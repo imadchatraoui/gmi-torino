@@ -1,0 +1,102 @@
+[
+  {
+    "id": "raccontarci",
+    "src": "/media/IMG_raccontarci.webp",
+    "title": "Raccontarci",
+    "subtitle": "L’Italia, l’identità e le nuove generazioni musulmane",
+    "alt": "Locandina Raccontarci, 26 settembre, Sala conferenza Chiesa Valdese a Torino, dalle 10 alle 19:30",
+    "kind": "poster",
+    "eventId": "raccontarci",
+    "dateLabel": "26 settembre 2026"
+  },
+  {
+    "id": "la-nostra-voce",
+    "src": "/media/IMG_6669.webp",
+    "title": "La nostra voce",
+    "subtitle": "Esperienze, sfide e nuove prospettive · Dalia El Brashy",
+    "alt": "Locandina La nostra voce, talk introduttivo con Dalia El Brashy, psicologa e psicoterapeuta",
+    "kind": "poster",
+    "eventId": "raccontarci",
+    "dateLabel": "26 settembre 2026"
+  },
+  {
+    "id": "gusto-appartenenza",
+    "src": "/media/IMG_6670.webp",
+    "title": "Il gusto di appartenenza",
+    "subtitle": "Cibo halal e tavola italiana · Veiled Spies e Badr Chatoui",
+    "alt": "Locandina Il gusto di appartenenza con Veiled Spies e Badr Chatoui",
+    "kind": "poster",
+    "eventId": "raccontarci",
+    "dateLabel": "26 settembre 2026"
+  },
+  {
+    "id": "indossare-identita",
+    "src": "/media/IMG_6671.webp",
+    "title": "Indossare l’identità",
+    "subtitle": "Presenza, racconto e libertà · Hind Lafram",
+    "alt": "Locandina Indossare l’identità con Hind Lafram, dedicata alla moda come presenza, racconto e libertà",
+    "kind": "poster",
+    "eventId": "raccontarci",
+    "dateLabel": "26 settembre 2026"
+  },
+  {
+    "id": "nafs-el-dam",
+    "src": "/media/IMG_6672.webp",
+    "title": "Nafs el dam",
+    "subtitle": "Creatività e nuove espressioni · Omar Chlhi",
+    "alt": "Locandina Nafs el dam con Omar Chlhi, creative director",
+    "kind": "poster",
+    "eventId": "raccontarci",
+    "dateLabel": "26 settembre 2026"
+  },
+  {
+    "id": "movimento",
+    "src": "/media/IMG_6673.webp",
+    "title": "Movimento",
+    "subtitle": "Sport, talento e nuove narrazioni · Ilias Aouani",
+    "alt": "Locandina Movimento, intervista online con Ilias Aouani su sport, talento e nuove narrazioni",
+    "kind": "poster",
+    "eventId": "raccontarci",
+    "dateLabel": "26 settembre 2026"
+  },
+  {
+    "id": "giovani-protagonisti",
+    "src": "/media/IMG_6674.webp",
+    "title": "Giovani protagonisti",
+    "subtitle": "Partecipazione, cittadinanza e spazio pubblico",
+    "alt": "Locandina Giovani protagonisti con Raisa Labaran, Marzia Sica e Abdullahi Ahmed",
+    "kind": "poster",
+    "eventId": "raccontarci",
+    "dateLabel": "26 settembre 2026"
+  },
+  {
+    "id": "prima-del-logo",
+    "src": "/media/IMG_6675.webp",
+    "title": "Prima del logo",
+    "subtitle": "Riconoscibili senza diventare qualcun altro · Souad Studio",
+    "alt": "Locandina Prima del logo, laboratorio pratico sull’identità con Souad Studio",
+    "kind": "poster",
+    "eventId": "raccontarci",
+    "dateLabel": "26 settembre 2026"
+  },
+  {
+    "id": "cambiare-racconto",
+    "src": "/media/IMG_6676.webp",
+    "title": "Cambiare il racconto",
+    "subtitle": "Nuove narrazioni sull’islam · Souad Maddahi",
+    "alt": "Locandina Cambiare il racconto con Souad Maddahi, disability e community manager",
+    "kind": "poster",
+    "eventId": "raccontarci",
+    "dateLabel": "26 settembre 2026"
+  },
+  {
+    "id": "save-the-date",
+    "src": "/media/IMG_savedate.webp",
+    "title": "Il primo invito",
+    "subtitle": "Save the date · Raccontarci",
+    "alt": "Locandina Save the date di GMI Torino con la data 26 settembre",
+    "kind": "poster",
+    "eventId": "raccontarci",
+    "dateLabel": "26 settembre 2026"
+  }
+]
