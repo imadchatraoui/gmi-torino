@@ -1,9 +1,25 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Mail, Camera, Globe, MapPin, CalendarDays } from "lucide-react";
+import {
+  Mail,
+  Camera,
+  Globe,
+  MapPin,
+  CalendarDays,
+  MessagesSquare,
+  BookOpen,
+  Users,
+} from "lucide-react";
 import { PageHeading, ContactInvitation } from "@/components/page-heading";
 import { GalleryRail, GalleryGrid } from "@/components/gallery";
+import {
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
+} from "@/components/animate-ui/components/radix/accordion";
+import { Surface, SiteButton } from "@/components/brand-experience";
 import { activities, events, gallery, site } from "@/lib/content";
 
 const pages: Record<string, { title: string; description: string }> = {
@@ -70,27 +86,20 @@ export default async function Page({
       <main id="main">
         <PageHeading
           label="Chi siamo"
-          title="Le nostre radici."
-          italic="Il nostro futuro, insieme."
+          title="Giovani Musulmani d’Italia."
+          secondLine="A Torino."
           description="Siamo giovani, siamo una comunità, siamo parte di Torino. Le nostre differenze sono il punto da cui partire per costruire qualcosa di condiviso."
         />
-        <section className="about-story wrap" data-reveal>
-          <div className="about-wordmark" aria-hidden="true">
-            <span>GMI</span>
-            <em>Torino.</em>
-            <p>
-              Radici profonde.
-              <br />
-              Orizzonti comuni.
-            </p>
-          </div>
+        <section className="about-story wrap">
+          <Surface className="about-wordmark" dark>
+            <span aria-hidden="true">GMI</span>
+            <span className="accent-text" aria-hidden="true">
+              Torino.
+            </span>
+          </Surface>
           <div>
             <p className="eyebrow">Una comunità che cresce</p>
-            <h2>
-              Le persone.
-              <br />
-              <em>Prima di tutto.</em>
-            </h2>
+            <h2>La sezione torinese.</h2>
             <p>
               GMI Torino è la sezione locale dei Giovani Musulmani d’Italia.
               Facciamo parte di una rete nazionale che promuove la crescita
@@ -117,7 +126,7 @@ export default async function Page({
             </a>
           </div>
         </section>
-        <section className="pillars-section wrap" data-reveal>
+        <section className="pillars-section wrap">
           <p className="eyebrow">Quello che ci guida</p>
           <div className="pillars-grid">
             <article>
@@ -154,8 +163,7 @@ export default async function Page({
       <main id="main">
         <PageHeading
           label="Attività"
-          title="Dalle idee"
-          italic="agli incontri."
+          title="Le nostre attività."
           description="L’identità si esplora, la cultura si condivide, la cittadinanza si vive. Questi sono i fili che attraversano le nostre iniziative."
         />
         <div className="wrap activity-list">
@@ -163,17 +171,17 @@ export default async function Page({
             <section
               key={a.number}
               className={`activity-detail ${i % 2 ? "reverse" : ""}`}
-              data-reveal
             >
-              <div className="activity-poster">
-                <img
-                  src={a.image}
-                  alt={`Locandina di Raccontarci: ${i === 0 ? "La nostra voce" : i === 1 ? "Prima del logo" : "Giovani protagonisti"}`}
-                  loading="lazy"
-                  width="1179"
-                  height="1470"
-                />
-              </div>
+              <Surface className="activity-tile" dark>
+                {i === 0 ? (
+                  <MessagesSquare aria-hidden="true" />
+                ) : i === 1 ? (
+                  <BookOpen aria-hidden="true" />
+                ) : (
+                  <Users aria-hidden="true" />
+                )}
+                <span>{a.number}</span>
+              </Surface>
               <div>
                 <p className="eyebrow">Percorso {a.number}</p>
                 <h2>{a.title}</h2>
@@ -194,8 +202,7 @@ export default async function Page({
       <main id="main">
         <PageHeading
           label="Eventi"
-          title="Ci incontriamo."
-          italic="E qualcosa comincia."
+          title="Gli incontri della sezione."
           description="Spazi di dialogo, esperienze e nuove prospettive. Scopri gli incontri della nostra comunità."
         />
         <section className="wrap upcoming-section">
@@ -231,11 +238,9 @@ export default async function Page({
             </div>
           )}
         </section>
-        <section className="wrap events-archive" data-reveal>
+        <section className="wrap events-archive">
           <p className="eyebrow">Dal nostro archivio</p>
-          <h2>
-            Incontri da <em>ricordare.</em>
-          </h2>
+          <h2>Gli incontri passati.</h2>
           <div className="events-list">
             {events
               .filter((e) => e.status === "archived")
@@ -252,18 +257,13 @@ export default async function Page({
       <main id="main">
         <PageHeading
           label="Archivio"
-          title="Una traccia"
-          italic="di ogni incontro."
-          description="Le immagini, le voci e i temi della nostra comunità. Esplora le storie in movimento, poi fermati sui dettagli."
+          title="L’archivio."
+          description="Le locandine e i materiali degli incontri di GMI Torino, raccolti per data e argomento."
         />
         <GalleryRail items={gallery} />
         <section className="wrap archive-intro">
           <p className="eyebrow">L’archivio completo</p>
-          <h2>
-            Ogni immagine,
-            <br />
-            <em>una storia.</em>
-          </h2>
+          <h2>I materiali degli eventi.</h2>
           <p>
             Ritrova tutti i materiali degli eventi. Le locandine conservano i
             temi e i protagonisti degli incontri; le fotografie ne raccontano i
@@ -279,90 +279,111 @@ export default async function Page({
       <main id="main">
         <PageHeading
           label="Contatti"
-          title="Ogni legame"
-          italic="inizia con un saluto."
+          title="Restiamo in contatto."
           description="Vuoi partecipare, condividere una proposta o conoscere meglio GMI Torino? Siamo qui per incontrarti."
         />
-        <section className="contact-grid wrap" data-reveal>
-          <a
-            className="contact-card primary"
-            href={`mailto:${site.localEmail}`}
-          >
-            <Mail size={28} strokeWidth={1} />
-            <p className="eyebrow">Scrivici</p>
-            <h2>Parliamone.</h2>
-            <span className="contact-address">{site.localEmail}</span>
-            <p>Per informazioni, collaborazioni e proposte per la comunità.</p>
-          </a>
-          <a
-            className="contact-card"
-            href={site.instagramUrl ?? site.nationalUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Camera size={28} strokeWidth={1} />
-            <p className="eyebrow">La comunità, ogni giorno</p>
-            <h2>Restiamo vicini.</h2>
-            <span className="contact-address">@gmi.torino</span>
-            <p>
-              Segui gli aggiornamenti e le iniziative della sezione su
-              Instagram.
-            </p>
-          </a>
-          <a
-            className="contact-card"
-            href={site.nationalUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Globe size={28} strokeWidth={1} />
-            <p className="eyebrow">La nostra rete</p>
-            <h2>GMI Italia.</h2>
-            <span className="contact-address">gmitalia.org</span>
-            <p>Conosci l’associazione nazionale e le altre sezioni.</p>
-          </a>
+        <section className="contact-grid wrap">
+          <Surface className="contact-spotlight">
+            <a
+              className="contact-card primary"
+              href={`mailto:${site.localEmail}`}
+            >
+              <Mail size={28} strokeWidth={1} />
+              <p className="eyebrow">Scrivici</p>
+              <h2>Parliamone.</h2>
+              <span className="contact-address">{site.localEmail}</span>
+              <p>
+                Per informazioni, collaborazioni e proposte per la comunità.
+              </p>
+            </a>
+          </Surface>
+          <Surface className="contact-spotlight">
+            <a
+              className="contact-card"
+              href={site.instagramUrl ?? site.nationalUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Camera size={28} strokeWidth={1} />
+              <p className="eyebrow">La comunità, ogni giorno</p>
+              <h2>Restiamo vicini.</h2>
+              <span className="contact-address">@gmi.torino</span>
+              <p>
+                Segui gli aggiornamenti e le iniziative della sezione su
+                Instagram.
+              </p>
+            </a>
+          </Surface>
+          <Surface className="contact-spotlight">
+            <a
+              className="contact-card"
+              href={site.nationalUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Globe size={28} strokeWidth={1} />
+              <p className="eyebrow">La nostra rete</p>
+              <h2>GMI Italia.</h2>
+              <span className="contact-address">gmitalia.org</span>
+              <p>Conosci l’associazione nazionale e le altre sezioni.</p>
+            </a>
+          </Surface>
         </section>
-        <section className="wrap faq-section" data-reveal>
+        <section className="wrap faq-section">
           <div>
             <p className="eyebrow">Prima di scriverci</p>
-            <h2>
-              Facciamo
-              <br />
-              <em>conoscenza.</em>
-            </h2>
+            <h2>Domande frequenti.</h2>
           </div>
-          <div className="faq-list">
-            <details>
-              <summary>Come posso conoscere le prossime attività?</summary>
-              <p>
-                Consulta la pagina Eventi e il profilo Instagram @gmi.torino.
-                Puoi anche scriverci per chiedere informazioni sulle iniziative.
-              </p>
-            </details>
-            <details>
-              <summary>Posso proporre una collaborazione?</summary>
-              <p>
-                Sì. Scrivi a {site.localEmail} raccontandoci la tua idea,
-                l’organizzazione di cui fai parte e come immagini la
-                collaborazione.
-              </p>
-            </details>
-            <details>
-              <summary>Dove si svolgono gli incontri?</summary>
-              <p>
-                Il luogo è indicato nella pagina di ogni evento. La sede di un
-                incontro non coincide necessariamente con la sede della sezione.
-              </p>
-            </details>
-            <details>
-              <summary>Come posso segnalare una foto o un contenuto?</summary>
-              <p>
-                Invia il collegamento alla pagina e una descrizione a{" "}
-                {site.localEmail}. Per richieste relative ai tuoi dati, consulta
-                anche l’informativa privacy.
-              </p>
-            </details>
-          </div>
+          <Accordion type="single" collapsible className="faq-list">
+            <AccordionItem value="question-1">
+              <AccordionTrigger>
+                Come posso conoscere le prossime attività?
+              </AccordionTrigger>
+              <AccordionContent>
+                <p>
+                  Consulta la pagina Eventi e il profilo Instagram @gmi.torino.
+                  Puoi anche scriverci per chiedere informazioni sulle
+                  iniziative.
+                </p>
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="question-2">
+              <AccordionTrigger>
+                Posso proporre una collaborazione?
+              </AccordionTrigger>
+              <AccordionContent>
+                <p>
+                  Sì. Scrivi a {site.localEmail} raccontandoci la tua idea,
+                  l’organizzazione di cui fai parte e come immagini la
+                  collaborazione.
+                </p>
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="question-3">
+              <AccordionTrigger>
+                Dove si svolgono gli incontri?
+              </AccordionTrigger>
+              <AccordionContent>
+                <p>
+                  Il luogo è indicato nella pagina di ogni evento. La sede di un
+                  incontro non coincide necessariamente con la sede della
+                  sezione.
+                </p>
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="question-4">
+              <AccordionTrigger>
+                Come posso segnalare una foto o un contenuto?
+              </AccordionTrigger>
+              <AccordionContent>
+                <p>
+                  Invia il collegamento alla pagina e una descrizione a{" "}
+                  {site.localEmail}. Per richieste relative ai tuoi dati,
+                  consulta anche l’informativa privacy.
+                </p>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
         </section>
       </main>
     );
@@ -408,7 +429,7 @@ function LegalPage({ page }: { page: string }) {
         description={pages[page].description}
       />
       <article className="legal-content wrap">
-        <p className="legal-updated">Ultimo aggiornamento: 7 ottobre 2026</p>
+        <p className="legal-updated">Ultimo aggiornamento: 8 ottobre 2026</p>
         {page === "privacy" ? (
           <>
             <h2>Chi gestisce il sito</h2>
@@ -581,6 +602,28 @@ function LegalPage({ page }: { page: string }) {
               locandine fornite; la data completa di Raccontarci, 26 settembre
               2026, è stata confermata dalla sezione. Non sono aperte iscrizioni
               per gli eventi in archivio.
+            </p>
+            <h2>Componenti e licenze</h2>
+            <p>
+              Il sito utilizza componenti di{" "}
+              <a
+                href="https://animate-ui.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Animate UI
+              </a>{" "}
+              e{" "}
+              <a
+                href="https://reactbits.dev/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                React Bits
+              </a>
+              . Sono conservati i rispettivi avvisi di copyright e i testi delle
+              licenze <a href="/licenses/animate-ui.txt">Animate UI</a> e{" "}
+              <a href="/licenses/react-bits.txt">React Bits</a>.
             </p>
             <h2>Segnalazioni</h2>
             <p>

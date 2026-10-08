@@ -36,7 +36,7 @@ cd site
 npm run media:sync
 ```
 
-Il comando importa le immagini in `site/public/media` e aggiunge le nuove voci alla galleria. Non cancella gli originali. Viene eseguito anche prima di `npm run build`. Usa un nome con `YYYY-MM-DD` per ricavare la data; senza data il sito indica semplicemente «Dall’archivio». I file che contengono `logo`, `cropped` o `gmi_singolo` non vengono importati come fotografie. I GIF non vengono importati, per evitare animazioni automatiche.
+Il comando importa le immagini in `site/public/media` e aggiunge le nuove voci alla galleria. Non cancella gli originali. Viene eseguito anche prima di `npm run build`. Usa un nome con `YYYY-MM-DD` per ricavare la data; senza data il sito indica semplicemente «Dall’archivio». I file che contengono `logo`, `cropped` o `gmi_singolo` non vengono importati come fotografie. I GIF non vengono importati nella galleria. Le due GIF originali del logo sono integrate separatamente nell’animazione d’ingresso: `public/media/gmi-build.gif` e `public/media/gmi-shine.gif`.
 
 Per completare il racconto della foto modifica `title`, `subtitle`, `alt`, `eventId` e `dateLabel` nel catalogo. Un titolo e una descrizione specifici sono preferibili ai testi generici dell’importazione. Usa solo immagini autorizzate, soprattutto se sono presenti minori.
 
@@ -44,10 +44,18 @@ Per completare il racconto della foto modifica `title`, `subtitle`, `alt`, `even
 
 Navigazione da tastiera, link per saltare al contenuto, focus visibile, dialoghi con gestione del focus, menu mobile e supporto a `prefers-reduced-motion`. Lo scorrimento dell’archivio torna nativo su dispositivi touch, con movimento ridotto e su finestre basse. I tasti Freccia sinistra/destra, Home ed End funzionano quando la galleria ha il focus; nel visualizzatore le frecce cambiano immagine ed Esc chiude.
 
-Font Manrope e Cormorant Garamond ospitati localmente con licenze SIL OFL. Nessun analytics, pixel, contenuto social incorporato, newsletter o modulo di registrazione. I link a Instagram e alla posta si aprono solo su azione dell’utente.
+Font Manrope ospitato localmente con licenza SIL OFL; i testi non utilizzano corsivo. Nessun analytics, pixel, contenuto social incorporato, newsletter o modulo di registrazione. I link a Instagram e alla posta si aprono solo su azione dell’utente.
 
 La versione Sites è **privata** e non indicizzabile. Prima del lancio pubblico completare la verifica descritta in `site/LAUNCH.md`; `legal.reviewed` è inizialmente `false`. Non rappresenta una certificazione di conformità legale.
 
 ## Pubblicazione
 
 Il progetto Sites è associato a `site/.openai/hosting.json`. La pubblicazione usa le procedure del plugin Sites. Non aggiungere token, credenziali o file `.env` al repository. Dopo nuove foto o modifiche ai contenuti, ricompilare e pubblicare una nuova versione.
+
+## Componenti visivi
+
+Il prodotto usa sorgenti ufficiali di [Animate UI](https://animate-ui.com/) e [React Bits](https://reactbits.dev/): Button, Sheet, Dialog, Tabs, Accordion, Fade, Blur; BlurText, SpotlightCard e Threads. I componenti copiati conservano il sorgente originale. La composizione del sito, i contenuti e la geometria dello scorrimento dell’archivio sono locali.
+
+`licenses/component-sources.json` registra repository, commit, registry e SHA-256 dei 22 file. Le licenze MIT con Commons Clause sono conservate in `licenses/` e nelle copie pubbliche `public/licenses/`. Non ridistribuire i componenti come un prodotto o una libreria di componenti.
+
+L’intro compone le due GIF originali, attende il caricamento e si chiude automaticamente al termine. È saltabile con il pulsante o Esc, ha chiusura su errore e timeout massimo di sicurezza. Con movimento ridotto l’intro e lo sfondo WebGL non sono montati; su mobile lo sfondo Threads resta disattivato. L’intro non si ripete durante la normale navigazione interna.

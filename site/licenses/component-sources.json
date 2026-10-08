@@ -1,0 +1,68 @@
+{
+  "retrievedAt": "2026-10-07",
+  "repositories": {
+    "animate-ui": {
+      "repo": "imskyleen/animate-ui",
+      "ref": "efeb96ffd7a3b7a4868667e4ac3c346620fb3044",
+      "license": "MIT + Commons Clause License Condition"
+    },
+    "react-bits": {
+      "repo": "DavidHDev/react-bits",
+      "ref": "63a008de65732d73010bd219d25d15c47739bb31",
+      "license": "MIT + Commons Clause License Condition v1.0"
+    }
+  },
+  "dependencies": [
+    "class-variance-authority",
+    "lucide-react",
+    "motion",
+    "radix-ui",
+    "motion@^12.23.12",
+    "ogl@^1.0.11"
+  ],
+  "existingLocalUtilityRequired": "@/lib/utils (cn, already in application)",
+  "roots": {
+    "animate-ui": [
+      "components-buttons-button",
+      "components-radix-sheet",
+      "components-radix-tabs",
+      "components-radix-dialog",
+      "components-radix-accordion",
+      "primitives-effects-fade",
+      "primitives-effects-blur"
+    ],
+    "react-bits": [
+      "BlurText",
+      "SpotlightCard",
+      "Threads"
+    ]
+  },
+  "sources": {
+    "animate-ui": [
+      "components-buttons-button",
+      "components-radix-sheet",
+      "components-radix-tabs",
+      "primitives-effects-fade",
+      "primitives-effects-blur",
+      "components-radix-dialog",
+      "primitives-radix-tabs",
+      "primitives-animate-slot",
+      "primitives-radix-sheet",
+      "hooks-use-is-in-view",
+      "primitives-buttons-button",
+      "primitives-radix-dialog",
+      "primitives-effects-auto-height",
+      "lib-get-strict-context",
+      "hooks-use-controlled-state",
+      "primitives-effects-highlight",
+      "hooks-use-auto-height",
+      "components-radix-accordion",
+      "primitives-radix-accordion"
+    ],
+    "react-bits": [
+      "BlurText",
+      "SpotlightCard",
+      "Threads"
+    ]
+  }
+}

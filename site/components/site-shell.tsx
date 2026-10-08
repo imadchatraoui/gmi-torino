@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { SiteButton } from "@/components/brand-experience";
 import { Menu, X } from "lucide-react";
 import {
   Sheet,
@@ -9,7 +10,7 @@ import {
   SheetDescription,
   SheetTrigger,
   SheetClose,
-} from "@/components/ui/sheet";
+} from "@/components/animate-ui/components/radix/sheet";
 const navigation = [
   { href: "/chi-siamo", label: "Chi siamo" },
   { href: "/attivita", label: "Attività" },
@@ -47,22 +48,25 @@ export function Header() {
               </Link>
             ))}
           </nav>
-          <Link href="/contatti" className="header-cta">
-            Entra in contatto
-          </Link>
+          <SiteButton asChild className="header-cta">
+            <Link href="/contatti">Contatti</Link>
+          </SiteButton>
           <Sheet>
             <SheetTrigger asChild>
-              <button className="mobile-toggle" aria-label="Apri il menu">
+              <SiteButton className="mobile-toggle" aria-label="Apri il menu">
                 <Menu size={22} />
-              </button>
+              </SiteButton>
             </SheetTrigger>
             <SheetContent showCloseButton={false} className="mobile-menu">
               <div className="mobile-menu-top">
                 <SheetTitle>GMI Torino</SheetTitle>
                 <SheetClose asChild>
-                  <button className="icon-button" aria-label="Chiudi il menu">
+                  <SiteButton
+                    className="icon-button"
+                    aria-label="Chiudi il menu"
+                  >
                     <X size={22} />
-                  </button>
+                  </SiteButton>
                 </SheetClose>
               </div>
               <SheetDescription>
@@ -87,6 +91,19 @@ export function Header() {
             </SheetContent>
           </Sheet>
         </div>
+        <noscript>
+          <nav
+            className="nojs-nav wrap"
+            aria-label="Navigazione senza JavaScript"
+          >
+            {navigation.map((n) => (
+              <a key={n.href} href={n.href}>
+                {n.label}
+              </a>
+            ))}
+            <a href="/contatti">Contatti</a>
+          </nav>
+        </noscript>
       </header>
     </>
   );
@@ -137,7 +154,7 @@ export function Footer() {
             <Link href="/cookie">Cookie</Link>
             <Link href="/note-legali">Note legali</Link>
           </div>
-          <span>Radici profonde. Orizzonti comuni.</span>
+          <span>Giovani Musulmani d’Italia · Torino</span>
         </div>
       </div>
     </footer>

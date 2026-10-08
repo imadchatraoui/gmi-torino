@@ -1,7 +1,7 @@
 import { site } from "@/lib/content";
 import type { Metadata } from "next";
 import "./globals.css";
-import { Motion } from "@/components/motion";
+import { ExperienceProvider, SiteIntro } from "@/components/brand-experience";
 import { Header, Footer } from "@/components/site-shell";
 export const metadata: Metadata = {
   title: {
@@ -21,10 +21,12 @@ export default function RootLayout({
   return (
     <html lang="it">
       <body>
-        <Header />
-        {children}
-        <Footer />
-        <Motion />
+        <ExperienceProvider>
+          <SiteIntro />
+          <Header />
+          {children}
+          <Footer />
+        </ExperienceProvider>
       </body>
     </html>
   );

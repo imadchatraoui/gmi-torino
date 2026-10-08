@@ -1,3 +1,4 @@
+import { SiteButton } from "@/components/brand-experience";
 import Link from "next/link";
 export default function NotFound() {
   return (
@@ -6,15 +7,15 @@ export default function NotFound() {
       <h1>
         Ripartiamo
         <br />
-        <em>da qui.</em>
+        <span className="accent-text">da qui.</span>
       </h1>
       <p>
         Questa pagina non è disponibile. La nostra comunità ti aspetta sulla
         Home.
       </p>
-      <Link className="button" href="/">
-        Torna alla Home
-      </Link>
+      <SiteButton asChild>
+        <Link href="/">Torna alla Home</Link>
+      </SiteButton>
     </main>
   );
 }

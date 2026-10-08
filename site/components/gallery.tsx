@@ -1,4 +1,5 @@
 "use client";
+import { useReducedMotion } from "motion/react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { RefObject } from "react";
 import { ChevronLeft, ChevronRight, Maximize2, X } from "lucide-react";
@@ -8,8 +9,15 @@ import {
   DialogTitle,
   DialogDescription,
   DialogClose,
-} from "@/components/ui/dialog";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+} from "@/components/animate-ui/components/radix/dialog";
+import {
+  Tabs,
+  TabsList,
+  TabsTrigger,
+  TabsContent,
+  TabsContents,
+} from "@/components/animate-ui/components/radix/tabs";
+import { SiteButton } from "@/components/brand-experience";
 import type { GalleryItem } from "@/lib/content";
 
 function Lightbox({
@@ -23,6 +31,7 @@ function Lightbox({
   onSelect: (n: number | null) => void;
   returnFocus: RefObject<HTMLButtonElement | null>;
 }) {
+  const reduced = useReducedMotion();
   const item = selected === null ? null : items[selected];
   const move = useCallback(
     (direction: number) => {
@@ -55,6 +64,14 @@ function Lightbox({
     >
       <DialogContent
         showCloseButton={false}
+        {...(reduced
+          ? {
+              initial: false,
+              animate: { opacity: 1, filter: "none", transform: "none" },
+              exit: { opacity: 0, filter: "none", transform: "none" },
+              transition: { duration: 0 },
+            }
+          : {})}
         className="lightbox"
         onCloseAutoFocus={(event) => {
           if (returnFocus.current?.isConnected) {
@@ -74,35 +91,38 @@ function Lightbox({
                 </DialogDescription>
               </div>
               <DialogClose asChild>
-                <button className="icon-button" aria-label="Chiudi l’immagine">
+                <SiteButton
+                  className="icon-button"
+                  aria-label="Chiudi l’immagine"
+                >
                   <X size={22} />
-                </button>
+                </SiteButton>
               </DialogClose>
             </div>
             <div className="lightbox-image">
               <img src={item.src} alt={item.alt} />
             </div>
             <div className="lightbox-bottom">
-              <button
+              <SiteButton
                 className="icon-button"
                 aria-label="Immagine precedente"
                 onClick={() => move(-1)}
               >
                 <ChevronLeft size={24} />
-              </button>
+              </SiteButton>
               <p>
                 {item.subtitle}
                 <span>
                   {(selected ?? 0) + 1} / {items.length}
                 </span>
               </p>
-              <button
+              <SiteButton
                 className="icon-button"
                 aria-label="Immagine successiva"
                 onClick={() => move(1)}
               >
                 <ChevronRight size={24} />
-              </button>
+              </SiteButton>
             </div>
           </>
         )}
@@ -120,7 +140,7 @@ function ImageCard({
   onOpen: (element: HTMLButtonElement) => void;
 }) {
   return (
-    <button
+    <SiteButton
       className="gallery-card"
       onClick={(event) => onOpen(event.currentTarget)}
       aria-label={`Apri ${item.title}`}
@@ -145,7 +165,7 @@ function ImageCard({
         <h3>{item.title}</h3>
         <p>{item.subtitle}</p>
       </div>
-    </button>
+    </SiteButton>
   );
 }
 export function GalleryRail({ items }: { items: GalleryItem[] }) {
@@ -180,10 +200,13 @@ export function GalleryRail({ items }: { items: GalleryItem[] }) {
       frame = 0;
       if (!enabled) return;
       const top = container.getBoundingClientRect().top + window.scrollY;
-      const range = container.offsetHeight - (window.innerHeight - 98);
+      const header =
+        document.querySelector(".site-header")?.getBoundingClientRect()
+          .height ?? 88;
+      const range = container.offsetHeight - (window.innerHeight - header);
       const fraction = Math.max(
         0,
-        Math.min(1, (window.scrollY - top + 98) / Math.max(1, range)),
+        Math.min(1, (window.scrollY - top + header) / Math.max(1, range)),
       );
       track.scrollLeft = (track.scrollWidth - track.clientWidth) * fraction;
       read();
@@ -229,8 +252,12 @@ export function GalleryRail({ items }: { items: GalleryItem[] }) {
       "(prefers-reduced-motion: reduce)",
     ).matches;
     if (pinned) {
-      const start = container.getBoundingClientRect().top + window.scrollY - 98;
-      const range = container.offsetHeight - (window.innerHeight - 98);
+      const header =
+        document.querySelector(".site-header")?.getBoundingClientRect()
+          .height ?? 88;
+      const start =
+        container.getBoundingClientRect().top + window.scrollY - header;
+      const range = container.offsetHeight - (window.innerHeight - header);
       window.scrollTo({
         top: start + (max > 0 ? left / max : 0) * range,
         behavior: reduce ? "instant" : "smooth",
@@ -251,18 +278,12 @@ export function GalleryRail({ items }: { items: GalleryItem[] }) {
           <div className="section-top">
             <div>
               <p className="eyebrow">Il nostro archivio visivo</p>
-              <h2 id="rail-title">
-                Le storie restano.
-                <br />
-                <em>Continua a scorrere.</em>
-              </h2>
+              <h2 id="rail-title">L’archivio della sezione.</h2>
             </div>
             <p className="rail-instruction">
               {pinned
                 ? "Scorri la pagina e attraversa le nostre storie."
                 : "Scorri le immagini, oppure usa i comandi."}
-              <br />
-              Ogni incontro lascia una traccia.
             </p>
           </div>
           <div
@@ -317,22 +338,22 @@ export function GalleryRail({ items }: { items: GalleryItem[] }) {
               {String(items.length).padStart(2, "0")}
             </span>
             <div className="gallery-controls">
-              <button
+              <SiteButton
                 className="icon-button"
                 aria-label="Scorri indietro nell’archivio"
                 disabled={progress <= 0.001}
                 onClick={() => go(active - 1)}
               >
                 <ChevronLeft size={22} />
-              </button>
-              <button
+              </SiteButton>
+              <SiteButton
                 className="icon-button"
                 aria-label="Scorri avanti nell’archivio"
                 disabled={progress >= 0.999}
                 onClick={() => go(active + 1)}
               >
                 <ChevronRight size={22} />
-              </button>
+              </SiteButton>
             </div>
           </div>
         </div>
@@ -376,41 +397,43 @@ export function GalleryGrid({ items }: { items: GalleryItem[] }) {
           </TabsList>
           <span className="archive-hint">Apri un’immagine per esplorarla</span>
         </div>
-        {["all", "photo", "poster"].map((value) => (
-          <TabsContent key={value} value={value}>
-            {visible.length ? (
-              <div className="gallery-grid">
-                {visible.map((item, i) => (
-                  <ImageCard
-                    key={item.id}
-                    item={item}
-                    index={i}
-                    onOpen={(element) => {
-                      opener.current = element;
-                      setSelected(i);
-                    }}
-                  />
-                ))}
-              </div>
-            ) : (
-              <div className="empty-state">
-                <p className="eyebrow">Le storie continuano</p>
-                <h2>
-                  Le fotografie
-                  <br />
-                  <em>arrivano qui.</em>
-                </h2>
-                <p>
-                  L’archivio si arricchirà con le immagini dei nostri incontri.
-                  Nel frattempo, scopri le locandine e i temi di Raccontarci.
-                </p>
-                <button className="button" onClick={() => setKind("poster")}>
-                  Esplora le locandine
-                </button>
-              </div>
-            )}
-          </TabsContent>
-        ))}
+        <TabsContents mode="layout">
+          {["all", "photo", "poster"].map((value) => (
+            <TabsContent key={value} value={value} initial={false}>
+              {visible.length ? (
+                <div className="gallery-grid">
+                  {visible.map((item, i) => (
+                    <ImageCard
+                      key={item.id}
+                      item={item}
+                      index={i}
+                      onOpen={(element) => {
+                        opener.current = element;
+                        setSelected(i);
+                      }}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <div className="empty-state">
+                  <p className="eyebrow">Le storie continuano</p>
+                  <h2>Fotografie in arrivo.</h2>
+                  <p>
+                    L’archivio si arricchirà con le immagini dei nostri
+                    incontri. Nel frattempo, scopri le locandine e i temi di
+                    Raccontarci.
+                  </p>
+                  <SiteButton
+                    className="button"
+                    onClick={() => setKind("poster")}
+                  >
+                    Esplora le locandine
+                  </SiteButton>
+                </div>
+              )}
+            </TabsContent>
+          ))}
+        </TabsContents>
       </Tabs>
       <Lightbox
         items={visible}

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CalendarDays, Clock3, MapPin } from "lucide-react";
 import { events, gallery } from "@/lib/content";
+import { SiteButton } from "@/components/brand-experience";
 import { ContactInvitation } from "@/components/page-heading";
 export function generateStaticParams() {
   return events.map((e) => ({ slug: e.slug }));
@@ -48,10 +49,7 @@ export default async function EventPage({
               ? "Dal nostro archivio"
               : "Il prossimo incontro"}
           </p>
-          <h1>
-            {e.title}
-            <em>.</em>
-          </h1>
+          <h1>{e.title}.</h1>
           <p className="event-subtitle">{e.subtitle}</p>
           <p className="event-summary">{e.description}</p>
           <dl className="event-facts">
@@ -92,9 +90,9 @@ export default async function EventPage({
               Partecipa all’incontro
             </a>
           ) : (
-            <Link className="button" href="/archivio">
-              Esplora l’archivio visivo
-            </Link>
+            <SiteButton asChild>
+              <Link href="/archivio">Esplora l’archivio visivo</Link>
+            </SiteButton>
           )}
         </div>
         <img
@@ -106,15 +104,11 @@ export default async function EventPage({
           fetchPriority="high"
         />
       </section>
-      <section className="wrap program-section" data-reveal>
+      <section className="wrap program-section">
         <div className="section-top">
           <div>
             <p className="eyebrow">Le voci di Raccontarci</p>
-            <h2>
-              Storie diverse.
-              <br />
-              <em>Un dialogo comune.</em>
-            </h2>
+            <h2>Il programma.</h2>
           </div>
           <p>
             Gli interventi e i laboratori raccontati nelle locandine
