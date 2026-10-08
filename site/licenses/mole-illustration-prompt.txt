@@ -1,0 +1,9 @@
+Use case: stylized-concept
+Asset type: original transparent raster architectural line illustration for GMI Torino website.
+Primary request: Elegant fine-line architectural illustration of Turin's Mole Antonelliana. Recognizable tall slender spire, stepped pavilion beneath the spire, high curved four-sided cupola, and broad rectangular base. It is the actual iconic Mole Antonelliana in Turin, not a mosque.
+Style/medium: Refined crisp restrained architectural line drawing, delicate clear outlines readable when scaled down. Gold linework #d6b879 only, no filled shapes, no shading or painted texture.
+Scene/backdrop: Genuinely transparent background with real alpha; all open space, building interiors, and ornament interiors transparent. No background color or colored fill.
+Composition/framing: Square approximately 1024 by 1024. Mole centrally aligned with generous negative space around it. Keep the middle and lower-center composition sparse so an existing centered logo badge and polygon video windows can overlay it. The tall recognizable silhouette should remain elegant and legible.
+Ornament: Only very light sparse restrained geometric eight-point Islamic star lattice details near the far left/right outer edges and bottom corners. The stars are an abstract framing accent separate from the architecture, never attached as religious symbols to the building. Plenty of transparent open space.
+Intended backdrop: The asset will be placed on deep bordeaux #251317, but do NOT render that bordeaux background; output remains fully transparent.
+Constraints: No writing, no logo, no people, no crescent, no mosque architecture, no domes shaped like onions, no photography, no video imagery, no border enclosing the entire canvas, no filled background, no simulated checkerboard. One final original illustration.

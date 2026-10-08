@@ -437,6 +437,198 @@ p {
   color: #ab9199;
   font-size: 0.8125rem;
 }
+/* The illustration carries the architecture; these polygons frame the media. */
+.brand-hero {
+  background: radial-gradient(ellipse at 85% 60%, #54212e 0, #2c151c 36%, #251317 70%);
+}
+.brand-hero-inner {
+  grid-template-columns: 1.05fr 1fr;
+  gap: clamp(24px, 4vw, 60px);
+}
+.torino-mosaic {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  isolation: isolate;
+  max-width: min(610px, max(360px, calc(100svh - 290px)));
+  margin-bottom: 85px;
+  justify-self: center;
+}
+.mole-art {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+}
+.mole-art img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0.48;
+}
+.mosaic-logo {
+  position: absolute !important;
+  width: 42%;
+  left: 29%;
+  top: 55%;
+  padding: 6px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: var(--gold) !important;
+  clip-path: polygon(29.3% 0, 70.7% 0, 100% 29.3%, 100% 70.7%, 70.7% 100%, 29.3% 100%, 0 70.7%, 0 29.3%);
+  aspect-ratio: 1;
+}
+.mosaic-logo .logo-plinth {
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  box-shadow: none;
+  clip-path: inherit;
+}
+.mosaic-logo .logo-plinth img {
+  width: 69%;
+  height: 80%;
+}
+.mosaic-footer {
+  position: absolute;
+  top: 100%;
+  width: 100%;
+}
+.mosaic-caption {
+  margin: 10px 0 0;
+  color: var(--gold);
+  text-align: center;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+.mosaic-ornament {
+  position: absolute;
+  width: 22%;
+  aspect-ratio: 1;
+  background: #d6b87952;
+  clip-path: polygon(50% 0, 64.6% 14.6%, 85.4% 14.6%, 85.4% 35.4%, 100% 50%, 85.4% 64.6%, 85.4% 85.4%, 64.6% 85.4%, 50% 100%, 35.4% 85.4%, 14.6% 85.4%, 14.6% 64.6%, 0 50%, 14.6% 35.4%, 14.6% 14.6%, 35.4% 14.6%);
+}
+.mosaic-ornament::after {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  background: #361921;
+  clip-path: inherit;
+}
+.mosaic-ornament-left { left: 1%; top: 36%; }
+.mosaic-ornament-right { right: 1%; top: 44%; }
+.mosaic-window {
+  position: absolute;
+  z-index: 2;
+  display: block;
+  width: 29%;
+  aspect-ratio: 1;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: white;
+  filter: drop-shadow(0 10px 20px #13070b80);
+}
+.mosaic-window-0 { top: 30%; left: 0; }
+.mosaic-window-1 { top: 41%; right: 0; }
+.mosaic-window-2 { top: 76%; right: 0; width: 20%; }
+.mosaic-video-shape {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 1;
+  background: var(--gold);
+  clip-path: polygon(29.3% 0, 70.7% 0, 100% 29.3%, 100% 70.7%, 70.7% 100%, 29.3% 100%, 0 70.7%, 0 29.3%);
+}
+.mosaic-video-shape img,
+.mosaic-video-shape video {
+  position: absolute;
+  inset: 2px;
+  width: calc(100% - 4px);
+  height: calc(100% - 4px);
+  object-fit: cover;
+  clip-path: inherit;
+  opacity: 0.88;
+}
+.mosaic-video-shape img { opacity: 1; }
+.mosaic-play {
+  display: grid;
+  place-items: center;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  width: 40px;
+  height: 40px;
+  background: #2513179c;
+  border: 1px solid #ffffff8c;
+  border-radius: 50%;
+}
+.mosaic-video-meta {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  justify-content: center;
+  margin-top: 9px;
+  color: #cbbac0;
+  font-size: 0.8125rem;
+}
+.mosaic-motion-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #ecdfc4;
+  background: #251317;
+  border: 1px solid #d6b8794a;
+  border-radius: 30px;
+  padding: 6px 13px;
+  min-height: 44px;
+  font-size: 0.8125rem;
+}
+.mosaic-dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  transform: none;
+  width: min(900px, calc(100vw - 32px));
+  max-width: none;
+  max-height: calc(100dvh - 32px);
+  overflow: auto;
+  background: #251317;
+  color: #f8f5ef;
+  border: 1px solid #d6b87952;
+  border-radius: 20px;
+  padding: clamp(16px, 3vw, 28px);
+}
+.mosaic-dialog-heading {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 20px;
+}
+.mosaic-dialog-heading h2 { font-size: 1.5rem; margin: 0 0 8px; }
+.mosaic-dialog-heading p { color: #d0bdc3; font-size: 0.875rem; margin: 0; }
+.mosaic-full-video {
+  display: block;
+  width: 100%;
+  max-height: calc(100dvh - 240px);
+  min-height: 130px;
+  object-fit: contain;
+  background: #140b0f;
+  border-radius: 8px;
+}
+.mosaic-video-credit { margin: 0; color: #d0bdc3; font-size: 0.8125rem; }
+.mosaic-video-credit a { text-decoration: underline; text-underline-offset: 3px; }
+.mosaic-video-error { padding: 25px; margin: 0; }
+.brand-hero-inner { padding-bottom: 125px; }
+@media (max-width: 850px) {
+  .brand-hero-inner { grid-template-columns: 1fr; }
+  .torino-mosaic { width: min(100%, 510px); margin-block: 2px 65px; }
+}
 .values-strip {
   background: var(--gold);
   color: #251317;

@@ -4,16 +4,15 @@ import { activities } from "@/lib/content";
 import { ContactInvitation } from "@/components/page-heading";
 import {
   BrandTitle,
-  HeroThreads,
   Surface,
   SiteButton,
 } from "@/components/brand-experience";
+import { TorinoMosaic } from "@/components/torino-mosaic";
 
 export default function Home() {
   return (
     <main id="main">
       <section className="brand-hero">
-        <HeroThreads />
         <div className="brand-hero-inner wrap">
           <div className="hero-copy">
             <p className="eyebrow">
@@ -34,18 +33,7 @@ export default function Home() {
               </SiteButton>
             </div>
           </div>
-          <Surface className="logo-stage" dark>
-            <div className="logo-plinth">
-              <img
-                src="/media/gmi-torino.png"
-                alt="Il logo di GMI Torino, con la Mole Antonelliana"
-                width={449}
-                height={556}
-                fetchPriority="high"
-              />
-            </div>
-            <p className="logo-stage-label">Giovani · Musulmani · Italiani</p>
-          </Surface>
+          <TorinoMosaic />
         </div>
         <div className="hero-meta wrap">
           <span>Sezione di Torino</span>

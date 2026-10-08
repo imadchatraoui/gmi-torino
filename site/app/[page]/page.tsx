@@ -589,11 +589,21 @@ function LegalPage({ page }: { page: string }) {
             </p>
             <h2>Materiali e diritti</h2>
             <p>
-              Logo e immagini sono forniti dalla sezione, che ne ha confermato
+              Logo e locandine sono forniti dalla sezione, che ne ha confermato
               l’autorizzazione alla pubblicazione. I diritti appartengono ai
               rispettivi titolari. La presenza di un contenuto nel sito non
               concede il diritto di riprodurlo o utilizzarlo per altri scopi.
               Per richieste di utilizzo, contatta la sezione.
+            </p>
+            <p>
+              L’illustrazione della Mole nella pagina iniziale è stata creata
+              con uno strumento di generazione di immagini. Le clip etichettate
+              «dimostrative» sono materiali di repertorio da{" "}
+              <a href="https://mixkit.co/" target="_blank" rel="noopener noreferrer">Mixkit</a>,
+              utilizzati secondo la{" "}
+              <a href="https://mixkit.co/license/" target="_blank" rel="noopener noreferrer">Stock Video Free License</a>.
+              Non documentano iniziative di GMI Torino. Il video del vicolo è
+              girato a Venezia; le fonti sono indicate nel visualizzatore.
             </p>
             <h2>Informazioni sugli eventi</h2>
             <p>

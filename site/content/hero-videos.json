@@ -1,0 +1,24 @@
+[
+  {
+    "id": "demo-collaborazione",
+    "title": "Collaborazione — esempio",
+    "description": "Due persone indicano un progetto sul tavolo. Clip dimostrativa senza audio.",
+    "src": "/media/demo/collaborazione.mp4",
+    "poster": "/media/demo/collaborazione.jpg",
+    "author": "Mixkit",
+    "sourceUrl": "https://mixkit.co/free-stock-video/pointing-to-blueprints-1439/",
+    "licenseUrl": "https://mixkit.co/license/",
+    "demo": true
+  },
+  {
+    "id": "demo-architettura",
+    "title": "Architettura a Venezia — esempio",
+    "description": "Una passeggiata in un vicolo di Venezia. Clip dimostrativa senza audio, non girata a Torino.",
+    "src": "/media/demo/architettura-venezia.mp4",
+    "poster": "/media/demo/architettura-venezia.jpg",
+    "author": "Mixkit",
+    "sourceUrl": "https://mixkit.co/free-stock-video/narrow-and-old-alley-in-venice-4600/",
+    "licenseUrl": "https://mixkit.co/license/",
+    "demo": true
+  }
+]

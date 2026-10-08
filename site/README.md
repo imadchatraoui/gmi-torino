@@ -54,8 +54,18 @@ Il progetto Sites è associato a `site/.openai/hosting.json`. La pubblicazione u
 
 ## Componenti visivi
 
-Il prodotto usa sorgenti ufficiali di [Animate UI](https://animate-ui.com/) e [React Bits](https://reactbits.dev/): Button, Sheet, Dialog, Tabs, Accordion, Fade, Blur; BlurText, SpotlightCard e Threads. I componenti copiati conservano il sorgente originale. La composizione del sito, i contenuti e la geometria dello scorrimento dell’archivio sono locali.
+Il prodotto usa sorgenti ufficiali di [Animate UI](https://animate-ui.com/) e [React Bits](https://reactbits.dev/): Button, Sheet, Dialog, Tabs, Accordion, Fade, Blur; BlurText e SpotlightCard. Threads resta conservato tra le sorgenti ufficiali, ma la landing corrente usa l’illustrazione della Mole. I componenti copiati conservano il sorgente originale. La composizione del sito, i contenuti e la geometria dello scorrimento dell’archivio sono locali.
 
 `licenses/component-sources.json` registra repository, commit, registry e SHA-256 dei 22 file. Le licenze MIT con Commons Clause sono conservate in `licenses/` e nelle copie pubbliche `public/licenses/`. Non ridistribuire i componenti come un prodotto o una libreria di componenti.
 
-L’intro compone le due GIF originali, attende il caricamento e si chiude automaticamente al termine. È saltabile con il pulsante o Esc, ha chiusura su errore e timeout massimo di sicurezza. Con movimento ridotto l’intro e lo sfondo WebGL non sono montati; su mobile lo sfondo Threads resta disattivato. L’intro non si ripete durante la normale navigazione interna.
+L’intro compone le due GIF originali, attende il caricamento e si chiude automaticamente al termine. È saltabile con il pulsante o Esc, ha chiusura su errore e timeout massimo di sicurezza. Con movimento ridotto l’intro non è montata. L’intro non si ripete durante la normale navigazione interna.
+
+## Mole, geometrie e video
+
+La landing utilizza `public/media/mole-geometrie-oro.png`, un’illustrazione originale trasparente creata con ImageGen. Il prompt esatto è conservato in `licenses/mole-illustration-prompt.txt`. Il logo originale rimane distinto dall’illustrazione.
+
+`content/hero-videos.json` configura fino a tre finestre ottagonali. Le due clip attuali sono esempi di repertorio Mixkit richiesti dall’utente: mani su un progetto e un vicolo di Venezia. Non sono presentati come attività di GMI né come riprese di Torino. Fonti e verifica delle licenze sono registrate in `licenses/demo-video-sources.json` e indicate nel visualizzatore. I file sono ospitati localmente; non vengono incorporati player esterni. Le clip non contengono tracce audio.
+
+Su mobile, con movimento ridotto o risparmio dati, le anteprime sono fotografie statiche e non caricano i file video automaticamente. Il tocco apre un dialogo con controlli nativi. Su desktop una sola anteprima alla volta viene riprodotta, senza audio, quando è visibile. Pausa, uscita dal viewport, scheda nascosta e apertura del visualizzatore fermano le anteprime. Esc chiude e restituisce il focus alla finestra selezionata.
+
+Per sostituire un esempio, aggiungere una clip autorizzata e la sua copertina in `public/media/`, aggiornare `src`, `poster`, `title` e `description` nel catalogo, e impostare `demo: false` solo per contenuti reali della sezione. Conservare le autorizzazioni, aggiungere sottotitoli se c’è parlato e aggiornare i crediti prima della pubblicazione. Ricompilare e pubblicare la nuova versione.

@@ -1,0 +1,31 @@
+{
+  "verifiedOn": "2026-10-08",
+  "purpose": "User requested temporary demonstration footage. These clips do not depict GMI Torino activities.",
+  "license": "Mixkit Stock Video Free License",
+  "licenseUrl": "https://mixkit.co/license/",
+  "verification": "Both official item pages explicitly permit commercial and personal use under the Stock Video Free License.",
+  "assets": [
+    {
+      "id": "1439",
+      "publisher": "Mixkit",
+      "creator": "Not listed on official source page",
+      "sourcePage": "https://mixkit.co/free-stock-video/pointing-to-blueprints-1439/",
+      "videoUrl": "https://assets.mixkit.co/videos/1439/1439-360.mp4",
+      "posterUrl": "https://assets.mixkit.co/videos/1439/1439-thumb-720-0.jpg",
+      "localVideo": "public/media/demo/collaborazione.mp4",
+      "localPoster": "public/media/demo/collaborazione.jpg",
+      "description": "Hands pointing to blueprints; no claim of GMI affiliation."
+    },
+    {
+      "id": "4600",
+      "publisher": "Mixkit",
+      "creator": "Not listed on official source page",
+      "sourcePage": "https://mixkit.co/free-stock-video/narrow-and-old-alley-in-venice-4600/",
+      "videoUrl": "https://assets.mixkit.co/videos/4600/4600-360.mp4",
+      "posterUrl": "https://assets.mixkit.co/videos/4600/4600-thumb-720-0.jpg",
+      "localVideo": "public/media/demo/architettura-venezia.mp4",
+      "localPoster": "public/media/demo/architettura-venezia.jpg",
+      "description": "Venice alley; explicitly labeled Venice in viewer, not Turin."
+    }
+  ]
+}
