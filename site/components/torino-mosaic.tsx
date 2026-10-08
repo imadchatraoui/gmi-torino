@@ -2,7 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Pause, Play, X } from "lucide-react";
-import { useReducedMotion } from "motion/react";
+import { useReducedMotion, useTransform } from "motion/react";
+import { Rosette, useHeroProgress, useMotionDistance } from "@/components/scroll-geometry";
 import { Fade } from "@/components/animate-ui/primitives/effects/fade";
 import { Surface, SiteButton } from "@/components/brand-experience";
 import {
@@ -104,6 +105,18 @@ export function TorinoMosaic() {
   const [preview, setPreview] = useState(0);
   const [selected, setSelected] = useState<HeroClip | null>(null);
   const trigger = useRef<HTMLButtonElement | null>(null);
+  const progress = useHeroProgress();
+  const distance = useMotionDistance();
+  const turn = useTransform(progress, [0, 1], [0, 105 * distance]);
+  const reverseTurn = useTransform(progress, [0, 1], [22.5, 22.5 - 85 * distance]);
+  const moleY = useTransform(progress, [0, 1], [0, -70 * distance]);
+  const moleScale = useTransform(progress, [0, 1], [1, 1 + 0.16 * distance]);
+  const leftX = useTransform(progress, [0, 1], [0, -42 * distance]);
+  const rightX = useTransform(progress, [0, 1], [0, 42 * distance]);
+  const leftY = useTransform(progress, [0, 1], [0, 90 * distance]);
+  const rightY = useTransform(progress, [0, 1], [0, -65 * distance]);
+  const leftRotate = useTransform(progress, [0, 1], [0, -18 * distance]);
+  const rightRotate = useTransform(progress, [0, 1], [0, 18 * distance]);
   useEffect(() => {
     const mq = window.matchMedia("(min-width: 851px) and (prefers-reduced-motion: no-preference)");
     const connection = (navigator as Navigator & {
@@ -128,7 +141,9 @@ export function TorinoMosaic() {
   const playing = automatic && inView && visible && !paused && !selected && !reduced;
   return (
     <div className="torino-mosaic" ref={stage}>
-      <Fade className="mole-art" initial={false} transition={{ duration: 0.9 }}>
+      <Fade initial={false} className="mosaic-orbit mosaic-orbit-outer" style={{ rotate: turn }} aria-hidden="true"><Rosette /></Fade>
+      <Fade initial={false} className="mosaic-orbit mosaic-orbit-inner" style={{ rotate: reverseTurn }} aria-hidden="true"><Rosette /></Fade>
+      <Fade className="mole-art" initial={false} style={{ y: moleY, scale: moleScale }} transition={{ duration: 0.9 }}>
         <img
           src="/media/mole-geometrie-oro.png"
           alt="Illustrazione della Mole Antonelliana in oro, incorniciata da geometrie a otto punte"
@@ -143,6 +158,7 @@ export function TorinoMosaic() {
         <SiteButton
           key={clip.id}
           className={`mosaic-window mosaic-window-${index}`}
+          style={{ x: index === 0 ? leftX : rightX, y: index === 0 ? leftY : rightY, rotate: index === 0 ? leftRotate : rightRotate }}
           aria-label={`Apri ${clip.demo ? "il video dimostrativo" : "il video"}: ${clip.title}`}
           aria-haspopup="dialog"
           onPointerEnter={(event) => {

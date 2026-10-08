@@ -56,7 +56,7 @@ Il progetto Sites è associato a `site/.openai/hosting.json`. La pubblicazione u
 
 Il prodotto usa sorgenti ufficiali di [Animate UI](https://animate-ui.com/) e [React Bits](https://reactbits.dev/): Button, Sheet, Dialog, Tabs, Accordion, Fade, Blur; BlurText e SpotlightCard. Threads resta conservato tra le sorgenti ufficiali, ma la landing corrente usa l’illustrazione della Mole. I componenti copiati conservano il sorgente originale. La composizione del sito, i contenuti e la geometria dello scorrimento dell’archivio sono locali.
 
-`licenses/component-sources.json` registra repository, commit, registry e SHA-256 dei 22 file. Le licenze MIT con Commons Clause sono conservate in `licenses/` e nelle copie pubbliche `public/licenses/`. Non ridistribuire i componenti come un prodotto o una libreria di componenti.
+`licenses/component-sources.json` registra repository, commit e registry dei 22 file. Le licenze MIT con Commons Clause sono conservate in `licenses/` e nelle copie pubbliche `public/licenses/`. Non ridistribuire i componenti come un prodotto o una libreria di componenti.
 
 L’intro compone le due GIF originali, attende il caricamento e si chiude automaticamente al termine. È saltabile con il pulsante o Esc, ha chiusura su errore e timeout massimo di sicurezza. Con movimento ridotto l’intro non è montata. L’intro non si ripete durante la normale navigazione interna.
 
@@ -69,3 +69,11 @@ La landing utilizza `public/media/mole-geometrie-oro.png`, un’illustrazione or
 Su mobile, con movimento ridotto o risparmio dati, le anteprime sono fotografie statiche e non caricano i file video automaticamente. Il tocco apre un dialogo con controlli nativi. Su desktop una sola anteprima alla volta viene riprodotta, senza audio, quando è visibile. Pausa, uscita dal viewport, scheda nascosta e apertura del visualizzatore fermano le anteprime. Esc chiude e restituisce il focus alla finestra selezionata.
 
 Per sostituire un esempio, aggiungere una clip autorizzata e la sua copertina in `public/media/`, aggiornare `src`, `poster`, `title` e `description` nel catalogo, e impostare `demo: false` solo per contenuti reali della sezione. Conservare le autorizzazioni, aggiungere sottotitoli se c’è parlato e aggiornare i crediti prima della pubblicazione. Ricompilare e pubblicare la nuova versione.
+
+## Landing geometrica e animazione durante lo scroll
+
+La home è una composizione continua bordeaux e oro: rosette geometriche attraversano lo sfondo, la Mole custom rimane al centro della prima scena e le immagini sono ritagliate in ottagoni e stelle. Cornice e immagine condividono la stessa trasformazione. Le immagini delle attività sono dettagli delle locandine autorizzate, non fotografie di incontri. La locandina dell’evento rimane interamente visibile dentro la cornice.
+
+`components/scroll-geometry.tsx` compone il Fade ufficiale di Animate UI con i MotionValue di `useScroll`, `useSpring` e `useTransform` della dipendenza Motion già presente. Le rosette sono geometria SVG decorativa. Nessuna nuova libreria né modifica ai componenti ufficiali. La prima scena resta temporaneamente fissa su desktop; lo scroll apre le finestre, ruota le rosette e avvicina la Mole. Le sezioni successive hanno trasformazioni locali legate alla loro posizione nella pagina.
+
+Fino a 850 px la pagina segue il normale flusso verticale: testo e azioni precedono la Mole, l’ampiezza del movimento è il 35% di quella desktop e non ci sono blocchi di scorrimento. `prefers-reduced-motion` azzera spostamenti, rotazioni e variazioni di scala e disattiva la scena fissa. I contenuti rimangono visibili anche prima dell’idratazione. Lo scroll nativo e il normale uso di tastiera e touch sono preservati; i link interni usano lo scorrimento fluido del browser.

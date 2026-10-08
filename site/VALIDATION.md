@@ -30,3 +30,13 @@ Questi controlli non costituiscono una certificazione WCAG o legale. `LAUNCH.md`
 - Gestione esplicita di movimento ridotto, risparmio dati e pagina nascosta. Il controllo della preferenza di movimento ridotto è stato verificato nel codice, non tramite modifica della preferenza del sistema operativo.
 - Nessun errore o avviso nella console durante i controlli desktop.
 - Le clip sono etichettate dimostrative nella landing e nel dialogo; il filmato di Venezia è identificato correttamente. Crediti aggiunti alle Note legali.
+
+## Landing geometrica continua
+
+- TypeScript superato dopo l’integrazione di MotionValue sui primitivi Animate UI.
+- Home desktop 1280×720: scena temporaneamente fissa, Mole in oro, due clip e logo leggibili. Uno scroll reale cambia la rosetta da 0° a circa 20°, sposta e ruota entrambe le finestre e avvicina la Mole. Le immagini rimangono ritagliate dentro le cornici durante il movimento.
+- Frame mobile/tablet a 320, 360, 390, 768 e 1024 px: `scrollWidth` uguale a `clientWidth` nei controlli. Titolo e azioni precedono l’illustrazione. Sistemata la separazione tra didascalie del mosaico e metadati della hero.
+- Attività: tre locandine autorizzate dentro ottagoni/stella, con trasformazioni locali osservate durante lo scorrimento. Testi esterni alle forme e leggibili; layout verticale su telefono.
+- Dialogo video aperto su desktop e a 390 px; conserva indicazione dimostrativa e crediti. Chiusura desktop restituisce il focus alla finestra originale. Il link «Scopri la comunità» raggiunge `#comunita`.
+- Preferenza di movimento ridotto gestita nei MotionValue e nel CSS della scena; controllo del codice, senza modificare le impostazioni del sistema operativo. Nessun nuovo embed, tracciamento, dipendenza o sorgente venduto come componente.
+- Build e pubblicazione eseguite sul sorgente finale tramite il workflow Sites.
