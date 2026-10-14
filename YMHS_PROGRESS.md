@@ -37,8 +37,12 @@ Branch: `ymhs-site` (creato da `main` dopo il commit "snapshot pre-YMHS"). Nient
 - Pagina `404.html` (nessun JS, ~2 KB) inclusa nel build.
 - Verificati in screenshot: desktop 1280x800 (home e menu a due colonne) e `prefers-reduced-motion` (bowl già aperte, niente sticky).
 
+### Run 1, iterazione 4
+- Home desktop (≥960px): bowl aperta decorativa nella colonna destra dell'hero (montata solo su schermi larghi,
+  senza numeri), timbro spostato sulla colonna del testo. Mobile invariato.
+- Revisione finale di PokeScroll/HeroBowl: nessun problema trovato.
+
 ## Manca / idee per le prossime run
-- [ ] (opzionale) Home desktop: la colonna destra dell'hero è vuota, si potrebbe mettere una bowl grande.
 - [ ] Provare su un iPhone vero (scroll sticky + barra Safari): da fare quando il dev server/anteprima è disponibile.
 - [ ] Pulizia dipendenze non più usate (react, react-dom, @vitejs/plugin-react, three, ogl, gsap, framer-motion, tailwind) — solo dopo conferma dell'utente.
 - [ ] Decidere hosting e DNS (utente).

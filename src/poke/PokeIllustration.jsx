@@ -42,7 +42,7 @@ function Marker({ x, y, n }) {
  *
  * API imperativa: ref.current.update(p, timeline)
  */
-const PokeIllustration = forwardRef(function PokeIllustration({ items, label }, ref) {
+const PokeIllustration = forwardRef(function PokeIllustration({ items, label, markers = true }, ref) {
   const uid = useId().replace(/:/g, '')
   const lidRef = useRef(null)
   const ringRef = useRef(null)
@@ -116,7 +116,7 @@ const PokeIllustration = forwardRef(function PokeIllustration({ items, label }, 
           </Svg>
         </div>
       )}
-      {riceIndex >= 0 && (
+      {markers && riceIndex >= 0 && (
         <div className="poke-art__layer poke-art__fade" ref={riceMarkerRef} style={{ opacity: 0 }}>
           <Svg>
             <Marker x={C} y={C + FOOD_R + 2} n={riceIndex + 1} />
@@ -135,9 +135,11 @@ const PokeIllustration = forwardRef(function PokeIllustration({ items, label }, 
               <g transform={`translate(${l.cx.toFixed(1)} ${l.cy.toFixed(1)}) scale(${ART_SCALE})`}>
                 <l.Art uid={`${uid}-${l.i}`} />
               </g>
-              <g ref={(el) => { markerRefs.current[l.i] = el }} style={{ opacity: 0 }}>
-                <Marker x={l.cx + l.dir.x * 80} y={l.cy + l.dir.y * 80} n={l.i + 1} />
-              </g>
+              {markers && (
+                <g ref={(el) => { markerRefs.current[l.i] = el }} style={{ opacity: 0 }}>
+                  <Marker x={l.cx + l.dir.x * 80} y={l.cy + l.dir.y * 80} n={l.i + 1} />
+                </g>
+              )}
             </Svg>
           </div>
         ),

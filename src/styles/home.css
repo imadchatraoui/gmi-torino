@@ -335,3 +335,24 @@
     bottom: -90px;
   }
 }
+
+@media (min-width: 960px) {
+  .hero {
+    padding-right: 40%;
+  }
+  .stamp {
+    top: 66px;
+    right: 41%;
+  }
+  .hero__bowl {
+    position: absolute;
+    top: 50%;
+    right: -20px;
+    width: 38%;
+    transform: translateY(-52%) rotate(-8deg);
+    animation: fade-up 1s 0.4s cubic-bezier(0.2, 0.75, 0.2, 1) both;
+  }
+  .hero__letters {
+    font-size: clamp(6rem, 17vw, 13rem);
+  }
+}

@@ -1,6 +1,7 @@
 import { EVENT } from '../data/event'
 import { POKES } from '../data/menu'
 import PokeIllustration from '../poke/PokeIllustration'
+import HeroBowl from './HeroBowl'
 import SiteFooter from '../shared/SiteFooter'
 import SiteHeader from '../shared/SiteHeader'
 import Ticker from '../shared/Ticker'
@@ -45,6 +46,7 @@ export default function Home() {
             <br />
             lavorazione
           </p>
+          <HeroBowl />
         </section>
 
         <dl className="facts">
