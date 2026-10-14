@@ -1,6 +1,36 @@
 /* GMI Torino · YMHS — base comune alle due pagine.
    Palette dal vecchio progetto GMI (rosso #8B181A, inchiostro #2A1314, oro)
    + carta crema e blu/salvia del materiale grafico YMHS. */
+/* Font self-hosted (subset latin, licenza SIL OFL 1.1 — vedi THIRD_PARTY_NOTICES.md) */
+@font-face {
+  font-family: 'Bodoni Moda';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/fonts/bodoni-moda-latin.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Bodoni Moda';
+  font-style: italic;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url('/fonts/bodoni-moda-italic-latin.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/ibm-plex-mono-400-latin.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/ibm-plex-mono-500-latin.woff2') format('woff2');
+}
+
 :root {
   --paper: #f3ecdf;
   --paper-2: #e9dfcc;

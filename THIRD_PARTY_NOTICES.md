@@ -46,3 +46,15 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
+
+---
+
+# Font (sito YMHS)
+
+I file in `public/fonts/` sono sottoinsiemi latin scaricati da Google Fonts e distribuiti
+con licenza **SIL Open Font License 1.1** (https://openfontlicense.org):
+
+- **Bodoni Moda** — Copyright 2020 The Bodoni Moda Project Authors (https://github.com/indestructible-type/Bodoni)
+- **IBM Plex Mono** — Copyright © 2017 IBM Corp. (https://github.com/IBM/plex)
+
+Nota: i componenti React Bits elencati sopra appartengono al vecchio sito, ora in `_unused/old-site/`.
