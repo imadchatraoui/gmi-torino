@@ -320,8 +320,10 @@ function Hummus() {
 }
 
 function Chicken() {
+  // straccetti tagliati e appoggiati quasi paralleli, come escono dalla piastra
   const strips = [
-    [-14, -26, -18], [16, -22, 22], [-26, 2, 64], [6, 2, -10], [28, 8, 80], [-10, 28, 14], [18, 32, -30],
+    [-20, -30, 28], [8, -32, 20], [-34, -6, 34], [-6, -8, 24], [22, -10, 16],
+    [-22, 18, 30], [4, 16, 22], [28, 16, 34], [-6, 38, 26],
   ]
   return (
     <g>
@@ -334,17 +336,17 @@ function Chicken() {
         </g>
       ))}
       <path
-        d="M -36 -10 L -24 -20 L -14 -2 L -2 -18 L 8 2 L 20 -14 L 30 6 L 38 -4"
+        d="M -30 -34 C -14 -28 -22 -12 -6 -8 S 4 10 18 12 S 34 26 30 38"
         fill="none"
         stroke="#B9A47A"
-        strokeWidth="5"
+        strokeWidth="6"
         strokeLinecap="round"
         strokeLinejoin="round"
         transform="translate(1 2)"
         opacity="0.5"
       />
       <path
-        d="M -36 -10 L -24 -20 L -14 -2 L -2 -18 L 8 2 L 20 -14 L 30 6 L 38 -4"
+        d="M -30 -34 C -14 -28 -22 -12 -6 -8 S 4 10 18 12 S 34 26 30 38"
         fill="none"
         stroke="#F2E6CA"
         strokeWidth="4.2"

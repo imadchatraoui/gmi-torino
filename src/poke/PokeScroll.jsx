@@ -27,7 +27,6 @@ export default function PokeScroll({ poke, index }) {
   useEffect(() => {
     const section = sectionRef.current
     const sticky = stickyRef.current
-    let raf = 0
     let active = -2
     let lastP = -1
 
@@ -58,8 +57,9 @@ export default function PokeScroll({ poke, index }) {
       return
     }
 
+    // Gli eventi scroll arrivano già una volta per frame (sono allineati al rendering),
+    // quindi si aggiorna direttamente: una lettura di layout, poi solo scritture.
     const update = () => {
-      raf = 0
       const rect = section.getBoundingClientRect()
       const range = rect.height - sticky.offsetHeight
       const p = range > 0 ? clamp01(-rect.top / range) : 0
@@ -67,22 +67,19 @@ export default function PokeScroll({ poke, index }) {
       lastP = p
       render(p)
     }
-    const onScroll = () => {
-      if (!raf) raf = requestAnimationFrame(update)
-    }
     const onResize = () => {
       lastP = -1
-      onScroll()
+      update()
     }
 
     // Ascolta lo scroll solo quando la sezione è vicina allo schermo.
     const io = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          window.addEventListener('scroll', onScroll, { passive: true })
-          onScroll()
+          window.addEventListener('scroll', update, { passive: true })
+          update()
         } else {
-          window.removeEventListener('scroll', onScroll)
+          window.removeEventListener('scroll', update)
           onResize()
         }
       },
@@ -93,8 +90,7 @@ export default function PokeScroll({ poke, index }) {
     render(0)
     return () => {
       io.disconnect()
-      cancelAnimationFrame(raf)
-      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('scroll', update)
       window.removeEventListener('resize', onResize)
     }
   }, [items, tl])
