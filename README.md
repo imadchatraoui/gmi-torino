@@ -7,7 +7,7 @@ Sito di GMI Torino per il **Youth Mental Health Summit** (25 ottobre 2026).
 | `gmitorino.org/` | `index.html` → `src/home/` | pagina "coming soon" con info evento e link al menu |
 | `gmitorino.org/menu/` | `menu/index.html` → `src/menu/` | menu del pranzo: due poke che si aprono con lo scroll |
 
-Vite + React, niente altre librerie a runtime. Le due pagine sono un build multi-page
+Vite + Preact (codice scritto in stile React, girato su `preact/compat`): ~13 KB gzip di JS per pagina, nessuna libreria di animazione. Le due pagine sono un build multi-page
 (`vite.config.js`), quindi `/menu/` è un file statico vero: funziona su qualunque hosting
 statico senza regole di rewrite.
 

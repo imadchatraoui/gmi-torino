@@ -23,13 +23,18 @@ Branch: `ymhs-site` (creato da `main` dopo il commit "snapshot pre-YMHS"). Nient
   Vecchio sito (componenti WebGL, gif da 2–3 MB, foto settembre) spostato in `_unused/old-site/` (non cancellato).
 - README riscritto (vecchio README in `_unused/old-site/README.md`).
 
+### Run 1, iterazione 2
+- Opzione 2 verificata aperta; straccetti di pollo ridisegnati (prima sembravano un anello).
+- Bowl ingrandita (sfrutta gli angoli liberi dello stage), toppings più grandi.
+- Progresso aggiornato direttamente nell'evento scroll (niente rAF in più, niente ritardo dopo i salti con le ancore).
+- **Preact** al posto di React (`@preact/preset-vite`, codice invariato via `preact/compat`):
+  JS da ~74 KB a **~13 KB gzip** per pagina (+1–2 KB di codice pagina).
+
 ## Manca / idee per le prossime run
-- [ ] Verificare in screenshot l'opzione 2 aperta (hummus, pollo, avocado+limone, barbabietola) e rifinire i disegni.
-- [ ] Valutare Preact (`@preact/preset-vite`) per scendere da ~74 KB a ~15 KB gzip di JS.
 - [ ] Font self-hosted (subset latin) invece di Google Fonts, per meno richieste e niente terze parti.
 - [ ] Immagine Open Graph (1200x630) per le anteprime su WhatsApp/Instagram.
 - [ ] Rifinire la home su desktop (layout largo) e il fallback reduced-motion.
-- [ ] Pulizia dipendenze non più usate (three, ogl, gsap, framer-motion, tailwind) — solo dopo conferma dell'utente.
+- [ ] Pulizia dipendenze non più usate (react, react-dom, @vitejs/plugin-react, three, ogl, gsap, framer-motion, tailwind) — solo dopo conferma dell'utente.
 - [ ] Decidere hosting e DNS (utente).
 
 ## Come provare
