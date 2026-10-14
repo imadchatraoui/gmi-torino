@@ -1,44 +1,84 @@
-# GMI Torino · Il gusto di stare insieme
+<div align="center">
+  <img src="public/cropped_gmi_singolo-removebg-preview.png" alt="GMI Torino Logo" width="120" />
+  <h1>GMI Torino · Immersive Event Experience</h1>
+  <p>A breathtaking, mobile-first web application designed for the <strong>Giovani Musulmani d'Italia (Torino)</strong> event.</p>
 
-Nuovo sito del menu GMI Torino, con grafica crema e bordeaux, immagini illustrative, filtri dei piatti e dettagli degli ingredienti. Applicazione React/Vite con componenti React Bits adattati al marchio GMI e animazioni Motion.
+  <div>
+    <img src="https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB" alt="React" />
+    <img src="https://img.shields.io/badge/vite-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white" alt="Vite" />
+    <img src="https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="TailwindCSS" />
+    <img src="https://img.shields.io/badge/Framer_Motion-black?style=for-the-badge&logo=framer&logoColor=blue" alt="Framer Motion" />
+    <img src="https://img.shields.io/badge/threejs-black?style=for-the-badge&logo=three.js&logoColor=white" alt="Three.js" />
+    <img src="https://img.shields.io/badge/GSAP-88CE02?style=for-the-badge&logo=greensock&logoColor=white" alt="GSAP" />
+  </div>
+</div>
 
-## Anteprima e build
+---
 
-Richiede Node.js 22.12 o superiore.
+## Overview
 
-```sh
-npm install
-npm run dev
-npm run build
-npm run preview
+Built to deliver a premium, fluid, and highly interactive user experience through advanced WebGL rendering and physics-based animations. The project abandons standard flat UI paradigms in favor of immersive 3D textures, animated typography, and dynamic transitions, while remaining heavily optimized for mobile devices.
+
+## Key Features
+
+- **Immersive 3D Graphics:** Utilizes `Three.js` and `OGL` for stunning visual effects (like the interactive `DriftWall` background and `MorphSlider` melt transitions).
+- **ASCII WebGL Text:** Custom-built hardware-accelerated text renderer that converts typography into animated ASCII art.
+- **Silky Smooth UI:** Powered by `Framer Motion` and `GSAP` for scroll-linked animations, text reveals, and seamless page overlays.
+- **Extreme Mobile Optimization:** Dynamically mounts/unmounts heavy Canvas/WebGL components using `IntersectionObserver` to preserve battery life and maintain 60FPS on smartphones.
+- **Dark & Elegant Aesthetics:** Carefully crafted palette featuring deep crimsons (`#2A1314`) and rich gold (`#D8A86C`), avoiding generic "AI-generated" looks.
+
+## 🛠️ Architecture & Performance
+
+This project relies heavily on hardware-accelerated graphics. To ensure it runs perfectly on mid-range smartphones without overheating:
+- **Zero-DOM-Leak:** WebGL contexts and textures are forcefully disposed of when components unmount (`CanvAscii.dispose()`, `DriftWall` observer disconnects).
+- **Viewport Culling:** Heavy components (`DriftWall`, `MorphSlider`, `ASCIIText`) are completely unmounted from the React Tree when scrolled out of view.
+- **Aggressive Caching:** Animated assets (like WebP) are systematically paused/cleared in the background to avoid Firefox/Safari endless memory-loop bugs.
+
+## 📂 Project Structure
+
+```text
+src/
+├── components/
+│   ├── ASCIIText.jsx      # WebGL ASCII Text Renderer
+│   ├── DriftWall.jsx      # 3D Parallax Image Wall
+│   ├── MorphSlider.jsx    # OGL WebGL Image Transition Slider
+│   ├── GlitchText.jsx     # CSS Glitch Effect
+│   ├── pages/             # Overlay Sub-Pages (Menu, Evento, Chi Siamo, Contatti)
+│   └── ui/                # Reusable UI Elements
+├── App.jsx                # Main Application & Router logic
+├── index.css              # Global styles & Tailwind entry
+└── main.jsx               # Entry Point
 ```
 
-L’anteprima è disponibile su `http://localhost:4173`. Il risultato della build è in `dist/`.
+## 💻 Getting Started
 
-## Aggiornare i contenuti
+### Prerequisites
+- [Node.js](https://nodejs.org/) (v18+)
+- `npm`, `yarn`, or `pnpm`
 
-- `src/data.js`: piatti, ingredienti e informazioni dell’evento. `eventInfo.date` accetta una data ISO, per esempio `2026-11-15T12:30:00+01:00`; `eventInfo.location` accetta un indirizzo o una descrizione del luogo. Lasciando i valori a `null`, il sito mostra «Dettagli in arrivo».
-- `src/App.jsx`: sezioni del sito, navigazione, filtri, dialogo ingredienti e contatti.
-- `src/components/CommunitySection.jsx` e `FaqSection.jsx`: presentazione GMI e FAQ.
-- `src/components/react-bits`: componenti importati dalle fonti ufficiali e adattati.
-- `src/styles.css`: colori, tipografia, layout e adattamento ai dispositivi.
-- `src/react-enhancements.css`: integrazione dei componenti React Bits e animazioni.
-- `public/assets`: logo e immagini.
+### Installation
 
-Le due proposte sono riprese dal vecchio menu e devono essere confermate per il nuovo evento. Non sono stati riutilizzati data, luogo, prezzi o programma del vecchio evento. Le immagini sono illustrative.
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/your-username/menu-gmi.git
+   cd menu-gmi
+   ```
 
-Accessibilità: navigazione da tastiera, link per saltare al menu, dialogo nativo con chiusura tramite Escape e ripristino del focus, annunci dei filtri, rispetto delle preferenze di movimento ridotto. Nessun splash screen o canvas WebGL.
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
 
-## Componenti online
+3. **Start the development server:**
+   ```bash
+   npm run dev
+   ```
 
-Fonti ufficiali [React Bits](https://reactbits.dev/) e [Motion](https://motion.dev/docs/react): BlurText per l’ingresso del titolo, TiltedCard per la fotografia, Magnet per i pulsanti e SpotlightCard per le schede del menu. Filtri e FAQ usano animazioni React Motion. Gli effetti al puntatore sono disabilitati sui dispositivi touch e con movimento ridotto. I sorgenti sono inclusi nel progetto, quindi non dipendono da un CDN a runtime.
+4. **Build for production:**
+   ```bash
+   npm run build
+   ```
 
-Attribuzione, licenza MIT + Commons Clause e modifiche sono documentate in `THIRD_PARTY_NOTICES.md`.
-
-## Immagini generate
-
-`public/assets/hero-menu.webp` è stata generata con ImageGen integrato. Prompt: fotografia editoriale realistica di due schiacciate — rucola, datterini e crema di funghi; melanzane grigliate, datterini e ricotta vegana — su lino crema e carta forno, telo bordeaux, luce calda naturale, senza testi, loghi, mani, carne o alcol.
-
-Gli asset del marchio GMI e le illustrazioni del menu provengono dal progetto precedente.
-
-`public/assets/contadina-v2.webp` è una revisione ImageGen dell’illustrazione precedente. Prompt di modifica: rimuovere scritta, freccia, ingrediente separato e strato di bresaola vegana, conservando stile pixel art, rucola, pomodorini, crema di funghi, pane e tutte le altre scritte. L’originale è conservato in `contadina.webp`.
+## 🤝 Context & Credits
+Developed for **Giovani Musulmani d'Italia (Sezione Torino)**.
+Designed with love, pairing modern interactive coding techniques with custom photography and authentic storytelling.

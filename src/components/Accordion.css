@@ -1,0 +1,86 @@
+.gmi-accordion {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.gmi-accordion-item {
+  border-bottom: 1px solid rgba(216, 168, 108, 0.12);
+}
+
+.gmi-accordion-item:first-child {
+  border-top: 1px solid rgba(216, 168, 108, 0.12);
+}
+
+.gmi-accordion-trigger {
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: #D8A86C;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px 4px;
+  cursor: pointer;
+  text-align: left;
+  transition: color 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.gmi-accordion-trigger:hover,
+.gmi-accordion-trigger:focus-visible {
+  color: #fff;
+  outline: none;
+}
+
+.gmi-accordion-title {
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1.4;
+  flex: 1;
+}
+
+@media (min-width: 768px) {
+  .gmi-accordion-title {
+    font-size: 1.1rem;
+  }
+}
+
+.gmi-accordion-indicator {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  opacity: 0.7;
+}
+
+.gmi-accordion-item.is-open .gmi-accordion-indicator {
+  transform: rotate(180deg);
+  opacity: 1;
+}
+
+.gmi-accordion-panel {
+  display: none;
+}
+
+.gmi-accordion-item.is-open .gmi-accordion-panel {
+  display: block;
+}
+
+.gmi-accordion-body {
+  padding: 0 4px 20px;
+  color: rgba(255,255,255,0.75);
+  font-size: 0.9rem;
+  line-height: 1.7;
+}
+
+
+@media (min-width: 768px) {
+  .gmi-accordion-body {
+    font-size: 0.95rem;
+  }
+}

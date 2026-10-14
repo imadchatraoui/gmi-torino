@@ -1,196 +1,469 @@
-import { forwardRef, useEffect, useRef, useState } from 'react';
-import { AnimatePresence, motion, useIsPresent, useReducedMotion } from 'motion/react';
-import { menuItems, eventInfo, contacts } from './data.js';
-import BlurText from './components/react-bits/BlurText.jsx';
-import Magnet from './components/react-bits/Magnet.jsx';
-import SpotlightCard from './components/react-bits/SpotlightCard.jsx';
-import TiltedCard from './components/react-bits/TiltedCard.jsx';
-import CommunitySection from './components/CommunitySection.jsx';
-import FaqSection from './components/FaqSection.jsx';
+import React, { useState, useEffect, useMemo } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import ASCIIText from './components/ASCIIText';
+import ScrollReveal from './components/ScrollReveal';
+import DriftWall from './components/DriftWall';
+import MorphSlider from './components/MorphSlider';
+import Accordion from './components/Accordion';
+import { MenuToggle } from './components/ui/menu-toggle';
+import TextLoop from './components/TextLoop';
+import {
+  PageMenu,
+  PageEvento,
 
-const email = contacts.find((contact) => contact.id === 'email');
-const instagram = contacts.find((contact) => contact.id === 'instagram');
-const navItems = [
-  { id: 'menu', label: 'Il menu' },
-  { id: 'insieme', label: 'Chi siamo' },
-  { id: 'domande', label: 'Da sapere' },
+  PageChiSiamo,
+  PageContatti
+} from './components/pages/MenuPages';
+
+// ==========================================
+// ELEMENTI DRIFT WALL (React Bits 3D Wall)
+// ==========================================
+const DRIFT_ITEMS = [
+  { image: '/IMG_6669.webp', title: 'Dalia' },
+  { image: '/IMG_6670.webp', title: 'Mediterranea' },
+  { image: '/IMG_raccontarci.webp', title: 'Contadina' },
+  { image: '/IMG_6671.webp', title: 'Mediterranea' },
+  { image: '/IMG_6672.webp', title: 'Contadina' },
+  { image: '/IMG_savedate.webp', title: 'Mediterranea' },
+  { image: '/IMG_6673.webp', title: 'Contadina' },
+  { image: '/IMG_6674.webp', title: 'Mediterranea' },
+  { image: '/cropped_gmi_singolo-removebg-preview.png', title: 'Logo GMI' },
+  { image: '/IMG_6675.webp', title: 'Contadina' },
+  { image: '/IMG_6676.webp', title: 'Mediterranea' },
 ];
 
-const PresenceElement = forwardRef(function PresenceElement({ as = 'article', ...props }, ref) {
-  const present = useIsPresent();
-  const Element = as === 'nav' ? motion.nav : motion.article;
-  return <Element ref={ref} {...props} inert={!present} aria-hidden={present ? undefined : true} />;
-});
-
-function Brand({ footer = false, onClick }) {
-  return <a href="#inizio" onClick={onClick} className={`brand ${footer ? 'footer-brand' : ''}`} aria-label="GMI Torino, torna all'inizio">
-    <img src="/assets/logo-gmi.png" alt="" width="42" height="48" />
-    <span>GMI <small>TORINO</small></span>
-  </a>;
-}
-
-function Header() {
-  const [open, setOpen] = useState(false);
-  const [active, setActive] = useState('');
-  const toggleRef = useRef(null);
-  const headerRef = useRef(null);
-  const reduced = useReducedMotion();
-
-  useEffect(() => {
-    const handleKey = (event) => {
-      if (event.key === 'Escape' && open) { setOpen(false); toggleRef.current?.focus(); }
-    };
-    const handleOutside = (event) => { if (!headerRef.current?.contains(event.target)) setOpen(false); };
-    const desktop = window.matchMedia('(min-width: 601px)');
-    const handleResize = () => { if (desktop.matches) setOpen(false); };
-    document.addEventListener('keydown', handleKey);
-    document.addEventListener('click', handleOutside);
-    desktop.addEventListener('change', handleResize);
-    return () => {
-      document.removeEventListener('keydown', handleKey);
-      document.removeEventListener('click', handleOutside);
-      desktop.removeEventListener('change', handleResize);
-    };
-  }, [open]);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => { if (entry.isIntersecting) setActive(entry.target.id); });
-    }, { rootMargin: '-15% 0px -60% 0px' });
-    navItems.forEach(({ id }) => observer.observe(document.getElementById(id)));
-    return () => observer.disconnect();
-  }, []);
-
-  return <header className="site-header" ref={headerRef}>
-    <div className="header-inner wrap">
-      <Brand onClick={() => setOpen(false)} />
-      <nav className="desktop-nav" aria-label="Navigazione principale">
-        {navItems.map(({ id, label }) => <a key={id} href={`#${id}`} className={active === id ? 'is-active' : ''} aria-current={active === id ? 'location' : undefined}>{label}</a>)}
-      </nav>
-      <Magnet padding={18} maxOffset={5} wrapperClassName="header-magnet"><a className="header-contact" href={email.href}>Parliamone <span aria-hidden="true">↗</span></a></Magnet>
-      <button ref={toggleRef} className="nav-toggle" onClick={() => setOpen((value) => !value)} aria-controls="mobile-navigation" aria-expanded={open} aria-label={open ? 'Chiudi la navigazione' : 'Apri la navigazione'}><span /><span /></button>
-    </div>
-    <AnimatePresence>
-      {open && <PresenceElement as="nav" id="mobile-navigation" className="mobile-nav" aria-label="Navigazione su telefono" initial={reduced ? false : { opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={reduced ? undefined : { opacity: 0, y: -8 }} transition={{ duration: .18 }}>
-        {navItems.map(({ id, label }) => <a key={id} href={`#${id}`} onClick={() => setOpen(false)}>{label}<span aria-hidden="true">↗</span></a>)}
-        <a href={email.href} onClick={() => setOpen(false)}>Contattaci <span aria-hidden="true">↗</span></a>
-      </PresenceElement>}
-    </AnimatePresence>
-  </header>;
-}
-
-function Hero() {
-  return <section className="hero wrap" aria-labelledby="hero-title">
-    <div className="hero-copy">
-      <p className="eyebrow"><span className="tiny-star" aria-hidden="true">✳</span> GIOVANI MUSULMANI D’ITALIA · TORINO</p>
-      <h1 id="hero-title"><BlurText tag="span" text="Il gusto di" className="hero-title-line" delay={75} animateBy="words" direction="bottom" /><span className="hero-title-line">stare <em><BlurText tag="span" text="insieme." className="hero-title-word" delay={110} direction="bottom" /></em></span></h1>
-      <p className="hero-description">Una tavola, tante storie.<br />Il nostro modo di condividere sapori,<br className="desktop-break" /> incontri e un po’ di noi.</p>
-      <Magnet padding={24} maxOffset={7} wrapperClassName="button-magnet"><a className="button button-dark" href="#menu">Scopri il menu <span aria-hidden="true">↓</span></a></Magnet>
-      <div className="hero-footnote"><span className="line-mark" aria-hidden="true" />Fatto per condividere. Pensato per te.</div>
-    </div>
-    <div className="hero-visual">
-      <div className="hero-photo"><TiltedCard className="hero-tilted-card" imageSrc="/assets/hero-menu.webp" altText="Illustrazione fotografica di schiacciate con verdure su una tavola apparecchiata" containerHeight="100%" containerWidth="100%" imageHeight="100%" imageWidth="100%" rotateAmplitude={7} scaleOnHover={1.025} showTooltip={false} showMobileWarning={false} fetchPriority="high" /></div>
-      <div className="hero-stamp" aria-label="Sapori che ci uniscono"><span>SAPORI CHE</span><span className="stamp-star" aria-hidden="true">✳</span><span>CI UNISCONO</span></div>
-      <div className="photo-caption"><span>LA CONVIVIALITÀ È IL NOSTRO INGREDIENTE PREFERITO.</span><span aria-hidden="true">01 / GMI</span></div>
-    </div>
-  </section>;
-}
-
-function TasteStrip() {
-  const [paused, setPaused] = useState(false);
-  return <div className={`taste-strip ${paused ? 'is-paused' : ''}`}><div className="taste-track" aria-hidden="true">{[0, 1].map((copy) => <div className="taste-copy" key={copy}>SAPORI AUTENTICI <span>✳</span> STORIE CONDIVISE <span>✳</span> UNA TAVOLA PER INCONTRARSI <span>✳</span> GMI TORINO <span>✳</span></div>)}</div><button className="marquee-pause" aria-label="Pausa del testo scorrevole" aria-pressed={paused} onClick={() => setPaused((value) => !value)}><span aria-hidden="true">{paused ? '▷' : 'Ⅱ'}</span></button></div>;
-}
-
-function MenuSection({ onOpenDish }) {
-  const [filter, setFilter] = useState('all');
-  const reduced = useReducedMotion();
-  const shown = menuItems.filter((item) => filter === 'all' || filter === item.id);
-  const filters = [{ id: 'all', label: 'Tutto il menu' }, { id: 'mediterranea', label: 'Mediterranea' }, { id: 'contadina', label: 'Contadina' }];
-  return <section id="menu" className="menu-section wrap" aria-labelledby="menu-title">
-    <div className="section-heading"><div><p className="eyebrow">01 — A TAVOLA</p><h2 id="menu-title">Due sapori.<br /><em>Una bella scelta.</em></h2></div><p>Ingredienti semplici, abbinamenti pieni di carattere.<br />Scopri cosa rende speciale ogni schiacciata.</p></div>
-    <div className="menu-toolbar" aria-label="Visualizzazione del menu"><div className="segmented-control" role="group" aria-label="Scegli cosa vedere">
-      {filters.map(({ id, label }) => <button className={`filter-button ${id === filter ? 'is-selected' : ''}`} key={id} data-filter={id} aria-label={id === 'all' ? 'Tutto il menu, 2 piatti' : label} aria-pressed={id === filter} onClick={() => setFilter(id)}>
-        {id === filter && <motion.span className="filter-highlight" layoutId="menu-filter" transition={reduced ? { duration: 0 } : { type: 'spring', stiffness: 350, damping: 32 }} />}
-        <span className="filter-label">{label}{id === 'all' && <span className="filter-count">02</span>}</span>
-      </button>)}
-    </div><span className="toolbar-note"><span aria-hidden="true">✳</span> Il piacere delle cose buone</span></div>
-    <motion.div layout={!reduced} id="dish-list" className="dish-grid">
-      <AnimatePresence mode="popLayout" initial={false}>
-        {shown.map((item) => <PresenceElement layout={!reduced} key={item.id} className="dish-motion" id={`piatto-${item.id}`} initial={reduced ? false : { opacity: .4, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: reduced ? 0 : -10 }} transition={{ duration: reduced ? 0 : .25 }}>
-          <SpotlightCard className="dish-card" spotlightColor="rgba(181, 139, 80, 0.18)">
-            <div className="dish-image-wrap"><img className="dish-image" src={item.image} alt={`Ingredienti della schiacciata ${item.name} illustrati in pixel art`} width="2400" height="1792" loading="lazy" decoding="async" /><span className="dish-image-label">LA SCHIACCIATA · {String(menuItems.indexOf(item) + 1).padStart(2, '0')}</span></div>
-            <div className="dish-body"><div className="dish-title-row"><h3 className="dish-title">{item.name}</h3><span className="dish-number">/ {String(menuItems.indexOf(item) + 1).padStart(2, '0')}</span></div><p className="dish-description">{item.description}</p><div className="dish-bottom"><span className="dish-tag">{item.tags[0]}</span><button className="dish-detail-button" data-dish={item.id} aria-haspopup="dialog" aria-label={`Ingredienti e dettagli di ${item.name}`} onClick={(event) => onOpenDish(item, event.currentTarget)}>Ingredienti e dettagli <span aria-hidden="true">↗</span></button></div></div>
-          </SpotlightCard>
-        </PresenceElement>)}
-      </AnimatePresence>
-    </motion.div>
-    <p id="menu-announcement" className="sr-only" aria-live="polite">{filter === 'all' ? `Tutto il menu: ${shown.length} piatti.` : `Visualizzata ${shown[0].name}.`}</p>
-    <p className="menu-confirmation">Proposte del menu GMI: la selezione per il prossimo evento è in attesa di conferma. Immagini illustrative.</p>
-    <div className="menu-information"><span className="info-icon" aria-hidden="true">i</span><div><strong>Un’esigenza alimentare? Parliamone.</strong><p>Per allergie, intolleranze o alternative, scrivici prima dell’evento. Ti aiuteremo a conoscere gli ingredienti e le opzioni disponibili.</p></div><a href={`${email.href}?subject=Informazioni%20sul%20menu`}>Chiedi informazioni <span aria-hidden="true">↗</span></a></div>
-  </section>;
-}
-
-function DishDialog({ item, onClose, triggerRef }) {
-  const dialogRef = useRef(null);
-  useEffect(() => {
-    const element = dialogRef.current;
-    if (item) {
-      if (!element.open) element.showModal();
-      document.body.classList.add('dialog-open');
-    } else {
-      if (element.open) element.close();
-      document.body.classList.remove('dialog-open');
-    }
-    return () => document.body.classList.remove('dialog-open');
-  }, [item]);
-  function close() { dialogRef.current.close(); }
-  function handleClose() {
-    document.body.classList.remove('dialog-open');
-    onClose();
-    if (triggerRef.current?.isConnected) triggerRef.current.focus({ preventScroll: true });
+// Accordion items — replace the old "info" section
+const ACCORDION_ITEMS = [
+  {
+    title: 'Informazioni Generali',
+    content: (
+      <p>
+        Una giornata di incontri, testimonianze, dialoghi e workshop dedicata alle nuove generazioni musulmane in Italia e al modo in cui scelgono di raccontare la propria identità.<br/><br/>
+        Attraverso voce, cultura, moda, cibo, sport e impegno sociale, l’evento vuole creare uno spazio in cui i giovani possano essere protagonisti del racconto di sé stessi e del proprio ruolo nella società.
+      </p>
+    )
+  },
+  {
+    title: 'Programma',
+    content: (
+      <ul style={{ paddingLeft: '0', listStyle: 'none', lineHeight: 1.8, margin: 0, fontSize: '0.85rem' }}>
+        <li><strong style={{ color: '#D8A86C' }}>10:00 - 10:15</strong> – Accoglienza e registrazione</li>
+        <li><strong style={{ color: '#D8A86C' }}>10:15 - 10:30</strong> – Saluti e apertura evento</li>
+        <li><strong style={{ color: '#D8A86C' }}>10:30 - 11:00</strong> – La nostra voce (Talk di Dalia El Brashy)</li>
+        <li><strong style={{ color: '#D8A86C' }}>11:05 - 11:40</strong> – Stesso sangue (Talk di Omar Chihi)</li>
+        <li><strong style={{ color: '#D8A86C' }}>11:45 - 12:20</strong> – Indossare l'identità (Talk di Hind Lafram)</li>
+        <li><strong style={{ color: '#D8A86C' }}>12:30 - 13:50</strong> – Pranzo</li>
+        <li><strong style={{ color: '#D8A86C' }}>14:00 - 15:00</strong> – Il gusto di appartenenza (Badr Chatoui, Veiled Spies)</li>
+        <li><strong style={{ color: '#D8A86C' }}>15:05 - 16:05</strong> – Giovani protagonisti (Raisa Labaran, Marzia Sica, Abdullahi Ahmed)</li>
+        <li><strong style={{ color: '#D8A86C' }}>16:10 - 16:40</strong> – Coffee break</li>
+        <li><strong style={{ color: '#D8A86C' }}>16:45 - 17:45</strong> – Movimento (Intervista a Ilias Aouani)</li>
+        <li><strong style={{ color: '#D8A86C' }}>17:50 - 19:10</strong> – Workshop (Soaud Maddahi / Souad Studio)</li>
+        <li><strong style={{ color: '#D8A86C' }}>19:15 - 19:30</strong> – Saluti finali</li>
+      </ul>
+    )
   }
-  return <dialog id="dish-dialog" className="dish-dialog" ref={dialogRef} aria-labelledby={item ? 'dialog-title' : undefined} onClose={handleClose} onClick={(event) => {
-    if (event.target !== dialogRef.current) return;
-    const rect = dialogRef.current.getBoundingClientRect();
-    if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) close();
-  }}>
-    <button className="dialog-close" aria-label="Chiudi dettagli" onClick={close}>×</button>
-    {item && <div id="dialog-content"><img className="dialog-image" src={item.image} alt={`Illustrazione della schiacciata ${item.name}`} width="2400" height="1792" /><div className="dialog-body"><p className="eyebrow">DENTRO OGNI MORSO</p><h2 id="dialog-title">{item.name}</h2><p>{item.description}</p><ul className="ingredient-list" aria-label="Ingredienti">{item.ingredients.map((ingredient) => <li key={ingredient}>{ingredient}</li>)}</ul><p className="dialog-note">{item.note}</p><Magnet padding={15} maxOffset={4}><a className="button button-dark" href={`${email.href}?subject=${encodeURIComponent(`Informazioni menu: ${item.name}`)}`}>Chiedi al nostro staff <span aria-hidden="true">↗</span></a></Magnet></div></div>}
-  </dialog>;
-}
+];
 
-function EventSection() {
-  const confirmed = eventInfo.date || eventInfo.location;
-  const date = eventInfo.date ? new Intl.DateTimeFormat('it-IT', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/Rome' }).format(new Date(eventInfo.date)) : 'Data in arrivo';
-  return <section id="evento" className="event-section wrap" aria-labelledby="event-title"><div><p className="eyebrow">IL PROSSIMO INCONTRO</p><h2 id="event-title">{confirmed ? eventInfo.name : <>Ci ritroviamo<br /><em>presto, a tavola.</em></>}</h2></div><div className="event-details"><span className="status-pill"><span />{confirmed ? 'IL PROSSIMO INCONTRO' : 'DETTAGLI IN ARRIVO'}</span>{confirmed ? <p><span className="confirmed-date">{date}</span><span className="event-location">{eventInfo.location || 'Luogo in arrivo'}</span></p> : <p>Nome, data e luogo del nuovo evento saranno pubblicati qui.</p>}<a className="text-link" href={instagram.href} target="_blank" rel="noopener noreferrer">Segui gli aggiornamenti <span aria-hidden="true">↗</span><span className="sr-only"> su Instagram (nuova scheda)</span></a></div></section>;
-}
 
-function ClosingSection() {
-  const reduced = useReducedMotion();
-  return <section className="closing-section"><div className="wrap closing-inner"><p className="eyebrow">LE COSE BELLE SI CONDIVIDONO</p><p className="closing-title">Ti aspettiamo.<br /><em>Porta la tua storia.</em></p><Magnet padding={26} maxOffset={6} wrapperClassName="button-magnet"><a className="button button-cream" href={email.href}>Ci sentiamo? <span aria-hidden="true">↗</span></a></Magnet><motion.span className="closing-star" aria-hidden="true" initial={false} whileInView={reduced ? undefined : { rotate: 28 }} viewport={{ once: true }} transition={{ duration: 1.3, ease: 'easeOut' }}>✳</motion.span></div></section>;
-}
+// Nav menu items
+const NAV_ITEMS = [
+  { label: 'Menu',      page: 'menu' },
+  { label: "L'Evento",  page: 'evento' },
+  { label: 'Chi Siamo', page: 'chisiamo' },
+  { label: 'Contatti',  page: 'contatti' },
+];
 
-function Footer() {
-  return <footer className="site-footer wrap"><Brand footer /><p>Giovani Musulmani d’Italia · Sezione Torino</p><div><a href={instagram.href} target="_blank" rel="noopener noreferrer">Instagram <span aria-hidden="true">↗</span><span className="sr-only"> (nuova scheda)</span></a><a href={email.href}>Email <span aria-hidden="true">↗</span></a></div><span className="copyright">© {new Date().getFullYear()} GMI Torino</span></footer>;
-}
+function App() {
+  const [showSplash, setShowSplash] = useState(true);
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [headerAnimating, setHeaderAnimating] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [activePage, setActivePage] = useState(null); // null | 'menu' | 'evento' | 'chisiamo' | 'contatti'
+  const [heroVisible, setHeroVisible] = useState(true);
+  const [activeSliderIndex, setActiveSliderIndex] = useState(0);
 
-function MobileBar() {
-  const [visible, setVisible] = useState(false);
   useEffect(() => {
-    let frame;
-    function update() {
-      if (frame) return;
-      frame = requestAnimationFrame(() => { setVisible(window.scrollY > 450); frame = null; });
-    }
-    update();
-    window.addEventListener('scroll', update, { passive: true });
-    return () => { window.removeEventListener('scroll', update); if (frame) cancelAnimationFrame(frame); };
+    const handleScroll = () => {
+      setHeroVisible(window.scrollY < (window.innerHeight || document.documentElement.clientHeight) * 1.2);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-  return <div className={`mobile-menu-bar ${visible ? 'is-visible' : ''}`} inert={!visible} aria-hidden={!visible}><a href="#menu">Il menu <span aria-hidden="true">↑</span></a><a href={email.href} aria-label="Scrivi a GMI Torino">Contattaci <span aria-hidden="true">↗</span></a></div>;
+
+  // Rendiamo i componenti pesanti della Hero solo se visibili e se nessuna sub-page è attiva a schermo intero
+  const shouldRenderHero = heroVisible && !activePage;
+
+  useEffect(() => {
+    if (imageLoaded) {
+      const timer = setTimeout(() => {
+        setShowSplash(false);
+        setTimeout(() => { ScrollTrigger.refresh(); }, 1100);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [imageLoaded]);
+
+  const handleHeaderClick = () => {
+    setHeaderAnimating(true);
+    setTimeout(() => { window.location.reload(); }, 3000);
+  };
+
+  const openPage = (page) => {
+    setMenuOpen(false);
+    setTimeout(() => setActivePage(page), 350); // wait for menu exit animation
+  };
+
+  const closePage = () => setActivePage(null);
+
+  // Elemento per il MorphSlider
+  const menuItems = useMemo(() => [
+    { 
+      image: '/contadina.webp',  
+      caption: (
+        <div className="flex flex-col items-center justify-center gap-2">
+          <span className="text-lg sm:text-xl text-[#D8A86C] font-bold uppercase tracking-wider">Contadina</span>
+          <span className="text-sm sm:text-base text-white/80 font-normal leading-relaxed max-w-2xl text-center">
+            Rucola, pomodorini datterini, crema di funghi fatta con formaggio Kinara stagionato piemontese (caglio vegetale).
+          </span>
+        </div>
+      )
+    },
+    { 
+      image: '/mediterranea.webp',    
+      caption: (
+        <div className="flex flex-col items-center justify-center gap-2">
+          <span className="text-lg sm:text-xl text-[#D8A86C] font-bold uppercase tracking-wider">Mediterranea</span>
+          <span className="text-sm sm:text-base text-white/80 font-normal leading-relaxed max-w-2xl text-center">
+            Ricotta vegana, pomodorini datterini, melanzane alla griglia, formaggio stagionato di Kinara (caglio vegetale).
+          </span>
+        </div>
+      )
+    }
+  ], []);
+
+  const lockScroll = showSplash || menuOpen || !!activePage;
+
+  return (
+    <main className={`relative w-full min-h-[100dvh] bg-[#2A1314] flex flex-col ${lockScroll ? 'h-[100dvh] overflow-hidden' : 'overflow-x-hidden'}`}>
+
+      {/* =========================================
+          HEADER: LOGO & MENU TOGGLE (FIXED, Z-[80])
+          ========================================= */}
+      {/* LOGO IN ALTO A SINISTRA */}
+      <motion.div
+        className="fixed top-4 left-4 sm:top-6 sm:left-6 z-[80] cursor-pointer pointer-events-auto"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: showSplash ? 0 : 1 }}
+        transition={{ duration: 1, delay: 0.2 }}
+        onClick={handleHeaderClick}
+      >
+        <img
+          src={headerAnimating ? '/animato gif.gif' : '/cropped_gmi_singolo-removebg-preview.png'}
+          alt="GMI Torino Logo"
+          className="w-10 h-auto sm:w-12 object-contain"
+        />
+      </motion.div>
+
+      {/* MENU TOGGLE IN ALTO A DESTRA */}
+      <motion.div
+        className="fixed top-4 right-4 sm:top-6 sm:right-6 z-[80] pointer-events-auto text-[#D8A86C]"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: showSplash ? 0 : 1 }}
+        transition={{ duration: 1, delay: 0.2 }}
+      >
+        <MenuToggle open={menuOpen} onOpenChange={setMenuOpen} strokeWidth={2.5} />
+      </motion.div>
+
+      {/* =========================================
+          SEZIONE HERO FISSA
+          ========================================= */}
+      <section className="fixed inset-0 w-full h-full overflow-hidden flex flex-col pointer-events-none z-0">
+
+        {/* DRIFT WALL DI SFONDO */}
+        <motion.div
+          className="absolute inset-0 z-0 pointer-events-auto"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: showSplash ? 0 : 0.4 }}
+          transition={{ duration: 1.5, delay: 0.3 }}
+        >
+          <DriftWall
+            items={DRIFT_ITEMS}
+            columns={3}
+            tileWidth={150}
+            tileHeight={132}
+            gap={18}
+            tilt={16}
+            turn={-14}
+            perspective={1200}
+            depth={120}
+            speed={36}
+            direction="up"
+            variance={0.45}
+            parallax={0.6}
+            lift={54}
+            fade={0.65}
+            dim={0.42}
+            overlayColor="#713336"
+            paused={!shouldRenderHero}
+          />
+        </motion.div>
+
+        {/* TESTO ASCII 3D */}
+        <motion.div
+          className="absolute inset-0 z-10 flex items-center justify-center overflow-hidden pointer-events-none"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: showSplash ? 0 : 1 }}
+          transition={{ duration: 1, delay: 0.2 }}
+        >
+          <div className="w-full h-full flex items-center justify-center transform-gpu">
+            <ASCIIText
+              text="MENU"
+              enableWaves={true}
+              asciiFontSize={9}
+              textFontSize={80}
+              planeBaseHeight={5.8}
+              textColor="#D8A86C"
+              paused={!shouldRenderHero}
+            />
+          </div>
+        </motion.div>
+
+        {/* INDICATORE SCROLL */}
+        <motion.div
+          className="absolute bottom-10 sm:bottom-12 left-1/2 -translate-x-1/2 z-20 pointer-events-none"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: showSplash || menuOpen ? 0 : 1 }}
+          transition={{ duration: 1, delay: 0.8 }}
+        >
+          <div className="ico">
+            <div className="circle circle-top" />
+            <div className="circle circle-main" />
+            <div className="circle circle-bottom" />
+            <svg className="svg" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612" style={{ enableBackground: 'new 0 0 612 612' }} xmlSpace="preserve">
+              <defs>
+                <clipPath id="cut-off-arrow"><circle cx="306" cy="306" r="287" /></clipPath>
+                <filter id="goo">
+                  <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
+                  <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo" />
+                  <feBlend in="SourceGraphic" in2="goo" />
+                </filter>
+              </defs>
+              <path className="st-arrow" d="M317.5,487.6c0.3-0.3,0.4-0.7,0.7-1.1l112.6-112.6c6.3-6.3,6.3-16.5,0-22.7c-6.3-6.3-16.5-6.3-22.7,0 l-86,86V136.1c0-8.9-7.3-16.2-16.2-16.2c-8.9,0-16.2,7.3-16.2,16.2v301.1l-86-86c-6.3-6.3-16.5-6.3-22.7,0 c-6.3,6.3-6.3,16.5,0,22.7l112.7,112.7c0.3,0.3,0.4,0.7,0.7,1c0.5,0.5,1.2,0.5,1.7,0.9c1.7,1.4,3.6,2.3,5.6,2.9 c0.8,0.2,1.5,0.4,2.3,0.4C308.8,492.6,313.8,491.3,317.5,487.6z" />
+            </svg>
+          </div>
+        </motion.div>
+
+      </section>
+
+      {/* =========================================
+          CONTENUTO SCROLLABILE (sopra la Hero)
+          ========================================= */}
+      <section className="relative w-full min-h-screen bg-[#2A1314] z-20 mt-[100svh] md:mt-[100vh] pt-20 md:pt-28 flex flex-col items-center justify-start shadow-[0_-20px_40px_rgba(42,19,20,1)]">
+
+        <div className="px-4 sm:px-6 w-full flex flex-col items-center">
+
+          {/* Testo animato con ScrollReveal */}
+          <div className="w-full max-w-4xl mx-auto mb-16 text-center">
+            <ScrollReveal
+              baseOpacity={0.5}
+              enableBlur={true}
+              baseRotation={2}
+              blurStrength={9}
+              wordAnimationEnd="bottom center"
+              rotationEnd="bottom center"
+            >
+              Benvenuti in GMI Torino. Preparati a vivere un'esperienza sensoriale
+              fatta di ingredienti rigorosamente selezionati, pura tradizione e
+              una vera passione per l'eccellenza.
+            </ScrollReveal>
+          </div>
+
+          {/* MorphSlider Container */}
+          <div className="w-full max-w-4xl flex flex-col gap-5 mb-20 md:mb-28">
+            <div className="w-full aspect-[4/3] md:aspect-video relative rounded-2xl overflow-hidden shadow-2xl border border-[#D8A86C]/20">
+              <MorphSlider
+                items={menuItems}
+                transition="melt"
+                intensity={0.55}
+                aberration={0.35}
+                drift={0.4}
+                autoplay={true}
+                autoplayDelay={9}
+                overlayColor="#2A1314"
+                duration={1.1}
+                ease="power2.inOut"
+                scale={2.4}
+                loop={true}
+                radius={16}
+                showCaptions={false}
+                showControls={true}
+                showIndicators={true}
+                onIndexChange={setActiveSliderIndex}
+              />
+            </div>
+            
+            {/* External Caption (Under the image) */}
+            <div className="w-full text-center px-4 flex flex-col items-center">
+              {menuItems[activeSliderIndex]?.caption}
+              
+              <p className="mt-5 text-[11px] sm:text-[13px] text-white/50 max-w-xl italic">
+                * Alternativa senza lattosio disponibile su richiesta (mozzarella con caglio microbico). Posti limitati.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* FOOTER */}
+        <footer className="w-full bg-[#1A0B0C] text-[#D8A86C] pt-16 pb-20 px-4 sm:px-6 md:px-12 flex flex-col items-center text-center relative overflow-hidden border-t border-[#D8A86C]/10 rounded-t-[32px] sm:rounded-t-[40px]">
+          <div className="w-full max-w-3xl mx-auto flex flex-col items-center gap-10">
+
+            {/* TextLoop Banner */}
+            <div className="w-full h-[90px] sm:h-[120px] md:h-[150px] -mt-6">
+              <TextLoop
+                text="RACCONTARCI ✦ GMI ✦ TORINO"
+                shape="wave"
+                speed={70}
+                direction="forward"
+                curviness={50}
+                fontSize={35}
+                fontWeight={700}
+                letterSpacing={5}
+                uppercase
+                color="#D8A86C"
+                ribbon
+                ribbonColor="rgba(42,19,20,0.5)"
+                ribbonWidth={60}
+                pauseOnHover={false}
+              />
+            </div>
+
+            {/* Title */}
+            <div>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-1 text-white">Evento GMI Torino</h2>
+              <p className="text-base sm:text-lg md:text-xl text-[#D8A86C] uppercase tracking-widest">26 settembre 2026</p>
+            </div>
+
+            {/* Accordion — replaces the old info block */}
+            <div className="w-full text-left">
+              <Accordion items={ACCORDION_ITEMS} />
+            </div>
+
+            {/* Verso del Corano (Fisso in basso) */}
+            <div className="w-full max-w-2xl text-center mt-12 mb-6 px-4 mx-auto border-t border-[#D8A86C]/10 pt-10">
+              <p className="italic text-sm sm:text-base leading-relaxed mb-3 text-[rgba(255,255,255,0.85)]">
+                "O voi che credete, mangiate le buone cose di cui vi abbiamo provvisto e ringraziate
+                Allah, se è Lui che adorate."
+              </p>
+              <p className="text-[10px] sm:text-xs text-[#D8A86C] tracking-[0.15em] uppercase opacity-80">
+                Corano, Surah Al-Baqarah · 2:172-173
+              </p>
+            </div>
+
+            {/* Footer bottom */}
+            <div className="mt-6 flex flex-col items-center gap-3">
+              <p className="text-xs opacity-40 tracking-widest uppercase">
+                Giovani Musulmani d'Italia APS · Torino · © 2026
+              </p>
+              <p className="text-[10px] text-white opacity-80 tracking-[0.15em] uppercase">
+                Made with ❤️ by a muslim
+              </p>
+            </div>
+          </div>
+        </footer>
+      </section>
+
+
+      {/* =========================================
+          FULLSCREEN MENU OVERLAY
+          ========================================= */}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            className="fixed inset-0 z-[65] bg-[#1A0B0C] flex flex-col items-center justify-center p-8 pointer-events-auto"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3, ease: 'easeOut' }}
+          >
+            <nav className="flex flex-col gap-6 sm:gap-8 text-center text-[#D8A86C]">
+              {NAV_ITEMS.map((item, i) => (
+                <motion.button
+                  key={item.page}
+                  type="button"
+                  className="text-4xl sm:text-5xl md:text-6xl font-bold uppercase tracking-widest hover:text-white transition-colors bg-transparent border-none cursor-pointer"
+                  initial={{ opacity: 0, x: 30 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.1 + i * 0.07, duration: 0.4 }}
+                  onClick={() => openPage(item.page)}
+                >
+                  {item.label}
+                </motion.button>
+              ))}
+            </nav>
+            <div className="absolute bottom-10 opacity-40 text-xs tracking-widest uppercase text-[#D8A86C]">
+              GMI Torino © 2026
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+
+      {/* =========================================
+          FULLSCREEN PAGE OVERLAY (sub-pages)
+          ========================================= */}
+      <AnimatePresence>
+        {activePage && (
+          <motion.div
+            className="fixed inset-0 z-[90] bg-[#100608] pointer-events-auto flex flex-col"
+            initial={{ opacity: 0, y: '100%' }}
+            animate={{ opacity: 1, y: '0%' }}
+            exit={{ opacity: 0, y: '100%' }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          >
+            {activePage === 'menu'     && <PageMenu      onClose={closePage} />}
+            {activePage === 'evento'   && <PageEvento    onClose={closePage} />}
+            {activePage === 'chisiamo' && <PageChiSiamo  onClose={closePage} />}
+            {activePage === 'contatti' && <PageContatti  onClose={closePage} />}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+
+      {/* =========================================
+          SPLASH SCREEN
+          ========================================= */}
+      <AnimatePresence>
+        {showSplash && (
+          <motion.div
+            className="fixed inset-0 z-[150] flex items-center justify-center bg-[#2A1314]"
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1 }}
+            onAnimationComplete={(definition) => {
+              // Quando l'animazione di uscita è completa (opacity 0), forziamo il browser a svuotare l'immagine
+              if (definition.opacity === 0) {
+                const img = document.getElementById('splash-img');
+                if (img) img.src = '';
+              }
+            }}
+          >
+            <motion.img
+              id="splash-img"
+              src="/cropped gmi.webp"
+              alt="GMI Torino"
+              className="w-56 sm:w-64 h-auto object-contain"
+              onLoad={() => setImageLoaded(true)}
+              initial={{ opacity: 0, scale: 0.9, y: 100 }}
+              animate={{ opacity: imageLoaded ? 1 : 0, scale: imageLoaded ? 0.7 : 0.9, y: 30 }}
+              transition={{ duration: 0.5 }}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+    </main>
+  );
 }
 
-export default function App() {
-  const [selectedDish, setSelectedDish] = useState(null);
-  const triggerRef = useRef(null);
-  return <><a className="skip-link" href="#menu">Vai al menu</a><Header /><main id="inizio"><Hero /><TasteStrip /><MenuSection onOpenDish={(item, trigger) => { triggerRef.current = trigger; setSelectedDish(item); }} /><CommunitySection /><EventSection /><FaqSection /><ClosingSection /></main><Footer /><MobileBar /><DishDialog item={selectedDish} onClose={() => setSelectedDish(null)} triggerRef={triggerRef} /></>;
-}
+export default App;

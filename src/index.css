@@ -1,0 +1,93 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+  background-color: #2A1314; /* Messo in linea col tema GMI */
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}/* =========================================
+   ANIMAZIONE INDICATORE SCROLL (GOOEY ARROW 50px)
+   ========================================= */
+/* =========================================
+   ANIMAZIONE INDICATORE SCROLL (GOOEY FLUID 50px)
+   ========================================= */
+.ico {
+  margin: 0 auto;
+  text-align: center;
+  width: 50px; 
+  height: 50px;
+  position: relative;
+  filter: url("#goo");
+}
+
+.ico .circle {
+  background: #FAF5E9; /* Cerchio color Crema */
+  border-radius: 50%;
+  display: inline-block;
+  height: 50px;
+  width: 50px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  transform-origin: 0%;
+}
+
+.ico .circle.circle-top {
+  height: 16.67px; 
+  width: 20.83px;  
+  animation: blob-1-anim 3s cubic-bezier(0.770, 0.000, 0.175, 1.000) infinite;
+  z-index: 0;
+  top: 0;
+}
+
+.ico .circle.circle-bottom {
+  height: 16.67px; 
+  width: 20.83px;  
+  animation: blob-2-anim 3s cubic-bezier(0.770, 0.000, 0.175, 1.000) infinite;
+  z-index: 9;
+  bottom: 0px;
+}
+
+.ico .st-arrow {
+  fill: #2A1314; /* Freccia Marrone Scuro */
+  animation: scrolly 3s cubic-bezier(0.770, 0.000, 0.175, 1.000) forwards infinite;
+  perspective: 9000px;
+  transform: translateZ(0);
+  transform-origin: bottom;
+}
+
+.ico .svg {
+  z-index: 9;
+  position: relative;
+}
+
+/* === KEYFRAMES FLUIDI ORIGINALI RIPRISTINATI E SCALATI === */
+
+@keyframes blob-1-anim {
+  0% { transform: translateX(-50%) translateY(0); }
+  14% { transform: translateX(-50%) translateY(-6px); }
+  24% { transform: translateX(-50%) translateY(0); }
+  100% { transform: translateX(-50%) translateY(0); }
+}
+
+@keyframes blob-2-anim {
+  0% { transform: scale(1) translate(-50%, 8px); }
+  30% { transform: scale(1) translate(-50%, 8px); }
+  70% { transform: scale(1) translate(-50%, 8px); }
+  95% { transform: scale(1) translate(-50%, 20px); } /* Riportato a un'escursione più ampia per ricreare il flusso */
+  100% { transform: scale(1) translate(-50%, 8px); }
+}
+
+@keyframes scrolly {
+  0% { transform: translate3d(0,-150%,0) rotateX(90deg) scale(0.5) skewX(3deg); }
+  30% { transform: translate3d(0,0,0) rotateX(0deg) scale(1) skewX(0deg); }
+  70% { transform: translate3d(0,0,0) rotateX(0deg) scale(1) skewX(0deg); }
+  95% { transform: translate3d(0,50%,0) rotateX(-90deg) scale(0.5) skewX(-3deg); }
+  100% { transform: translate3d(0,50%,0) rotateX(-90deg) scale(0.5) skewX(-3deg); }
+}
