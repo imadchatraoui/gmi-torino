@@ -30,9 +30,11 @@ Branch: `ymhs-site` (creato da `main` dopo il commit "snapshot pre-YMHS"). Nient
 - **Preact** al posto di React (`@preact/preset-vite`, codice invariato via `preact/compat`):
   JS da ~74 KB a **~13 KB gzip** per pagina (+1–2 KB di codice pagina).
 
+### Run 1, iterazione 3
+- Font self-hosted in `public/fonts/` (subset latin, ~120 KB totali, preload del Bodoni regolare): niente più Google Fonts.
+- Immagine Open Graph `public/og-ymhs.jpg` (1200x630, 68 KB) + meta og/twitter su entrambe le pagine.
+
 ## Manca / idee per le prossime run
-- [ ] Font self-hosted (subset latin) invece di Google Fonts, per meno richieste e niente terze parti.
-- [ ] Immagine Open Graph (1200x630) per le anteprime su WhatsApp/Instagram.
 - [ ] Rifinire la home su desktop (layout largo) e il fallback reduced-motion.
 - [ ] Pulizia dipendenze non più usate (react, react-dom, @vitejs/plugin-react, three, ogl, gsap, framer-motion, tailwind) — solo dopo conferma dell'utente.
 - [ ] Decidere hosting e DNS (utente).
