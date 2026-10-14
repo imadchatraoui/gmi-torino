@@ -1,84 +1,94 @@
-<div align="center">
-  <img src="public/cropped_gmi_singolo-removebg-preview.png" alt="GMI Torino Logo" width="120" />
-  <h1>GMI Torino · Immersive Event Experience</h1>
-  <p>A breathtaking, mobile-first web application designed for the <strong>Giovani Musulmani d'Italia (Torino)</strong> event.</p>
+# GMI Torino · sito YMHS
 
-  <div>
-    <img src="https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB" alt="React" />
-    <img src="https://img.shields.io/badge/vite-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white" alt="Vite" />
-    <img src="https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="TailwindCSS" />
-    <img src="https://img.shields.io/badge/Framer_Motion-black?style=for-the-badge&logo=framer&logoColor=blue" alt="Framer Motion" />
-    <img src="https://img.shields.io/badge/threejs-black?style=for-the-badge&logo=three.js&logoColor=white" alt="Three.js" />
-    <img src="https://img.shields.io/badge/GSAP-88CE02?style=for-the-badge&logo=greensock&logoColor=white" alt="GSAP" />
-  </div>
-</div>
+Sito di GMI Torino per il **Youth Mental Health Summit** (25 ottobre 2026).
 
----
+| URL | File | Cosa |
+| --- | --- | --- |
+| `gmitorino.org/` | `index.html` → `src/home/` | pagina "coming soon" con info evento e link al menu |
+| `gmitorino.org/menu/` | `menu/index.html` → `src/menu/` | menu del pranzo: due poke che si aprono con lo scroll |
 
-## Overview
+Vite + React, niente altre librerie a runtime. Le due pagine sono un build multi-page
+(`vite.config.js`), quindi `/menu/` è un file statico vero: funziona su qualunque hosting
+statico senza regole di rewrite.
 
-Built to deliver a premium, fluid, and highly interactive user experience through advanced WebGL rendering and physics-based animations. The project abandons standard flat UI paradigms in favor of immersive 3D textures, animated typography, and dynamic transitions, while remaining heavily optimized for mobile devices.
-
-## Key Features
-
-- **Immersive 3D Graphics:** Utilizes `Three.js` and `OGL` for stunning visual effects (like the interactive `DriftWall` background and `MorphSlider` melt transitions).
-- **ASCII WebGL Text:** Custom-built hardware-accelerated text renderer that converts typography into animated ASCII art.
-- **Silky Smooth UI:** Powered by `Framer Motion` and `GSAP` for scroll-linked animations, text reveals, and seamless page overlays.
-- **Extreme Mobile Optimization:** Dynamically mounts/unmounts heavy Canvas/WebGL components using `IntersectionObserver` to preserve battery life and maintain 60FPS on smartphones.
-- **Dark & Elegant Aesthetics:** Carefully crafted palette featuring deep crimsons (`#2A1314`) and rich gold (`#D8A86C`), avoiding generic "AI-generated" looks.
-
-## 🛠️ Architecture & Performance
-
-This project relies heavily on hardware-accelerated graphics. To ensure it runs perfectly on mid-range smartphones without overheating:
-- **Zero-DOM-Leak:** WebGL contexts and textures are forcefully disposed of when components unmount (`CanvAscii.dispose()`, `DriftWall` observer disconnects).
-- **Viewport Culling:** Heavy components (`DriftWall`, `MorphSlider`, `ASCIIText`) are completely unmounted from the React Tree when scrolled out of view.
-- **Aggressive Caching:** Animated assets (like WebP) are systematically paused/cleared in the background to avoid Firefox/Safari endless memory-loop bugs.
-
-## 📂 Project Structure
-
-```text
-src/
-├── components/
-│   ├── ASCIIText.jsx      # WebGL ASCII Text Renderer
-│   ├── DriftWall.jsx      # 3D Parallax Image Wall
-│   ├── MorphSlider.jsx    # OGL WebGL Image Transition Slider
-│   ├── GlitchText.jsx     # CSS Glitch Effect
-│   ├── pages/             # Overlay Sub-Pages (Menu, Evento, Chi Siamo, Contatti)
-│   └── ui/                # Reusable UI Elements
-├── App.jsx                # Main Application & Router logic
-├── index.css              # Global styles & Tailwind entry
-└── main.jsx               # Entry Point
+```bash
+npm install
+npm run dev      # http://localhost:5173 e http://localhost:5173/menu/
+npm run build    # output in dist/
+npm run preview
 ```
 
-## 💻 Getting Started
+## Dove si cambiano i contenuti
 
-### Prerequisites
-- [Node.js](https://nodejs.org/) (v18+)
-- `npm`, `yarn`, or `pnpm`
+- `src/data/event.js` — data, orari, luogo, quota, link iscrizioni, temi.
+- `src/data/menu.js` — le due opzioni poke e i loro ingredienti (testo esatto del menu).
+- `src/styles/` — stile comune (`base.css`), home (`home.css`), menu (`menu.css`).
 
-### Installation
+## Animazione poke
 
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/your-username/menu-gmi.git
-   cd menu-gmi
-   ```
+`src/poke/PokeScroll.jsx` crea una sezione alta alcune schermate con uno stage
+`position: sticky`. Lo scroll produce un progresso `p` da 0 a 1 che guida:
 
-2. **Install dependencies:**
-   ```bash
-   npm install
-   ```
+1. il coperchio che si solleva e scivola via;
+2. gli ingredienti, uno alla volta nell'ordine del menu: ognuno si stacca dalla bowl
+   e compare il suo numero, mentre nella lista sotto si accende il nome.
 
-3. **Start the development server:**
-   ```bash
-   npm run dev
-   ```
+Durante lo scroll React non fa re-render: vengono scritti solo `transform`/`opacity`
+sui livelli (un `<div>` con il suo SVG per ingrediente). Con `prefers-reduced-motion`
+la sezione non è sticky e mostra subito la bowl aperta.
 
-4. **Build for production:**
-   ```bash
-   npm run build
-   ```
+I tempi sono in `src/poke/timeline.js` (`LID`, `STEP`, `TAIL` in schermate di scroll).
+I disegni sono in `src/poke/art.jsx`.
 
-## 🤝 Context & Credits
-Developed for **Giovani Musulmani d'Italia (Sezione Torino)**.
-Designed with love, pairing modern interactive coding techniques with custom photography and authentic storytelling.
+### Sostituire il disegno con frame o video (es. Higgsfield)
+
+Ogni poke in `src/data/menu.js` ha un campo `media`. Se è `null` si usa il disegno in
+codice; altrimenti:
+
+**Sequenza di frame** (consigliata: scrub perfetto anche su iPhone)
+
+```js
+import { framesFor } from './menu'
+// public/poke/option-1/0001.webp ... 0096.webp
+media: { type: 'frames', frames: framesFor('option-1', 96) },
+```
+
+Estrarre e comprimere i frame da un video:
+
+```bash
+mkdir -p public/poke/option-1
+ffmpeg -i option-1.mp4 -vf "fps=24,scale=720:-1" -c:v libwebp -quality 70 public/poke/option-1/%04d.webp
+```
+
+720 px di lato e ~80–120 frame bastano: restare sotto ~3 MB a sequenza.
+
+**Video scrubbato**
+
+```js
+media: { type: 'video', src: '/poke/option-1.mp4', poster: '/poke/option-1.webp' },
+```
+
+Il video va codificato con un keyframe per frame, altrimenti lo scrub scatta:
+
+```bash
+ffmpeg -i input.mp4 -an -vf "scale=720:-1" -c:v libx264 -g 1 -crf 26 -movflags +faststart public/poke/option-1.mp4
+```
+
+**Sincronizzare i nomi degli ingredienti** con il video: `cues` indica a che punto
+(0–1) dello scroll parte ogni ingrediente.
+
+```js
+media: { type: 'frames', frames: framesFor('option-1', 96), cues: [0.2, 0.34, 0.48, 0.62, 0.76] },
+```
+
+## Asset
+
+- Logo: `public/brand/gmi-logo.webp` (320 px, ~20 KB) generato dal PNG originale.
+- Favicon/icone in `public/` (rigenerate dal logo).
+- Il vecchio sito (componenti WebGL, gif animate da 2–3 MB, foto evento di settembre) è
+  in `_unused/old-site/`: non entra nel build.
+
+## Deploy
+
+Non ancora fatto: va deciso dove pubblicare (`dist/` è un sito statico) e come puntare il
+DNS di `gmitorino.org`.

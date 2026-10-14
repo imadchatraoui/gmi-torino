@@ -1,0 +1,369 @@
+.menu {
+  width: 100%;
+  overflow-x: clip;
+}
+
+/* ---------- intro ---------- */
+.menu-intro {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 40px var(--gutter) 28px;
+}
+
+.menu-intro__title {
+  margin-top: 14px;
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: clamp(3.4rem, 17vw, 7.5rem);
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+}
+
+.menu-intro__title em {
+  display: block;
+  font-weight: 400;
+  color: var(--red);
+}
+
+.menu-intro__lede {
+  margin-top: 18px;
+  max-width: 30em;
+  font-size: 17px;
+  line-height: 1.55;
+  color: var(--ink-2);
+}
+
+.jump {
+  margin-top: 26px;
+  border-top: 1px solid var(--ink);
+}
+
+.jump a {
+  display: grid;
+  grid-template-columns: 34px 1fr auto;
+  align-items: baseline;
+  gap: 10px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line);
+  text-decoration: none;
+}
+
+.jump__num {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--red);
+}
+
+.jump__title {
+  font-family: var(--serif);
+  font-size: 20px;
+  line-height: 1.2;
+}
+
+/* ---------- sezione scroll poke ---------- */
+.poke {
+  position: relative;
+  height: calc((var(--poke-screens) + 1) * (100svh - var(--header-h)));
+}
+
+.poke + .poke {
+  border-top: 1px solid var(--line);
+}
+
+.poke__sticky {
+  position: sticky;
+  top: var(--header-h);
+  height: calc(100svh - var(--header-h));
+  display: flex;
+  flex-direction: column;
+  padding: 18px var(--gutter) calc(16px + env(safe-area-inset-bottom));
+  overflow: hidden;
+}
+
+.poke__bar {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 2px;
+  background: var(--line);
+}
+
+.poke__bar span {
+  display: block;
+  height: 100%;
+  background: var(--red);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+.poke__title {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-top: 6px;
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: clamp(1.6rem, 7.2vw, 2.8rem);
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+}
+
+.poke__num {
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--red);
+  transform: translateY(-0.4em);
+}
+
+.poke__stage {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  margin: 8px 0 10px;
+  container-type: size;
+}
+
+.poke__hint {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  pointer-events: none;
+}
+
+.poke__hint::after {
+  content: '';
+  width: 1px;
+  height: 22px;
+  background: var(--ink);
+  transform-origin: top;
+  animation: hint-line 1.6s cubic-bezier(0.6, 0, 0.3, 1) infinite;
+}
+
+@keyframes hint-line {
+  0% {
+    transform: scaleY(0);
+  }
+  50% {
+    transform: scaleY(1);
+    transform-origin: top;
+  }
+  51% {
+    transform-origin: bottom;
+  }
+  100% {
+    transform: scaleY(0);
+    transform-origin: bottom;
+  }
+}
+
+.poke__list {
+  display: grid;
+  gap: 2px;
+  padding: 0;
+  list-style: none;
+}
+
+.poke__list li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 32px;
+  opacity: 0.24;
+  will-change: opacity, transform;
+}
+
+.poke__badge {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1.5px solid var(--red);
+  color: var(--red);
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 500;
+  transition: background-color 0.25s, color 0.25s;
+}
+
+.poke__name {
+  font-size: 16px;
+  line-height: 1.25;
+  transition: color 0.25s;
+}
+
+.poke__list li.is-active .poke__badge {
+  background: var(--red);
+  color: var(--paper);
+}
+
+.poke__list li.is-active .poke__name {
+  color: var(--red);
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 18px;
+}
+
+/* senza animazioni: tutto aperto, niente sticky */
+.poke--static {
+  height: auto;
+}
+
+.poke--static .poke__sticky {
+  position: relative;
+  top: 0;
+  height: auto;
+}
+
+.poke--static .poke__stage {
+  flex: none;
+  height: min(88vw, 420px);
+}
+
+.poke--static .poke__hint {
+  display: none;
+}
+
+/* schermi bassi (es. iPhone SE) */
+@media (max-height: 640px) {
+  .poke__title {
+    font-size: 1.45rem;
+  }
+  .poke__list li {
+    min-height: 27px;
+  }
+  .poke__name {
+    font-size: 14px;
+  }
+  .poke__list li.is-active .poke__name {
+    font-size: 16px;
+  }
+}
+
+/* ---------- riepilogo ---------- */
+.recap {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 56px var(--gutter) 24px;
+}
+
+.recap__title {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 40px;
+  letter-spacing: -0.02em;
+  margin-bottom: 18px;
+}
+
+.recap__grid {
+  display: grid;
+  gap: 14px;
+}
+
+.recap__card {
+  padding: 20px;
+  background: var(--paper-2);
+  border-top: 3px solid var(--red);
+}
+
+.recap__card h3 {
+  margin: 6px 0 12px;
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 22px;
+  line-height: 1.15;
+}
+
+.recap__card ol {
+  padding-left: 22px;
+  display: grid;
+  gap: 4px;
+}
+
+.recap__card li::marker {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--red);
+}
+
+.recap__note {
+  margin-top: 16px;
+  font-size: 14px;
+  color: var(--ink-2);
+}
+
+.verse {
+  max-width: 34em;
+  margin: 40px auto 48px;
+  padding: 0 var(--gutter);
+  text-align: center;
+}
+
+.verse blockquote {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 19px;
+  line-height: 1.5;
+}
+
+.verse figcaption {
+  margin-top: 12px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+/* ---------- desktop ---------- */
+@media (min-width: 860px) {
+  :root {
+    --gutter: 40px;
+  }
+  .jump {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 28px;
+  }
+  .poke__sticky {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(280px, 1fr);
+    grid-template-rows: auto 1fr;
+    gap: 0 48px;
+    max-width: var(--max);
+    margin: 0 auto;
+    padding-top: 28px;
+  }
+  .poke__head {
+    grid-column: 1 / -1;
+  }
+  .poke__stage {
+    grid-row: 2;
+    margin: 16px 0;
+  }
+  .poke__list {
+    grid-row: 2;
+    align-self: center;
+    gap: 10px;
+  }
+  .poke__name {
+    font-size: 19px;
+  }
+  .poke__list li.is-active .poke__name {
+    font-size: 22px;
+  }
+  .recap__grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}

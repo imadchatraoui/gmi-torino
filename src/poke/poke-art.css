@@ -1,0 +1,38 @@
+/* Livelli della bowl illustrata (usati da /menu e dalla card in home). */
+.poke-art {
+  position: relative;
+  aspect-ratio: 1;
+}
+
+.poke__stage .poke-art,
+.poke-media {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: min(100cqw, 100cqh);
+  height: min(100cqw, 100cqh);
+}
+
+.poke-media {
+  object-fit: contain;
+}
+
+.poke-art__layer {
+  position: absolute;
+  inset: 0;
+}
+
+.poke-art__layer svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.poke-art__move {
+  will-change: transform;
+}
+
+.poke-art__lid {
+  will-change: transform, opacity;
+}
+
