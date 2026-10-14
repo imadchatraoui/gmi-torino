@@ -34,8 +34,12 @@ Branch: `ymhs-site` (creato da `main` dopo il commit "snapshot pre-YMHS"). Nient
 - Font self-hosted in `public/fonts/` (subset latin, ~120 KB totali, preload del Bodoni regolare): niente più Google Fonts.
 - Immagine Open Graph `public/og-ymhs.jpg` (1200x630, 68 KB) + meta og/twitter su entrambe le pagine.
 
+- Pagina `404.html` (nessun JS, ~2 KB) inclusa nel build.
+- Verificati in screenshot: desktop 1280x800 (home e menu a due colonne) e `prefers-reduced-motion` (bowl già aperte, niente sticky).
+
 ## Manca / idee per le prossime run
-- [ ] Rifinire la home su desktop (layout largo) e il fallback reduced-motion.
+- [ ] (opzionale) Home desktop: la colonna destra dell'hero è vuota, si potrebbe mettere una bowl grande.
+- [ ] Provare su un iPhone vero (scroll sticky + barra Safari): da fare quando il dev server/anteprima è disponibile.
 - [ ] Pulizia dipendenze non più usate (react, react-dom, @vitejs/plugin-react, three, ogl, gsap, framer-motion, tailwind) — solo dopo conferma dell'utente.
 - [ ] Decidere hosting e DNS (utente).
 
