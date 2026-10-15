@@ -120,20 +120,20 @@ export default function PokeScroll({ poke, skipTo }) {
           <span ref={barRef} />
         </div>
         <header className="poke__head">
-          <p className="poke__label">
-            {t(label, lang)}
-            {skipTo && (
-              <a className="poke__skip" href={skipTo}>
-                {t({ it: 'Salta', en: 'Skip' }, lang)}
-              </a>
-            )}
-          </p>
-          <div className="poke__titlerow">
-            <h2 id={`${id}-title`} className="poke__title display">
-              {t(title, lang)}
-            </h2>
-            <LikeButton poke={poke} size={20} />
+          <div className="poke__label">
+            <span>{t(label, lang)}</span>
+            <span className="poke__actions">
+              <LikeButton poke={poke} size={20} />
+              {skipTo && (
+                <a className="poke__skip" href={skipTo}>
+                  {t({ it: 'Salta', en: 'Skip' }, lang)}
+                </a>
+              )}
+            </span>
           </div>
+          <h2 id={`${id}-title`} className="poke__title display">
+            {t(title, lang)}
+          </h2>
         </header>
         <div className="poke__stage">
           {renderer}

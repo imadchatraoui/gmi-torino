@@ -108,16 +108,16 @@
   right: 10px;
 }
 
-.poke__titlerow {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 12px;
+.poke__actions {
+  --like-pill: var(--surface); /* stesso fondo del bottone Salta */
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: -6px 0;
 }
 
-.poke__titlerow .like {
-  flex: none;
-  margin-top: 4px;
+.poke__actions .like {
+  min-height: 36px;
 }
 
 /* ---------- le due proposte ---------- */
@@ -135,14 +135,14 @@
   grid-template-columns: 104px 1fr;
   align-items: center;
   gap: 14px;
-  padding: 18px 58px 18px 10px;
+  padding: 18px 16px 18px 10px;
   background: var(--card);
   color: var(--on-card);
   text-decoration: none;
   transition: transform 0.3s var(--ease-out), background-color 0.3s;
 }
 
-.choice:nth-child(2) {
+.choice-wrap:nth-child(2) .choice {
   background: var(--surface);
   color: var(--text);
 }
@@ -173,6 +173,11 @@
   font-weight: 600;
   letter-spacing: 0.16em;
   text-transform: uppercase;
+}
+
+.choice__label,
+.choice__title {
+  padding-right: 48px; /* spazio per il cuore in alto a destra */
 }
 
 .choice__title {
@@ -239,7 +244,6 @@
   display: inline-flex;
   align-items: center;
   min-height: 36px;
-  margin: -6px 0;
   padding: 0 14px;
   border-radius: 999px;
   background: var(--surface);
@@ -466,5 +470,12 @@
   }
   .poke__name {
     font-size: 19px;
+  }
+}
+
+/* con "riduci movimento" la bowl è già aperta: non c'è animazione da saltare */
+@media (prefers-reduced-motion: reduce) {
+  .poke__skip {
+    display: none;
   }
 }

@@ -35,7 +35,7 @@ export default function MenuPage() {
           <div className="divider" aria-hidden="true" />
           <p className="menu-hero__date display">{ev.dayMonth}</p>
           <p className="menu-hero__meta">
-            {ev.venue}, To
+            {ev.venue}, {ev.city}
             <br />
             {ev.time}
           </p>

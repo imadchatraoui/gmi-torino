@@ -1,8 +1,11 @@
-// usage: node shot.mjs url out.png [scrollY,...] [--reduce|--dark]
+// usage: node shot.mjs url out.png [scrollY,...] [--reduce] [--dark|--light] [--size=375x667] [--en]
 // scrollY: pixel, percentuale (es. 50%), #id (inizio elemento) o #id@0.4 (avanzamento 40% di una sezione poke)
 import { spawn } from 'node:child_process';
 import { writeFileSync } from 'node:fs';
-const [url, out, scrolls = '0', flag] = process.argv.slice(2);
+const args = process.argv.slice(2);
+const flags = args.filter(a => a.startsWith('--'));
+const [url, out, scrolls = '0'] = args.filter(a => !a.startsWith('--'));
+const [W, H] = (flags.find(f => f.startsWith('--size='))?.slice(7) ?? '375x812').split('x').map(Number);
 const port = 9333 + Math.floor(Math.random()*500);
 const chrome = spawn('/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
   ['--headless=new', `--remote-debugging-port=${port}`, '--hide-scrollbars', `--user-data-dir=/tmp/cdp-${port}`, 'about:blank'], { stdio: 'ignore' });
@@ -13,11 +16,14 @@ await new Promise(r => ws.onopen = r);
 let id = 0; const pending = new Map();
 ws.onmessage = e => { const m = JSON.parse(e.data); if (m.id && pending.has(m.id)) { pending.get(m.id)(m); pending.delete(m.id); } };
 const send = (method, params={}) => new Promise(r => { const i=++id; pending.set(i, r); ws.send(JSON.stringify({id:i, method, params})); });
-await send('Emulation.setDeviceMetricsOverride', { width: 375, height: 812, deviceScaleFactor: 2, mobile: true });
+await send('Emulation.setDeviceMetricsOverride', { width: W, height: H, deviceScaleFactor: 2, mobile: true });
 await send('Emulation.setTouchEmulationEnabled', { enabled: true });
-if (flag === '--reduce') await send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'reduce' }] });
-if (flag === '--light') await send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-color-scheme', value: 'light' }] });
-if (flag === '--dark') await send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-color-scheme', value: 'dark' }] });
+const features = [];
+if (flags.includes('--reduce')) features.push({ name: 'prefers-reduced-motion', value: 'reduce' });
+if (flags.includes('--light')) features.push({ name: 'prefers-color-scheme', value: 'light' });
+if (flags.includes('--dark')) features.push({ name: 'prefers-color-scheme', value: 'dark' });
+if (features.length) await send('Emulation.setEmulatedMedia', { features });
+if (flags.includes('--en')) await send('Page.addScriptToEvaluateOnNewDocument', { source: "try{localStorage.setItem('gmi-lang','en')}catch{}" });
 await send('Page.enable'); await send('Runtime.enable');
 await send('Page.navigate', { url }); await sleep(1800);
 const logs = await send('Runtime.evaluate', { expression: 'JSON.stringify({w:innerWidth, sw:document.documentElement.scrollWidth, h:document.documentElement.scrollHeight})', returnByValue: true });
