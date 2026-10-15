@@ -55,6 +55,29 @@ Branch: `ymhs-site` (creato da `main` dopo il commit "snapshot pre-YMHS"). Nient
   (bowl aperte, niente sticky), nessun overflow orizzontale (scrollWidth = 375).
 - Il loop si è fermato qui: quello che resta richiede decisioni o un telefono vero (sotto).
 
+### Sessione 15 ottobre (pomeriggio) — identità e sito ufficiale
+Richiesta: sito troppo complesso → creare un'identità su cui costruire il sito ufficiale, con solo
+Chi siamo, Eventi, Archivio, Contatti, nello stile di GMI Italia.
+- Lo stile nazionale è su **gmitalia.org** (gmiitalia.org non esiste: NXDOMAIN). Valori presi dal suo CSS:
+  bianco, teal `#18abaf`, blu `#004a73`, inchiostro `#0f172a`, Poppins, angoli 10 px, bottoni a pillola,
+  titolo con gradiente blu→teal.
+- **Identità GMI Torino** in `src/styles/base.css` (token) e documentata su **`/identita/`**: logo Torino
+  ricolorato col gradiente GMI (maschera CSS, nessun nuovo file), Poppins self-hosted (5 file, ~40 KB),
+  accento torinese = **l'arco dei portici** (cornici, badge numerici, arcata del footer), regole di movimento e di voce.
+- **Home riscritta** (via countdown grande, timbro, ticker, bowl decorativa): hero "Protagonisti noi, a Torino."
+  con chip "Sito in costruzione" e arcata animata il cui portale centrale porta al YMHS; poi
+  Chi siamo (testo + cammino Reconnect/Inform/Socialize/Empower di GMI Italia), Eventi (card YMHS con
+  iscrizione e link al menu), Archivio (Raccontarci, 26.09.2026: locandina in cornice ad arco + 8 talk in
+  carosello, immagini ottimizzate 28–53 KB), Contatti (Instagram, email, GMI Italia).
+- Navigazione: su telefono barra flottante in basso con indicatore che scivola sulla sezione in vista;
+  su desktop link nell'header.
+- Animazioni nuove: righe del titolo che salgono, archi che crescono dal basso in sequenza, riflesso sul
+  portale, puntino "live", lettere YMHS in sequenza, arco della card evento, locandina che si apre dal basso,
+  archi del cammino. Tutte con transform/opacity (tranne il clip della locandina, una volta sola) e
+  disattivate con "riduci movimento".
+- /menu/ allineato: Poppins, blu/teal, bollino del coperchio e numeri ricolorati.
+- 404 ristilizzata. Rimossi Bodoni/IBM Plex, HeroBowl, Ticker (restano nella storia git).
+
 ## Manca / idee per le prossime run
 - [ ] Provare su un iPhone vero (scroll sticky + barra Safari): da fare quando il dev server/anteprima è disponibile.
 - [ ] Pulizia dipendenze non più usate (react, react-dom, @vitejs/plugin-react, three, ogl, gsap, framer-motion, tailwind) — solo dopo conferma dell'utente.
@@ -80,6 +103,9 @@ node scripts/perf-scroll.mjs http://localhost:4179/menu/
 Su telefono: `npm run dev -- --host` e aprire l'IP del Mac dalla stessa rete Wi-Fi.
 
 ## Decisioni prese
+- (15/10) Stile del sito = sistema GMI Italia (gmitalia.org), non più carta crema/rosso. Il logo Torino resta lo
+  stesso disegno ma viene mostrato col gradiente GMI. Tagline "Protagonisti noi, a Torino." ripresa da quella nazionale.
+- (15/10) Archivio: "Raccontarci" con le locandine dei talk pubblicate da GMI Torino; nomi letti dalle locandine.
 - Nome evento: uso **"Youth Mental Health Summit"** (come nei post Instagram), non "Young" come nel brief.
 - Menu su `/menu/` come file statico (multi-page) → nessuna regola di rewrite sull'hosting.
 - Stile carta crema + rosso GMI `#8B181A` + inchiostro `#2A1314`, ispirato al "Save the date" GMI e alla grafica YMHS

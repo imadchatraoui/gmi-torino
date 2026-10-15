@@ -19,15 +19,15 @@ const Svg = ({ children }) => (
 function Marker({ x, y, n }) {
   return (
     <g transform={`translate(${x.toFixed(1)} ${y.toFixed(1)})`}>
-      <circle r="15" fill="#8B181A" />
-      <circle r="15" fill="none" stroke="#F3ECDF" strokeWidth="2" />
+      <circle r="15" fill="#004a73" />
+      <circle r="15" fill="none" stroke="#ffffff" strokeWidth="2" />
       <text
         y="5"
         textAnchor="middle"
-        fontFamily="'IBM Plex Mono', ui-monospace, monospace"
+        fontFamily="'Poppins', system-ui, sans-serif"
         fontSize="14"
         fontWeight="500"
-        fill="#F3ECDF"
+        fill="#ffffff"
       >
         {n}
       </text>
@@ -112,7 +112,7 @@ const PokeIllustration = forwardRef(function PokeIllustration({ items, label, ma
       {riceIndex >= 0 && (
         <div className="poke-art__layer poke-art__fade" ref={ringRef} style={{ opacity: 0 }}>
           <Svg>
-            <circle cx={C} cy={C} r={FOOD_R - 2} fill="none" stroke="#F3ECDF" strokeWidth="2.5" strokeDasharray="2 9" strokeLinecap="round" />
+            <circle cx={C} cy={C} r={FOOD_R - 2} fill="none" stroke="#ffffff" strokeOpacity="0.5" strokeWidth="2.5" strokeDasharray="2 9" strokeLinecap="round" />
           </Svg>
         </div>
       )}

@@ -1,18 +1,39 @@
-import { EVENT } from '../data/event'
+import { CONTACTS, SECTIONS } from '../data/site'
+import Mark from './Mark'
 
 export default function SiteFooter() {
   return (
     <footer className="site-footer">
-      <img src="/brand/gmi-logo.webp" alt="" width="56" height="64" loading="lazy" />
-      <p className="site-footer__org">Giovani Musulmani d'Italia APS · <span className="nowrap">Sezione di Torino</span></p>
-      <p className="site-footer__links">
-        <a href={EVENT.instagram} target="_blank" rel="noopener noreferrer">
-          @gmi.torino
-        </a>
-        <span aria-hidden="true">·</span>
-        <a href="mailto:gmitorino@gmail.com">gmitorino@gmail.com</a>
-      </p>
-      <p className="site-footer__small">© 2026 GMI Torino</p>
+      <div className="site-footer__inner">
+        <div className="site-footer__brand">
+          <Mark white />
+          <p>
+            GMI Torino
+            <small>Giovani Musulmani d’Italia APS · Sezione di Torino</small>
+          </p>
+        </div>
+        <ul className="site-footer__links">
+          {SECTIONS.map((s) => (
+            <li key={s.id}>
+              <a href={`/#${s.id}`}>{s.label}</a>
+            </li>
+          ))}
+        </ul>
+        <p className="site-footer__small">
+          <span>© 2026 GMI Torino</span>
+          <span>
+            <a href={CONTACTS.instagram.url} target="_blank" rel="noopener noreferrer">
+              {CONTACTS.instagram.handle}
+            </a>
+            {' · '}
+            <a href={CONTACTS.national.url} target="_blank" rel="noopener noreferrer">
+              {CONTACTS.national.label}
+            </a>
+            {' · '}
+            <a href="/identita/">Identità visiva</a>
+          </span>
+        </p>
+      </div>
     </footer>
   )
 }

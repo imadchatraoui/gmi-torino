@@ -12,17 +12,21 @@
 
 .menu-intro__title {
   margin-top: 14px;
-  font-family: var(--serif);
-  font-weight: 500;
-  font-size: clamp(3.4rem, 17vw, 7.5rem);
-  line-height: 0.9;
-  letter-spacing: -0.03em;
+  font-weight: 700;
+  font-size: clamp(3rem, 15vw, 6.5rem);
+  line-height: 0.98;
+  letter-spacing: -0.04em;
+  color: var(--navy-dark);
 }
 
 .menu-intro__title em {
   display: block;
-  font-weight: 400;
-  color: var(--red);
+  font-style: normal;
+  background: var(--grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  padding-bottom: 0.06em;
 }
 
 .menu-intro__lede {
@@ -34,8 +38,9 @@
 }
 
 .jump {
+  display: grid;
+  gap: 8px;
   margin-top: 26px;
-  border-top: 1px solid var(--ink);
 }
 
 .jump a {
@@ -43,21 +48,36 @@
   grid-template-columns: 34px 1fr auto;
   align-items: baseline;
   gap: 10px;
-  padding: 14px 0;
-  border-bottom: 1px solid var(--line);
+  padding: 14px 16px;
+  border-radius: var(--radius-lg);
+  background: var(--mist);
   text-decoration: none;
+  transition: background-color 0.25s;
+}
+
+.jump a:active {
+  background: var(--mist-2);
 }
 
 .jump__num {
-  font-family: var(--mono);
-  font-size: 12px;
-  color: var(--red);
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 31px;
+  padding-top: 3px;
+  border-radius: var(--arch);
+  background: var(--grad-v);
+  color: var(--white);
+  font-size: 11px;
+  font-weight: 600;
+  align-self: center;
 }
 
 .jump__title {
-  font-family: var(--serif);
-  font-size: 20px;
-  line-height: 1.2;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--navy);
 }
 
 /* ---------- sezione scroll poke ---------- */
@@ -100,11 +120,11 @@
   align-items: baseline;
   gap: 12px;
   margin-top: 6px;
-  font-family: var(--serif);
-  font-weight: 500;
-  font-size: clamp(1.6rem, 7.2vw, 2.8rem);
-  line-height: 1.05;
-  letter-spacing: -0.015em;
+  font-weight: 700;
+  font-size: clamp(1.5rem, 6.8vw, 2.6rem);
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  color: var(--navy-dark);
 }
 
 .poke__num {
@@ -134,7 +154,7 @@
   gap: 6px;
   font-family: var(--mono);
   font-size: 11px;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--ink-2);
   pointer-events: none;
@@ -209,10 +229,8 @@
 }
 
 .poke__list li.is-active .poke__name {
-  color: var(--red);
-  font-family: var(--serif);
-  font-style: italic;
-  font-size: 18px;
+  color: var(--navy);
+  font-weight: 600;
 }
 
 /* senza animazioni: tutto aperto, niente sticky */
@@ -247,7 +265,7 @@
     font-size: 14px;
   }
   .poke__list li.is-active .poke__name {
-    font-size: 16px;
+    font-size: 14px;
   }
 }
 
@@ -259,10 +277,10 @@
 }
 
 .recap__title {
-  font-family: var(--serif);
-  font-weight: 500;
-  font-size: 40px;
-  letter-spacing: -0.02em;
+  font-weight: 700;
+  font-size: 34px;
+  letter-spacing: -0.03em;
+  color: var(--navy-dark);
   margin-bottom: 18px;
 }
 
@@ -273,16 +291,16 @@
 
 .recap__card {
   padding: 20px;
-  background: var(--paper-2);
-  border-top: 3px solid var(--red);
+  border-radius: var(--radius-lg);
+  background: var(--mist);
 }
 
 .recap__card h3 {
   margin: 6px 0 12px;
-  font-family: var(--serif);
-  font-weight: 500;
-  font-size: 22px;
-  line-height: 1.15;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 1.2;
+  color: var(--navy);
 }
 
 .recap__card ol {
@@ -311,17 +329,16 @@
 }
 
 .verse blockquote {
-  font-family: var(--serif);
-  font-style: italic;
-  font-size: 19px;
-  line-height: 1.5;
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--navy-dark);
 }
 
 .verse figcaption {
   margin-top: 12px;
   font-family: var(--mono);
   font-size: 11px;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--gold);
 }
@@ -361,7 +378,7 @@
     font-size: 19px;
   }
   .poke__list li.is-active .poke__name {
-    font-size: 22px;
+    font-size: 19px;
   }
   .recap__grid {
     grid-template-columns: 1fr 1fr;

@@ -79,8 +79,8 @@ export function Bowl({ uid }) {
     <g>
       <defs>
         <radialGradient id={`${uid}-shadow`} cx="50%" cy="50%" r="50%">
-          <stop offset="62%" stopColor="#2A1314" stopOpacity="0.32" />
-          <stop offset="100%" stopColor="#2A1314" stopOpacity="0" />
+          <stop offset="62%" stopColor="#0f172a" stopOpacity="0.3" />
+          <stop offset="100%" stopColor="#0f172a" stopOpacity="0" />
         </radialGradient>
         <radialGradient id={`${uid}-glaze`} cx="38%" cy="32%" r="75%">
           <stop offset="0%" stopColor="#34475A" />
@@ -119,16 +119,17 @@ export function Lid({ uid, label }) {
       <circle cx={C} cy={C} r={BOWL_R - 14} fill="none" stroke="#E4CCA4" strokeOpacity="0.7" strokeWidth="1.5" />
       {/* bollino */}
       <g transform={`rotate(-8 ${C} ${C})`}>
-        <circle cx={C} cy={C} r="62" fill="#F7F0E2" />
-        <circle cx={C} cy={C} r="55" fill="none" stroke="#8B181A" strokeWidth="1.5" />
+        <circle cx={C} cy={C} r="62" fill="#ffffff" />
+        <circle cx={C} cy={C} r="55" fill="none" stroke="#18abaf" strokeWidth="1.5" />
         <text
           x={C}
           y={C - 6}
           textAnchor="middle"
-          fontFamily="'Bodoni Moda', Georgia, serif"
-          fontStyle="italic"
-          fontSize="30"
-          fill="#8B181A"
+          fontFamily="'Poppins', system-ui, sans-serif"
+          fontWeight="700"
+          fontSize="28"
+          letterSpacing="-0.5"
+          fill="#004a73"
         >
           Poke
         </text>
@@ -136,10 +137,11 @@ export function Lid({ uid, label }) {
           x={C}
           y={C + 22}
           textAnchor="middle"
-          fontFamily="'IBM Plex Mono', ui-monospace, monospace"
-          fontSize="12"
-          letterSpacing="2.5"
-          fill="#2A1314"
+          fontFamily="'Poppins', system-ui, sans-serif"
+          fontWeight="600"
+          fontSize="11"
+          letterSpacing="1.5"
+          fill="#0a8f92"
         >
           {label.toUpperCase()}
         </text>

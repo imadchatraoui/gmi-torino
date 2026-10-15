@@ -1,15 +1,17 @@
-# GMI Torino · sito YMHS
+# GMI Torino · sito
 
-Sito di GMI Torino per il **Youth Mental Health Summit** (25 ottobre 2026).
+Base del sito ufficiale di GMI Torino, con l'identità visiva della sezione
+(sistema GMI Italia di [gmitalia.org](https://gmitalia.org) + l'arco dei portici torinesi).
 
 | URL | File | Cosa |
 | --- | --- | --- |
-| `gmitorino.org/` | `index.html` → `src/home/` | pagina "coming soon" con info evento e link al menu |
-| `gmitorino.org/menu/` | `menu/index.html` → `src/menu/` | menu del pranzo: due poke che si aprono con lo scroll |
+| `gmitorino.org/` | `index.html` → `src/home/` | Chi siamo, Eventi, Archivio, Contatti (+ chip "Sito in costruzione") |
+| `gmitorino.org/menu/` | `menu/index.html` → `src/menu/` | menu del pranzo YMHS: due poke che si aprono con lo scroll |
+| `gmitorino.org/identita/` | `identita/index.html` → `src/identity/` | guida all'identità visiva: marchio, colori, tipografia, arco, movimento, voce |
 
-Vite + Preact (codice scritto in stile React, girato su `preact/compat`): ~13 KB gzip di JS per pagina, nessuna libreria di animazione. Le due pagine sono un build multi-page
-(`vite.config.js`), quindi `/menu/` è un file statico vero: funziona su qualunque hosting
-statico senza regole di rewrite.
+Vite + Preact (codice scritto in stile React, girato su `preact/compat`): ~13 KB gzip di JS per pagina,
+nessuna libreria di animazione. Build multi-page (`vite.config.js`): ogni URL è un file statico vero,
+funziona su qualunque hosting statico senza regole di rewrite.
 
 ```bash
 npm install
@@ -20,9 +22,13 @@ npm run preview
 
 ## Dove si cambiano i contenuti
 
-- `src/data/event.js` — data, orari, luogo, quota, link iscrizioni, temi.
+- `src/data/site.js` — testi di Chi siamo, eventi in programma, archivio, contatti, voci di navigazione.
+- `src/data/event.js` — data, orari, luogo, quota, link iscrizioni del YMHS.
 - `src/data/menu.js` — le due opzioni poke e i loro ingredienti (testo esatto del menu).
-- `src/styles/` — stile comune (`base.css`), home (`home.css`), menu (`menu.css`).
+- `src/styles/` — identità e componenti comuni (`base.css`: colori, Poppins, bottoni, header, footer, comparse),
+  home (`home.css`), menu (`menu.css`), guida identità (`identity.css`).
+- Nuovo evento in archivio: aggiungere un oggetto in `ARCHIVE` (`src/data/site.js`) e le immagini in
+  `public/archivio/<id>/` (webp, ~560 px di larghezza, `cwebp -q 72 -resize 560 0`).
 
 ## Animazione poke
 
