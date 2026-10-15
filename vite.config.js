@@ -16,6 +16,12 @@ function devLikes() {
       store.set(args[0], (store.get(args[0]) ?? 0) + Number(args[1]))
       return store.get(args[0])
     }
+    if (op === 'INCR') {
+      const key = command[1]
+      store.set(key, (store.get(key) ?? 0) + 1)
+      return store.get(key)
+    }
+    if (op === 'EXPIRE') return 1
     if (op === 'HSET') {
       store.set(args[0], Number(args[1]))
       return 1

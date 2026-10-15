@@ -65,6 +65,14 @@ export async function toggleLike(id, liked) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id, delta: liked ? 1 : -1 }),
       })
+      if (r.status === 429) {
+        // troppi tocchi in poco tempo: si torna a com'era prima del tocco
+        state.liked = { ...state.liked, [id]: liked ? undefined : true }
+        writeJSON(LIKED_KEY, state.liked)
+        state.counts = { ...state.counts, [id]: Math.max(0, (state.counts[id] ?? 0) + (liked ? -1 : 1)) }
+        emit()
+        return
+      }
       if (!r.ok) throw new Error(String(r.status))
       const data = await r.json()
       state.counts = { ...state.counts, [id]: data.count }
