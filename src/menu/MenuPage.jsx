@@ -4,6 +4,7 @@ import LikeButton from '../poke/LikeButton'
 import PokeScroll from '../poke/PokeScroll'
 import Intro from '../shared/Intro'
 import { t, usePrefs } from '../shared/prefs'
+import ShareButton from '../shared/ShareButton'
 import SiteFooter from '../shared/SiteFooter'
 import SiteHeader from '../shared/SiteHeader'
 import { tornClip } from '../shared/Paper'
@@ -71,6 +72,11 @@ export default function MenuPage() {
 
         <section id="menu-end" className="menu-end" aria-label={tr(meal)}>
           <p className="menu-note">{tr(note)}</p>
+          <ShareButton
+            className="menu-share"
+            title={tr({ it: 'Il menu del pranzo · YMHS', en: 'The lunch menu · YMHS' })}
+            label={tr({ it: 'Condividi il menu', en: 'Share the menu' })}
+          />
           <figure className="verse">
             <blockquote>
               <p className="verse__ar" lang="ar" dir="rtl">

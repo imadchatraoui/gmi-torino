@@ -484,3 +484,28 @@
     display: none;
   }
 }
+
+/* condividi il menu (foglio di condivisione del telefono o copia del link) */
+.menu-share {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 48px;
+  margin: 14px auto 0;
+  padding: 0 22px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--line);
+  color: var(--heading);
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.menu-share:active {
+  transform: scale(0.97);
+}
