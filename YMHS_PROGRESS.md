@@ -2,6 +2,15 @@
 
 Branch: `ymhs-site` (creato da `main` dopo il commit "snapshot pre-YMHS"), con push su GitHub. Niente deploy, DNS non toccato.
 
+## Riepilogo della notte 15→16 ottobre (per Imad)
+Tutto sul branch `ymhs-site`, già su GitHub. Video aggiornati in `anteprime/` (menu scuro, home chiaro).
+In breve: like condivisi sui poke (con ripiego locale e protezione anti-spam), menu rifinito su telefoni piccoli e
+grandi, chiaro/scuro, IT/EN; bug iPhone sistemati per quanto verificabile senza un iPhone; contrasti e focus da tastiera;
+scroll più fluido (fotogrammi persi nel menu da 4–7 a 0–1) e dipendenze inutili tolte; home centrata; testi riletti;
+/design aggiornato; in più "Aggiungi al calendario", "Condividi il menu", sito consultabile senza rete,
+anteprime dei link e 404 senza cerchio intorno al logo, dati evento per Google. Dettagli sotto, in fondo cosa resta
+e cosa devi decidere tu.
+
 ## Fatto
 
 ### Run 1 — 2026-10-15
@@ -193,23 +202,23 @@ Nuova direzione decisa con l'utente (dettagli in YMHS_BRIEF.md, "Aggiornamento 1
 - Home a 375x667 chiaro/scuro, IT/EN: ok, niente testo coperto dalla barra in basso.
 
 ## Manca / idee per le prossime run
-- [ ] Provare su iPhone vero (sticky + barra di Safari, intro video in risparmio energetico).
-- [ ] Come aggiungere eventi in futuro (file dati, pannello admin o tramite Claude): da chiedere all'utente.
+- [ ] Provare su un iPhone vero (sul Mac non c'è Xcode, quindi niente simulatore: tutto verificato con Chrome in
+  emulazione). Da guardare: intro in risparmio energetico, barra di Safari durante lo scroll del menu, tocchi sulla barra in basso.
+- [ ] Deploy (Vercel) e collegamento di Upstash Redis per i like condivisi: poi controllare che `/api/likes` risponda 200.
 - [ ] Programma e ospiti del YMHS (blocco `program` già previsto nel template, spento).
-- [ ] Logo/banner del YMHS se l'utente li manda (campi `logo` e `banner` in `src/data/events.js`).
-- [x] Pulizia dipendenze non più usate (fatto la notte del 16/10).
-- [ ] Like: collegare Upstash Redis al progetto Vercel (gratis) quando si fa il deploy; fino ad allora i numeri restano sul telefono.
+- [ ] Come aggiungere eventi in futuro (file dati, pannello, o tramite Claude).
+- [x] Pulizia dipendenze, like, calendario, condivisione, sito senza rete, anteprime dei link, 404, dati per Google.
 
 ## Da decidere (utente)
-- **Like**: il cuore va bene in quella posizione e con quel rosso? Vanno mostrati i numeri anche quando sono 0?
-- **Upstash**: per i like condivisi serve un database Upstash Redis (gratuito) collegato al progetto Vercel:
-  Vercel → Storage → Upstash Redis → Connect. Non l'ho creato io (niente account).
-- **Push** del branch `ymhs-site` su GitHub: consentito dall'utente il 15/10, fatto a fine sessione.
-- **Deploy** su `gmitorino.org`: la cartella `dist/` è statica (`/`, `/menu/`, `404.html`), va bene su
-  qualsiasi hosting statico; nessun rewrite necessario per `/menu`.
-- **Video/frame Higgsfield**: se arrivano, impostare `media` in `src/data/menu.js` (`type: 'video'` o `'frames'`),
-  istruzioni nel README. Senza, resta l'animazione SVG in codice.
-- Titoli delle due opzioni e nota allergie (vedi "Decisioni prese").
+- **Like**: il cuore va bene lì (in alto a destra nelle schede, accanto a "Salta" nelle sezioni) e con quel rosso?
+  Mostrare il numero anche quando è 0, o solo il cuore finché nessuno ha messo like?
+- **Upstash**: per i like condivisi tra tutti i telefoni serve un database Upstash Redis gratuito collegato al progetto
+  Vercel (Vercel → Storage → Upstash Redis → Connect). Non l'ho creato io (niente account).
+- **Deploy** su `gmitorino.org`: quando vuoi, su Vercel (preset Vite, output `dist/`); il dominio lo punti tu.
+- **Pagina /design nella sitemap**: è pubblica e indicizzabile; se preferisci tenerla nascosta la tolgo dalla sitemap
+  e aggiungo `noindex`.
+- **Video/frame Higgsfield** per il poke: se arrivano, impostare `media` in `src/data/menu.js` (istruzioni nel README).
+- Titoli delle due opzioni ("Tonno & avocado al miele", "Hummus, pollo & barbabietola") e nota allergie: scritti da me.
 
 ## Come provare
 ```bash
