@@ -1,40 +1,33 @@
 import { useState } from 'react'
 import PokeIllustration from '../poke/PokeIllustration'
 import { POKES } from '../data/menu'
-import MetroLine from '../shared/MetroLine'
 import { t, usePrefs } from '../shared/prefs'
 import { useReveal } from '../shared/reveal'
 import SiteFooter from '../shared/SiteFooter'
 import SiteHeader from '../shared/SiteHeader'
-import Skyline from '../shared/Skyline'
+import { Corner, Lace, tornClip } from '../shared/Paper'
 
 // Guida all'identità di GMI Torino: la base su cui costruire il sito ufficiale e ogni evento.
 // I valori sono gli stessi di src/styles/base.css.
 
 const COLORS = [
   { name: 'Crema', hex: '#FFFCEB', role: { it: 'Fondo del tema chiaro. È il crema del logo.', en: 'Light theme background. The cream of the logo.' } },
-  { name: 'Bordeaux', hex: '#6E0B0E', role: { it: 'Colore del logo: titoli, bottoni, linea della metro.', en: 'The logo colour: headings, buttons, metro line.' } },
+  { name: 'Bordeaux', hex: '#6E0B0E', role: { it: 'Colore del logo: titoli, bottoni, barra di navigazione.', en: 'The logo colour: headings, buttons, navigation bar.' } },
   { name: 'Bordeaux vivo', hex: '#8F1A1E', role: { it: 'Stato premuto e passaggio del mouse.', en: 'Pressed and hover states.' } },
-  { name: 'Oro', hex: '#C99434', role: { it: 'Ornamenti, filetti, calligrafia. Mai per testo piccolo su crema.', en: 'Ornaments, rules, calligraphy. Never small text on cream.' } },
+  { name: 'Oro', hex: '#C99434', role: { it: 'Ornamenti e filetti. Mai per testo piccolo su crema.', en: 'Ornaments and rules. Never small text on cream.' } },
   { name: 'Oro testo', hex: '#8A5F12', role: { it: 'Etichette e piccoli testi d’accento su crema.', en: 'Labels and small accent text on cream.' } },
   { name: 'Bordeaux notte', hex: '#1C0709', role: { it: 'Fondo del tema scuro.', en: 'Dark theme background.' } },
   { name: 'Inchiostro', hex: '#2B0A0C', role: { it: 'Testo principale nel tema chiaro.', en: 'Body text in the light theme.' } },
-  { name: 'Sabbia', hex: '#F2E3BD', role: { it: 'Skyline e superfici calde.', en: 'Skyline and warm surfaces.' } },
+  { name: 'Crema scuro', hex: '#FBF3DA', role: { it: 'Superfici: schede e bottoni secondari.', en: 'Surfaces: cards and secondary buttons.' } },
 ]
 
 const ACCENTS = [
-  { name: 'YMHS', hex: '#7E9A86' },
-  { name: { it: 'Esempio', en: 'Example' }, hex: '#B07A4A' },
-  { name: { it: 'Esempio', en: 'Example' }, hex: '#5E7FA0' },
+  { name: 'YMHS', hex: '#8F9C7D' },
+  { name: { it: 'Esempio', en: 'Example' }, hex: '#B88A5A' },
+  { name: { it: 'Esempio', en: 'Example' }, hex: '#6C86B0' },
 ]
 
-const DEMO_STOPS = [
-  { id: 'd1', label: { it: 'Prossimamente', en: 'Coming soon' } },
-  { id: 'd2', label: { it: 'Chi siamo', en: 'About us' } },
-  { id: 'd3', label: { it: 'Eventi', en: 'Events' } },
-  { id: 'd4', label: { it: 'Archivio', en: 'Archive' } },
-  { id: 'd5', label: { it: 'Contatti', en: 'Contact' } },
-]
+const DEMO_CLIP = tornClip(14, { depth: 5 })
 
 function Swatch({ c, lang }) {
   const [copied, setCopied] = useState(false)
@@ -59,12 +52,21 @@ function Swatch({ c, lang }) {
   )
 }
 
-function IntroDemo({ lang }) {
+function IntroDemo({ lang, theme }) {
   const [k, setK] = useState(0)
   return (
     <div className="intro-demo">
-      <div className="intro-demo__disc">
-        <video key={k} src="/brand/gmi-torino-intro.mp4" muted playsInline autoPlay preload="metadata" width="400" height="456" />
+      <div className="intro-demo__logo">
+        <video
+          key={`${k}-${theme}`}
+          src={theme === 'dark' ? '/brand/gmi-torino-intro-d.mp4' : '/brand/gmi-torino-intro-l.mp4'}
+          muted
+          playsInline
+          autoPlay
+          preload="metadata"
+          width="400"
+          height="456"
+        />
       </div>
       <button type="button" className="btn btn--ghost" onClick={() => setK((v) => v + 1)}>
         {t({ it: 'Riproduci', en: 'Play again' }, lang)}
@@ -74,9 +76,8 @@ function IntroDemo({ lang }) {
 }
 
 export default function Design() {
-  const { lang } = usePrefs()
+  const { lang, theme } = usePrefs()
   const tr = (v) => t(v, lang)
-  const [here, setHere] = useState('d1')
   useReveal()
 
   return (
@@ -88,8 +89,8 @@ export default function Design() {
           <h1 className="id-hero__title">{tr({ it: 'L’identità di GMI Torino', en: 'The GMI Torino identity' })}</h1>
           <p className="id-hero__lede">
             {tr({
-              it: 'I colori del nostro logo, un solo font, Torino sullo sfondo. Questa pagina è la base per il sito ufficiale e per ogni evento: se qualcosa non è qui, prima si aggiunge qui.',
-              en: 'The colours of our logo, one typeface, Turin in the background. This page is the basis for the official website and for every event: if something is not here, add it here first.',
+              it: 'Il nostro logo nei suoi colori, bordeaux, crema e oro, un solo font per il testo. Ogni evento può portare il suo stile dentro la sua scheda. Questa pagina è la base per il sito ufficiale: se qualcosa non è qui, prima si aggiunge qui.',
+              en: 'Our logo in its own colours, burgundy, cream and gold, one typeface for text. Each event can bring its own style inside its card. This page is the basis for the official website: if something is not here, add it here first.',
             })}
           </p>
         </section>
@@ -107,26 +108,24 @@ export default function Design() {
             </figure>
             <figure className="marks__item reveal" style={{ '--d': 1 }}>
               <div className="marks__box marks__box--dark">
-                <span className="marks__disc">
-                  <img src="/brand/gmi-torino-320.png" alt="" width="320" height="394" />
-                </span>
+                <img src="/brand/gmi-torino-scuro-320.png" alt="" width="320" height="394" />
               </div>
-              <figcaption>{tr({ it: 'Su fondo scuro: dentro un tondo crema.', en: 'On dark backgrounds: inside a cream disc.' })}</figcaption>
+              <figcaption>{tr({ it: 'Su fondo scuro: stesso PNG, bordeaux schiarito.', en: 'On dark backgrounds: same PNG, lightened burgundy.' })}</figcaption>
             </figure>
           </div>
           <ul className="rules reveal">
             <li>{tr({ it: 'Mai ricolorarlo, deformarlo o ruotarlo.', en: 'Never recolour, stretch or rotate it.' })}</li>
             <li>{tr({ it: 'Larghezza minima 28 px; intorno, spazio libero pari a metà della sua larghezza.', en: 'Minimum width 28 px; clear space of half its width around it.' })}</li>
-            <li>{tr({ it: 'File: public/brand/gmi-torino-160|320|640.png (scontornati).', en: 'Files: public/brand/gmi-torino-160|320|640.png (transparent).' })}</li>
+            <li>{tr({ it: 'File: public/brand/gmi-torino-*.png e gmi-torino-scuro-*.png (trasparenti). Niente cerchi o riquadri intorno.', en: 'Files: public/brand/gmi-torino-*.png and gmi-torino-scuro-*.png (transparent). No discs or boxes around it.' })}</li>
           </ul>
           <h3 className="id-sub reveal">{tr({ it: 'Il logo che si costruisce', en: 'The logo building itself' })}</h3>
           <p className="id-sec__lede reveal">
             {tr({
-              it: 'All’apertura del sito si disegna prima la Mole, poi compare il logo. Una volta per visita, si salta con un tocco. Video da 114 KB al posto della GIF da 3 MB.',
-              en: 'When the site opens, the Mole is drawn first, then the logo appears. Once per visit, skippable with a tap. A 114 KB video instead of the 3 MB GIF.',
+              it: 'All’apertura del sito si disegna prima la Mole, poi compare il logo. Una volta per visita, si salta con un tocco. Due video (chiaro e scuro, 109 e 164 KB) al posto della GIF da 3 MB.',
+              en: 'When the site opens, the Mole is drawn first, then the logo appears. Once per visit, skippable with a tap. Two videos (light and dark, 109 and 164 KB) instead of the 3 MB GIF.',
             })}
           </p>
-          <IntroDemo lang={lang} />
+          <IntroDemo lang={lang} theme={theme} />
         </section>
 
         <section className="id-sec" aria-labelledby="c-t">
@@ -152,8 +151,8 @@ export default function Design() {
           </h2>
           <p className="id-sec__lede reveal">
             {tr({
-              it: 'Un solo font per tutto: SF Pro, il font dell’iPhone. Non si scarica (zero byte); sugli altri telefoni si usa il loro font di sistema. Titoli in Semibold 600.',
-              en: 'One typeface for everything: SF Pro, the iPhone font. Nothing to download; other phones use their own system font. Headings in Semibold 600.',
+              it: 'Un solo font per il testo: SF Pro, il font dell’iPhone (zero byte da scaricare; sugli altri telefoni il loro font di sistema). Titoli in Semibold 600. Solo i titoli degli eventi usano un serif come nelle locandine: Bodoni Moda.',
+              en: 'One typeface for text: SF Pro, the iPhone font (nothing to download; other phones use their system font). Headings in Semibold 600. Only event titles use a serif like the posters: Bodoni Moda.',
             })}
           </p>
           <ul className="type-list">
@@ -175,7 +174,11 @@ export default function Design() {
               </span>
             </li>
             <li className="reveal">
-              <span className="type-list__label">{tr({ it: 'Etichetta · 600, oro', en: 'Label · 600, gold' })}</span>
+              <span className="type-list__label">{tr({ it: 'Titolo evento · Bodoni Moda', en: 'Event title · Bodoni Moda' })}</span>
+              <span className="type-event display">Youth Mental Health Summit</span>
+            </li>
+            <li className="reveal">
+              <span className="type-list__label">{tr({ it: 'Etichetta · 600, maiuscolo spaziato', en: 'Label · 600, spaced caps' })}</span>
               <span className="type-label">{tr({ it: 'Prossimo evento', en: 'Next event' })}</span>
             </li>
             <li className="reveal">
@@ -188,23 +191,21 @@ export default function Design() {
         </section>
 
         <section className="id-sec" aria-labelledby="to-t">
-          <h2 id="to-t" className="id-sec__title reveal">Torino</h2>
+          <h2 id="to-t" className="id-sec__title reveal">{tr({ it: 'Lo stile di un evento: YMHS', en: 'An event’s own style: YMHS' })}</h2>
           <p className="id-sec__lede reveal">
             {tr({
-              it: 'La Mole è già nel logo. Sul sito Torino torna come nel pannello sotto le fermate della metro: uno skyline chiaro (Superga, Gran Madre, Mole, le Alpi) e una linea con le fermate. La fermata in cui ti trovi è vuota.',
-              en: 'The Mole is already in the logo. On the site Turin comes back like the panel under the metro stops: a light skyline (Superga, Gran Madre, Mole, the Alps) and a line with stops. The stop you are at is hollow.',
+              it: 'Un evento può avere il suo stile, ma solo dentro le sue cose: la sua scheda in Eventi e la sua pagina del menu. Per il YMHS è lo stile delle locandine: carta, salvia strappata, blu, pizzo, filetti col rombo, titoli in serif. Il resto del sito resta GMI Torino.',
+              en: 'An event can have its own style, but only inside its own things: its card in Events and its menu page. For YMHS it is the poster style: paper, torn sage, blue, lace, diamond rules, serif titles. The rest of the site stays GMI Torino.',
             })}
           </p>
-          <div className="metro-demo reveal">
-            <Skyline />
-            <MetroLine stops={DEMO_STOPS} current={here} />
-          </div>
-          <div className="metro-demo__buttons">
-            {DEMO_STOPS.map((s) => (
-              <button key={s.id} type="button" className={`chip${s.id === here ? ' is-on' : ''}`} onClick={() => setHere(s.id)}>
-                {tr(s.label)}
-              </button>
-            ))}
+          <div className="paper-demo theme-ymhs reveal">
+            <Corner />
+            <div className="paper-demo__card" style={{ clipPath: DEMO_CLIP }}>
+              <span className="paper-demo__label">{tr({ it: 'Prossimo evento', en: 'Next event' })}</span>
+              <span className="paper-demo__title display">Youth Mental Health Summit</span>
+            </div>
+            <div className="divider" aria-hidden="true" />
+            <Lace />
           </div>
         </section>
 
@@ -230,8 +231,8 @@ export default function Design() {
           <h2 id="mo-t" className="id-sec__title reveal">{tr({ it: 'Movimento', en: 'Motion' })}</h2>
           <p className="id-sec__lede reveal">
             {tr({
-              it: 'Un solo momento forte per pagina: in home lo skyline che sale e la linea che si disegna, nel menu la ciotola che si apre. Si animano solo posizione e trasparenza, così resta fluido anche su telefoni economici. Con “riduci movimento” tutto è fermo.',
-              en: 'One strong moment per page: on the home page the skyline rising and the line drawing itself, on the menu the bowl opening. Only position and opacity are animated, so it stays smooth on cheap phones. With “reduce motion” everything stands still.',
+              it: 'Un solo momento forte per pagina: all’apertura il logo che si costruisce, nel menu la ciotola che si apre. Si animano solo posizione e trasparenza, così resta fluido anche su telefoni economici. Con “riduci movimento” tutto è fermo.',
+              en: 'One strong moment per page: the logo building itself when the site opens, the bowl opening on the menu. Only position and opacity are animated, so it stays smooth on cheap phones. With “reduce motion” everything stands still.',
             })}
           </p>
           <div className="bowl-demo reveal">

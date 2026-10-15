@@ -16,6 +16,7 @@ export const EVENTS = [
     start: '2026-10-25T10:00:00+01:00',
     end: '2026-10-25T19:30:00+01:00',
     date: { it: 'Domenica 25 ottobre 2026', en: 'Sunday 25 October 2026' },
+    dayMonth: '25.10',
     time: '10:00 – 19:30',
     venue: 'Casa del Quartiere di San Salvario',
     city: 'Torino',
@@ -25,9 +26,11 @@ export const EVENTS = [
       url: 'https://forms.gle/fRGgX14NWpU66HHJ9',
       note: { it: 'Iscrizioni entro venerdì 23 ottobre', en: 'Sign up by Friday 23 October' },
     },
-    accent: '#7e9a86',
+    // stile proprio dell'evento (classe .theme-ymhs in base.css): scheda evento e pagina del menu
+    theme: 'ymhs',
+    accent: '#8f9c7d',
     banner: null,
-    logo: null,
+    logo: '/eventi/ymhs/logo.webp',
     blocks: { info: true, signup: true, program: false, menu: true },
     menu: {
       meal: { it: 'Il pranzo', en: 'Lunch' },

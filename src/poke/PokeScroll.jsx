@@ -127,7 +127,7 @@ export default function PokeScroll({ poke, skipTo }) {
               </a>
             )}
           </p>
-          <h2 id={`${id}-title`} className="poke__title">
+          <h2 id={`${id}-title`} className="poke__title display">
             {t(title, lang)}
           </h2>
         </header>

@@ -11,26 +11,23 @@
 .menu-hero {
   position: relative;
   isolation: isolate;
-  max-width: var(--max);
+  max-width: 640px;
   margin: 0 auto;
-  padding: 28px var(--gutter) 24px;
+  padding: 36px var(--gutter) 28px;
+  text-align: center;
 }
 
-/* alone dell'evento: una macchia nel colore dell'evento e una in oro GMI.
-   Gradienti fermi e sfumati, niente filtri (costo zero durante lo scroll) */
+/* alone dell'evento: una macchia nel colore dell'evento, sfumata a zero (niente bordi, niente filtri) */
 .menu-hero::before {
   content: '';
   position: absolute;
   z-index: -1;
-  top: -80px;
-  bottom: -20px;
+  top: -60px;
+  bottom: 0;
   left: calc(50% - 50vw);
   right: calc(50% - 50vw);
-  /* ogni macchia sfuma a zero dentro il suo riquadro: nessun bordo netto */
-  background:
-    radial-gradient(closest-side, var(--accent), transparent) 100% 0 / min(70vw, 620px) 90% no-repeat,
-    radial-gradient(closest-side, var(--gold-light), transparent) 0 100% / min(60vw, 520px) 70% no-repeat;
-  opacity: 0.24;
+  background: radial-gradient(closest-side, var(--accent), transparent) 50% 30% / min(110vw, 700px) 80% no-repeat;
+  opacity: 0.22;
   pointer-events: none;
 }
 
@@ -38,39 +35,52 @@
   opacity: 0.14;
 }
 
-.menu-hero__event {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--gold-text);
+.menu-hero .corner {
+  z-index: -1;
+  top: -1px;
 }
 
-.menu-hero__event img {
-  height: 28px;
-  width: auto;
+/* logo dell'evento: i bordi della foto sfumano nella carta */
+.menu-hero__logo {
+  width: min(100%, 440px);
+  height: auto;
+  margin: 0 auto;
+  -webkit-mask-image: radial-gradient(72% 68% at 50% 50%, #000 60%, transparent 100%);
+  mask-image: radial-gradient(72% 68% at 50% 50%, #000 60%, transparent 100%);
+}
+
+.menu-hero__event {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--label);
 }
 
 .menu-hero__title {
-  margin-top: 10px;
-  font-size: clamp(2.6rem, 12.5vw, 4.6rem);
-  font-weight: 600;
+  margin-top: 6px;
+  font-size: clamp(2.5rem, 11.5vw, 4.2rem);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  color: var(--heading);
+}
+
+.menu-hero__date {
+  font-size: clamp(2.6rem, 13vw, 3.6rem);
   line-height: 1;
-  letter-spacing: -0.04em;
+  letter-spacing: 0.02em;
   color: var(--heading);
 }
 
 .menu-hero__meta {
-  margin-top: 16px;
+  margin-top: 8px;
   font-size: 15px;
-  line-height: 1.45;
+  line-height: 1.6;
+  letter-spacing: 0.06em;
   color: var(--text-2);
 }
 
 .menu-hero__lede {
-  margin-top: 14px;
   max-width: 30em;
+  margin: 18px auto 0;
   font-size: 17px;
   line-height: 1.5;
   color: var(--text);
@@ -85,16 +95,22 @@
   padding: 4px var(--gutter) 40px;
 }
 
+/* le due proposte: pezzi di carta salvia strappata */
 .choice {
   display: grid;
   grid-template-columns: 104px 1fr;
   align-items: center;
   gap: 14px;
-  padding: 12px 16px 12px 10px;
-  border-radius: var(--radius-lg);
-  background: var(--surface);
+  padding: 18px 16px 18px 10px;
+  background: var(--card);
+  color: var(--on-card);
   text-decoration: none;
   transition: transform 0.3s var(--ease-out), background-color 0.3s;
+}
+
+.choice:nth-child(2) {
+  background: var(--surface);
+  color: var(--text);
 }
 
 .choice:active {
@@ -119,24 +135,22 @@
 }
 
 .choice__label {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
-  color: var(--gold-text);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
 }
 
 .choice__title {
-  font-size: 18px;
-  font-weight: 600;
-  line-height: 1.2;
-  letter-spacing: -0.01em;
-  color: var(--heading);
+  font-size: 21px;
+  line-height: 1.15;
 }
 
 .choice__items {
   margin-top: 4px;
   font-size: 13px;
   line-height: 1.4;
-  color: var(--text-2);
+  opacity: 0.85;
 }
 
 /* ---------- sezione scroll poke ---------- */
@@ -179,9 +193,11 @@
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 600;
-  color: var(--gold-text);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--label);
 }
 
 /* per chi è in fila e ha fretta: salta l'animazione */
@@ -196,15 +212,16 @@
   color: var(--heading);
   font-size: 13px;
   font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
   text-decoration: none;
 }
 
 .poke__title {
   margin-top: 2px;
-  font-size: clamp(1.55rem, 7vw, 2.6rem);
-  font-weight: 600;
-  line-height: 1.1;
-  letter-spacing: -0.03em;
+  font-size: clamp(1.7rem, 7.6vw, 2.8rem);
+  line-height: 1.08;
+  letter-spacing: -0.01em;
   color: var(--heading);
 }
 
@@ -380,15 +397,9 @@
   color: var(--text-3);
 }
 
-/* Torino in chiusura, appoggiata sul footer */
-.menu-city {
-  position: relative;
-  height: 150px;
+/* pizzo in chiusura, appoggiato sul footer */
+.menu-lace {
   margin: 48px 0 -48px;
-}
-
-.menu-city .skyline {
-  height: 150px;
 }
 
 /* ---------- desktop ---------- */

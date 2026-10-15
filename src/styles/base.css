@@ -1,12 +1,22 @@
 /* GMI Torino — identità visiva, base comune a tutte le pagine.
-   Colori del logo e delle locandine di GMI Torino: bordeaux, crema, oro.
-   Un solo font: SF Pro (font di sistema su iPhone e Mac, zero byte da scaricare),
-   con ripiego sul font di sistema degli altri telefoni.
-   Tema chiaro e scuro ("bordeaux notte"): data-theme su <html>, impostato prima del primo
-   disegno da uno script inline nell'<head> di ogni pagina. La guida completa è su /design/. */
+   Sito: colori del logo e delle locandine di GMI Torino (bordeaux, crema, oro).
+   Eventi: ogni evento può avere il suo stile; il YMHS usa quello delle sue locandine
+   (carta, salvia, blu, pizzo) solo dentro .theme-ymhs (scheda evento e pagina del menu).
+   Un solo font per il testo: SF Pro (font di sistema, zero byte da scaricare); un serif solo per i
+   titoli degli eventi. Tema chiaro e scuro: data-theme su <html>, impostato prima del primo disegno
+   da uno script inline nell'<head> di ogni pagina. La guida completa è su /design/. */
+
+/* Bodoni Moda (SIL OFL 1.1), subset latin: solo per i titoli degli eventi */
+@font-face {
+  font-family: 'Bodoni Moda';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/fonts/bodoni-moda-latin.woff2') format('woff2');
+}
 
 :root {
-  /* palette fissa */
+  /* palette GMI Torino */
   --cream: #fffceb;
   --bordeaux: #6e0b0e;
   --bordeaux-2: #8f1a1e;
@@ -14,6 +24,15 @@
   --gold-light: #e6be6a;
   --gold-deep: #a87a20; /* oro per la calligrafia su crema (contrasto 3,7:1) */
   --night: #1c0709;
+
+  /* palette YMHS (usata solo dentro .theme-ymhs) */
+  --paper: #f3ede2;
+  --paper-2: #e9e1d1;
+  --ink: #1e2e36;
+  --navy: #27396a;
+  --sage: #a7af92;
+  --sage-dark: #7d8866;
+  --sage-light: #c3cbaa;
 
   /* ruoli — tema chiaro */
   --bg: var(--cream);
@@ -28,14 +47,17 @@
   --brand-hover: var(--bordeaux-2);
   --on-brand: var(--cream);
   --gold-text: #8a5f12;
+  --label: var(--gold-text);
+  --ornament: rgba(201, 148, 52, 0.75);
   --shadow: 0 18px 40px -24px rgba(43, 10, 12, 0.45);
 
   /* accento dell'evento (ogni evento lo cambia; vedi src/data/events.js) */
-  --accent: #7e9a86;
+  --accent: #8f9c7d;
 
   /* tipografia */
   --font: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', system-ui, 'Segoe UI', Roboto,
     'Helvetica Neue', Arial, sans-serif;
+  --display: 'Bodoni Moda', 'Didot', 'Bodoni 72', Georgia, serif;
 
   /* forma */
   --radius: 12px;
@@ -50,32 +72,10 @@
   --gutter: 20px;
   --max: 1080px;
 
-  /* alias per le pagine non ancora ridisegnate */
-  --white: var(--bg);
-  --mist: var(--surface);
-  --mist-2: var(--surface-2);
+  /* alias usati da alcune pagine */
   --fg: var(--text);
   --fg-2: var(--text-2);
   --fg-3: var(--text-3);
-  --teal: var(--bordeaux);
-  --teal-light: var(--gold-light);
-  --teal-lighter: rgba(110, 11, 14, 0.25);
-  --teal-dark: var(--bordeaux);
-  --teal-darker: var(--bordeaux);
-  --navy: var(--bordeaux);
-  --navy-light: var(--bordeaux-2);
-  --navy-dark: var(--bordeaux);
-  --navy-darker: #2b0a0c;
-  --grad: linear-gradient(90deg, var(--bordeaux), var(--bordeaux-2));
-  --grad-v: linear-gradient(180deg, var(--bordeaux-2), var(--bordeaux));
-  --arch: 999px 999px var(--radius) var(--radius);
-  --paper: var(--bg);
-  --paper-2: var(--surface);
-  --paper-3: var(--line);
-  --ink: var(--text);
-  --ink-2: var(--text-2);
-  --ink-3: var(--text-3);
-  --red: var(--brand);
   --serif: var(--font);
   --mono: var(--font);
   --sans: var(--font);
@@ -96,9 +96,50 @@
   --brand-hover: #cc454b;
   --on-brand: #fff6e2;
   --gold-text: var(--gold-light);
+  --label: var(--gold-light);
+  --ornament: rgba(230, 190, 106, 0.6);
   --shadow: 0 18px 40px -24px rgba(0, 0, 0, 0.8);
-  --navy-darker: #120405;
   color-scheme: dark;
+}
+
+/* ---------- stile evento YMHS (scheda evento, pagina del menu) ---------- */
+.theme-ymhs {
+  --bg: var(--paper);
+  --surface: var(--paper-2);
+  --surface-2: #ded4c1;
+  --line: rgba(30, 46, 54, 0.16);
+  --text: #1f2a30;
+  --text-2: rgba(31, 42, 48, 0.76);
+  --text-3: rgba(31, 42, 48, 0.62);
+  --heading: var(--ink);
+  --brand: var(--ink);
+  --brand-hover: #2c4049;
+  --on-brand: var(--paper);
+  --label: var(--navy);
+  --gold-text: var(--navy);
+  --ornament: rgba(30, 46, 54, 0.45);
+  --card: var(--sage);
+  --on-card: var(--ink);
+}
+
+:root[data-theme='dark'] .theme-ymhs,
+:root.theme-ymhs[data-theme='dark'] {
+  --bg: #121b20;
+  --surface: #1b272d;
+  --surface-2: #24323a;
+  --line: rgba(238, 230, 214, 0.14);
+  --text: #eee6d6;
+  --text-2: rgba(238, 230, 214, 0.78);
+  --text-3: rgba(238, 230, 214, 0.6);
+  --heading: #f1eadc;
+  --brand: var(--sage-light);
+  --brand-hover: #d2d8bd;
+  --on-brand: #121b20;
+  --label: var(--sage-light);
+  --gold-text: var(--sage-light);
+  --ornament: rgba(238, 230, 214, 0.4);
+  --card: #3d4636;
+  --on-card: #eee6d6;
 }
 
 *,
@@ -193,7 +234,7 @@ blockquote {
   white-space: nowrap;
 }
 
-/* ---------- logo ufficiale ---------- */
+/* ---------- logo ufficiale (PNG trasparente) ---------- */
 .logo,
 .mark {
   display: block;
@@ -201,13 +242,129 @@ blockquote {
   background: url('/brand/gmi-torino-160.png') center / contain no-repeat;
 }
 
-/* nel tema scuro il logo bordeaux poggia su un tondo crema */
+/* nel tema scuro: stesso logo con il bordeaux schiarito, l'oro resta uguale */
 :root[data-theme='dark'] .logo,
 :root[data-theme='dark'] .mark {
-  background-color: var(--cream);
-  background-size: 74%;
-  border-radius: 50%;
-  aspect-ratio: 1;
+  background-image: url('/brand/gmi-torino-scuro-160.png');
+}
+
+/* ---------- carta: pizzo, angolo strappato, arabesco di fondo ---------- */
+.lace {
+  display: block;
+  width: 100%;
+  height: 54px;
+}
+
+.lace__sage {
+  fill: var(--sage);
+}
+
+.lace__navy {
+  fill: var(--navy);
+}
+
+.lace__hole {
+  fill: var(--bg);
+}
+
+:root[data-theme='dark'] .lace__sage {
+  fill: #5d6650;
+}
+
+:root[data-theme='dark'] .lace__navy {
+  fill: #33497f;
+}
+
+.corner {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: min(50vw, 300px);
+  height: auto;
+  pointer-events: none;
+}
+
+.corner__navy {
+  fill: var(--navy);
+}
+
+.corner__paper {
+  fill: #c9c2b0;
+}
+
+.corner__stem {
+  stroke: var(--sage-dark);
+  stroke-width: 1.4;
+}
+
+.corner__leaf {
+  fill: var(--sage);
+}
+
+.corner__leaf:nth-child(3n) {
+  fill: var(--sage-dark);
+}
+
+.corner__flower {
+  fill: #fbf8f1;
+  stroke: var(--sage-dark);
+  stroke-width: 0.6;
+}
+
+:root[data-theme='dark'] .corner__paper {
+  fill: #2c3a42;
+}
+
+/* arabesco di cerchi intrecciati, appena visibile sulla carta (solo pagine in stile YMHS) */
+:root.theme-ymhs body {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27160%27 height=%27160%27 viewBox=%270 0 160 160%27%3E%3Cg fill=%27none%27 stroke=%27%237e684a%27 stroke-opacity=%27.07%27 stroke-width=%271.1%27%3E%3Ccircle cx=%270%27 cy=%270%27 r=%2780%27/%3E%3Ccircle cx=%27160%27 cy=%270%27 r=%2780%27/%3E%3Ccircle cx=%270%27 cy=%27160%27 r=%2780%27/%3E%3Ccircle cx=%27160%27 cy=%27160%27 r=%2780%27/%3E%3Ccircle cx=%2780%27 cy=%2780%27 r=%2780%27/%3E%3Ccircle cx=%2780%27 cy=%2780%27 r=%2722%27/%3E%3C/g%3E%3C/svg%3E");
+}
+
+:root.theme-ymhs[data-theme='dark'] body {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27160%27 height=%27160%27 viewBox=%270 0 160 160%27%3E%3Cg fill=%27none%27 stroke=%27%23eee6d6%27 stroke-opacity=%27.04%27 stroke-width=%271.1%27%3E%3Ccircle cx=%270%27 cy=%270%27 r=%2780%27/%3E%3Ccircle cx=%27160%27 cy=%270%27 r=%2780%27/%3E%3Ccircle cx=%270%27 cy=%27160%27 r=%2780%27/%3E%3Ccircle cx=%27160%27 cy=%27160%27 r=%2780%27/%3E%3Ccircle cx=%2780%27 cy=%2780%27 r=%2780%27/%3E%3Ccircle cx=%2780%27 cy=%2780%27 r=%2722%27/%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* ---------- filetto con il rombo, come nelle locandine ---------- */
+.divider {
+  position: relative;
+  height: 9px;
+  margin: 18px auto;
+  max-width: 260px;
+}
+
+.divider::before {
+  content: '';
+  position: absolute;
+  inset: 4px 0 auto;
+  height: 1px;
+  background: var(--ornament);
+}
+
+.divider::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 9px;
+  height: 9px;
+  margin-left: -4.5px;
+  border: 1px solid var(--ornament);
+  background: var(--bg);
+  transform: rotate(45deg);
+}
+
+/* titoli degli eventi: serif delle locandine YMHS */
+.display {
+  font-family: var(--display);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.caps {
+  font-family: var(--display);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
 }
 
 /* ---------- header ---------- */
@@ -242,10 +399,6 @@ blockquote {
 
 .site-header__brand .logo {
   width: 34px;
-}
-
-:root[data-theme='dark'] .site-header__brand .logo {
-  width: 40px;
 }
 
 .site-header__name {
@@ -439,7 +592,7 @@ blockquote {
 }
 
 :root[data-theme='dark'] .intro {
-  background: var(--night);
+  background: var(--night); /* stesso fondo del video scuro */
 }
 
 .intro.is-done {
@@ -447,19 +600,13 @@ blockquote {
   visibility: hidden;
 }
 
-.intro__disc {
-  display: grid;
-  place-items: center;
-  width: min(64vw, 300px);
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: var(--cream); /* stesso crema del fondo del video: i bordi non si vedono */
-  overflow: hidden;
+.intro__logo {
+  width: min(56vw, 260px);
 }
 
 .intro video,
 .intro img {
-  width: 78%;
+  width: 100%;
   height: auto;
   aspect-ratio: 400 / 456;
 }
@@ -503,10 +650,6 @@ blockquote {
 
 .site-footer__brand .logo {
   width: 46px;
-}
-
-:root[data-theme='dark'] .site-footer__brand .logo {
-  width: 54px;
 }
 
 .site-footer__brand p {

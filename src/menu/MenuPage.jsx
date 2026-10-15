@@ -5,10 +5,11 @@ import Intro from '../shared/Intro'
 import { t, usePrefs } from '../shared/prefs'
 import SiteFooter from '../shared/SiteFooter'
 import SiteHeader from '../shared/SiteHeader'
-import Skyline from '../shared/Skyline'
+import { Corner, Lace, tornClip } from '../shared/Paper'
 
 // Il menu del prossimo evento con menu. gmitorino.org/menu resta sempre questo indirizzo.
 const EVENT = eventById('ymhs')
+const CHOICE_CLIPS = [tornClip(21, { depth: 3, points: 30 }), tornClip(33, { depth: 3, points: 30 })]
 
 export default function MenuPage() {
   const { lang } = usePrefs()
@@ -22,17 +23,21 @@ export default function MenuPage() {
       <SiteHeader page="menu" />
       <main className="menu" style={{ '--accent': ev.accent }}>
         <section className="menu-hero" aria-labelledby="menu-title">
-          <p className="menu-hero__event">
-            {ev.logo ? <img src={ev.logo} alt="" /> : null}
-            {ev.name}
-          </p>
-          <h1 id="menu-title" className="menu-hero__title">
+          <Corner />
+          {ev.logo ? (
+            <img className="menu-hero__logo" src={ev.logo} alt={ev.name} width="748" height="304" />
+          ) : (
+            <p className="menu-hero__event">{ev.name}</p>
+          )}
+          <h1 id="menu-title" className="menu-hero__title display">
             {tr({ it: 'Il menu del pranzo', en: 'The lunch menu' })}
           </h1>
+          <div className="divider" aria-hidden="true" />
+          <p className="menu-hero__date display">{ev.dayMonth}</p>
           <p className="menu-hero__meta">
-            {tr(ev.date)}
+            {ev.venue}, To
             <br />
-            {ev.venue}
+            {ev.time}
           </p>
           <p className="menu-hero__lede">
             {tr({
@@ -43,14 +48,14 @@ export default function MenuPage() {
         </section>
 
         <section className="choices" aria-label={tr({ it: 'Le due proposte', en: 'The two options' })}>
-          {options.map((p) => (
-            <a key={p.id} className="choice" href={`#${p.id}`}>
+          {options.map((p, i) => (
+            <a key={p.id} className="choice" href={`#${p.id}`} style={{ clipPath: CHOICE_CLIPS[i % 2] }}>
               <span className="choice__bowl" aria-hidden="true">
                 <PokeIllustration items={p.items} label={tr(p.label)} open markers={false} />
               </span>
               <span className="choice__text">
                 <span className="choice__label">{tr(p.label)}</span>
-                <span className="choice__title">{tr(p.title)}</span>
+                <span className="choice__title display">{tr(p.title)}</span>
                 <span className="choice__items">{p.items.map((it) => tr(it.name)).join(', ')}</span>
               </span>
             </a>
@@ -78,9 +83,7 @@ export default function MenuPage() {
             <figcaption>{tr({ it: 'Corano, Al-Baqarah 2:172', en: 'Quran, Al-Baqarah 2:172' })}</figcaption>
           </figure>
         </section>
-        <div className="menu-city">
-          <Skyline />
-        </div>
+        <Lace className="menu-lace" />
       </main>
       <SiteFooter />
     </>

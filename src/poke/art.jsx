@@ -217,9 +217,9 @@ export function Lid({ uid, label }) {
       {/* adesivo */}
       <g transform={`rotate(-7 ${C} ${C})`}>
         <circle cx={C + 2} cy={C + 3} r="76" fill="#2A0B0D" opacity="0.18" />
-        <circle cx={C} cy={C} r="76" fill="#FFFCEB" />
-        <circle cx={C} cy={C} r="70" fill="none" stroke="#6E0B0E" strokeWidth="2" />
-        <circle cx={C} cy={C} r="66.5" fill="none" stroke="#C99434" strokeWidth="1" />
+        <circle cx={C} cy={C} r="76" fill="#F3EDE2" />
+        <circle cx={C} cy={C} r="70" fill="none" stroke="#27396A" strokeWidth="2" />
+        <circle cx={C} cy={C} r="66.5" fill="none" stroke="#7D8866" strokeWidth="1" />
         <g clipPath={`url(#${uid}-sticker)`}>
           <image href="/brand/gmi-torino-160.png" x={C - 33} y={C - 58} width="66" height="81" />
         </g>
@@ -231,7 +231,7 @@ export function Lid({ uid, label }) {
           fontSize="15"
           fontWeight="600"
           letterSpacing="0.2"
-          fill="#6E0B0E"
+          fill="#1E2E36"
         >
           {label}
         </text>

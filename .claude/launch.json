@@ -1,6 +1,7 @@
 {
   "version": "0.0.1",
   "configurations": [
-    { "name": "ymhs-dev", "runtimeExecutable": "npm", "runtimeArgs": ["run", "dev", "--", "--port", "5174", "--strictPort"], "port": 5174 }
+    { "name": "ymhs-dev", "runtimeExecutable": "npm", "runtimeArgs": ["run", "dev", "--", "--port", "5174", "--strictPort"], "port": 5174 },
+    { "name": "gmi-sito", "runtimeExecutable": "npm", "runtimeArgs": ["run", "dev", "--", "--host", "--port", "5180", "--strictPort"], "port": 5180 }
   ]
 }

@@ -19,15 +19,15 @@ const Svg = ({ children }) => (
 function Marker({ x, y, n }) {
   return (
     <g transform={`translate(${x.toFixed(1)} ${y.toFixed(1)})`}>
-      <circle r="15" fill="#6E0B0E" />
-      <circle r="15" fill="none" stroke="#FFFCEB" strokeWidth="2" />
+      <circle r="15" fill="#27396A" />
+      <circle r="15" fill="none" stroke="#F3EDE2" strokeWidth="2" />
       <text
         y="5"
         textAnchor="middle"
         fontFamily="-apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, sans-serif"
         fontSize="14"
         fontWeight="600"
-        fill="#FFFCEB"
+        fill="#F3EDE2"
       >
         {n}
       </text>
@@ -121,7 +121,7 @@ const PokeIllustration = forwardRef(function PokeIllustration({ items, label, ma
       {riceIndex >= 0 && (
         <div className="poke-art__layer poke-art__fade" ref={ringRef} style={{ opacity: 0 }}>
           <Svg>
-            <circle cx={C} cy={C} r={FOOD_R - 2} fill="none" stroke="#E6BE6A" strokeOpacity="0.8" strokeWidth="2.5" strokeDasharray="2 9" strokeLinecap="round" />
+            <circle cx={C} cy={C} r={FOOD_R - 2} fill="none" stroke="#C3CBAA" strokeOpacity="0.85" strokeWidth="2.5" strokeDasharray="2 9" strokeLinecap="round" />
           </Svg>
         </div>
       )}

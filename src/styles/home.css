@@ -1,6 +1,5 @@
 /* GMI Torino — home: "Prossimamente, inshallah" + Chi siamo, Eventi, Archivio, Contatti.
-   Il momento forte è uno solo: all'apertura lo skyline di Torino sale e la linea della metro
-   si disegna fermata dopo fermata. Il resto della pagina è quieto. */
+   Colori GMI Torino; le schede dell'evento YMHS usano lo stile delle sue locandine (.theme-ymhs). */
 
 .home {
   overflow-x: clip;
@@ -15,17 +14,18 @@
 }
 
 .hero__body {
+  position: relative;
   flex: 1 0 auto;
   width: 100%;
   max-width: var(--max);
   margin: 0 auto;
-  padding: 24px var(--gutter) 28px;
+  padding: 40px var(--gutter) 36px;
 }
 
 .hero__kicker {
   font-size: 15px;
   font-weight: 600;
-  color: var(--gold-text);
+  color: var(--label);
 }
 
 .hero__title {
@@ -52,6 +52,11 @@
   color: var(--gold-light);
 }
 
+.divider--left {
+  margin: 6px 0 16px;
+  max-width: 180px;
+}
+
 .hero__lede {
   margin-top: 8px;
   max-width: 30em;
@@ -60,13 +65,14 @@
   color: var(--text-2);
 }
 
+/* prossimo evento: un pezzo di carta salvia strappata */
 .hero__next {
   display: grid;
   gap: 2px;
-  margin-top: 22px;
-  padding: 14px 18px;
-  border-radius: var(--radius-lg);
-  background: var(--surface);
+  margin-top: 24px;
+  padding: 20px 20px 22px;
+  background: var(--card);
+  color: var(--on-card);
   text-decoration: none;
   transition: transform 0.3s var(--ease-out);
 }
@@ -76,16 +82,15 @@
 }
 
 .hero__next-label {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
-  color: var(--gold-text);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
 }
 
 .hero__next-name {
-  font-size: 18px;
-  font-weight: 600;
-  line-height: 1.25;
-  color: var(--heading);
+  font-size: 22px;
+  line-height: 1.2;
 }
 
 .hero__next-date {
@@ -94,7 +99,6 @@
   align-items: center;
   gap: 4px 10px;
   font-size: 14px;
-  color: var(--text-2);
 }
 
 .hero__next-count {
@@ -104,13 +108,6 @@
   color: var(--on-brand);
   font-size: 12px;
   font-weight: 600;
-}
-
-/* ---------- skyline + linea della metro (stili in torino.css) ---------- */
-.hero__city {
-  position: relative;
-  height: 210px;
-  margin-top: auto;
 }
 
 /* ---------- sezioni ---------- */
@@ -206,9 +203,7 @@
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  padding: 22px 20px 20px;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
+  padding: 26px 20px 26px;
   background: var(--surface);
 }
 
@@ -264,17 +259,20 @@
   color: var(--heading);
 }
 
+/* il logo dell'evento (immagine): i bordi sfumano nella carta */
 .event__logo {
-  max-height: 72px;
-  width: auto;
-  margin-top: 14px;
+  width: calc(100% + 24px);
+  max-width: none;
+  height: auto;
+  margin: 8px -12px 0;
+  -webkit-mask-image: radial-gradient(75% 70% at 50% 50%, #000 62%, transparent 100%);
+  mask-image: radial-gradient(75% 70% at 50% 50%, #000 62%, transparent 100%);
 }
 
 .event__title {
-  margin-top: 8px;
-  font-size: 20px;
-  font-weight: 600;
-  line-height: 1.25;
+  margin-top: 4px;
+  font-size: 24px;
+  line-height: 1.2;
   color: var(--heading);
 }
 
@@ -552,7 +550,7 @@
   font-weight: 500;
   white-space: nowrap;
   text-decoration: none;
-  color: rgba(255, 252, 235, 0.75);
+  color: rgba(255, 252, 235, 0.78);
   transition: color 0.3s;
 }
 
@@ -589,12 +587,6 @@
   }
   .hero__next {
     max-width: 420px;
-  }
-  .hero__city {
-    height: 260px;
-  }
-  .skyline {
-    height: 240px;
   }
   .sec {
     padding-top: 120px;

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { t } from './prefs'
+import { getTheme, t } from './prefs'
 
 // Intro: il logo di GMI Torino che si costruisce (la Mole disegnata, poi il logo).
 // Una volta per visita; si salta con un tocco; niente intro con "riduci movimento".
@@ -50,10 +50,10 @@ export default function Intro() {
   if (!show || gone) return null
   return (
     <div className={`intro${done ? ' is-done' : ''}`} onClick={() => setDone(true)} aria-hidden="true" style={done ? { pointerEvents: 'none' } : undefined}>
-      <div className="intro__disc">
+      <div className="intro__logo">
         <video
           ref={video}
-          src="/brand/gmi-torino-intro.mp4"
+          src={getTheme() === 'dark' ? '/brand/gmi-torino-intro-d.mp4' : '/brand/gmi-torino-intro-l.mp4'}
           muted
           playsInline
           preload="auto"

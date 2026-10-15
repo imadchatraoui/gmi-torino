@@ -1,17 +1,16 @@
-import { useEffect, useState } from 'react'
 import { EVENTS } from '../data/events'
 import { ABOUT, ARCHIVE, CONTACTS, SECTIONS } from '../data/site'
 import { daysUntil, eventStatus } from '../data/when'
 import BottomNav from '../shared/BottomNav'
 import Intro from '../shared/Intro'
-import MetroLine from '../shared/MetroLine'
 import { t, usePrefs } from '../shared/prefs'
-import { observeSections, useReveal } from '../shared/reveal'
+import { tornClip } from '../shared/Paper'
+import { useReveal } from '../shared/reveal'
 import SiteFooter from '../shared/SiteFooter'
 import SiteHeader from '../shared/SiteHeader'
-import Skyline from '../shared/Skyline'
 
-const STOPS = [{ id: 'top', label: { it: 'Prossimamente', en: 'Coming soon' } }, ...SECTIONS]
+const NEXT_CLIP = tornClip(5, { depth: 5 })
+const CARD_CLIP = tornClip(9, { depth: 2.5, points: 40 })
 
 function countdown(iso, lang) {
   const n = daysUntil(iso)
@@ -21,7 +20,7 @@ function countdown(iso, lang) {
   return null
 }
 
-function Hero({ next, current, lang }) {
+function Hero({ next, lang }) {
   const tr = (v) => t(v, lang)
   return (
     <section id="top" className="hero" aria-labelledby="hero-title">
@@ -33,6 +32,7 @@ function Hero({ next, current, lang }) {
         <p className="hero__ar" lang="ar" dir="rtl">
           إن شاء الله
         </p>
+        <div className="divider divider--left" aria-hidden="true" />
         <p className="hero__lede">
           {tr({
             it: 'Stiamo costruendo la nuova casa online della sezione torinese di Giovani Musulmani d’Italia. Intanto qui trovi chi siamo, i prossimi eventi e come scriverci.',
@@ -40,19 +40,15 @@ function Hero({ next, current, lang }) {
           })}
         </p>
         {next && (
-          <a className="hero__next" href="#eventi">
+          <a className="hero__next theme-ymhs" href="#eventi" style={{ clipPath: NEXT_CLIP }}>
             <span className="hero__next-label">{tr({ it: 'Prossimo evento', en: 'Next event' })}</span>
-            <span className="hero__next-name">{next.name}</span>
+            <span className="hero__next-name display">{next.name}</span>
             <span className="hero__next-date">
               {tr(next.date)}
               {countdown(next.start, lang) && <span className="hero__next-count">{countdown(next.start, lang)}</span>}
             </span>
           </a>
         )}
-      </div>
-      <div className="hero__city">
-        <Skyline />
-        <MetroLine stops={STOPS} current={current} />
       </div>
     </section>
   )
@@ -104,15 +100,19 @@ function EventCard({ ev, lang }) {
   const tr = (v) => t(v, lang)
   const when = countdown(ev.start, lang)
   return (
-    <article className="event reveal" style={{ '--accent': ev.accent }}>
+    <article className={`event reveal${ev.theme ? ` theme-${ev.theme}` : ''}`} style={{ '--accent': ev.accent, clipPath: CARD_CLIP }}>
       {ev.banner && <img className="event__banner" src={ev.banner} alt="" loading="lazy" decoding="async" />}
       <div className="event__head">
         <p className="event__kicker">
           {tr({ it: 'Prossimo evento', en: 'Next event' })}
           {when && <span className="event__count">{when}</span>}
         </p>
-        {ev.logo ? <img className="event__logo" src={ev.logo} alt={ev.name} /> : <p className="event__short">{ev.short}</p>}
-        <h3 className="event__title">{ev.name}</h3>
+        {ev.logo ? (
+          <img className="event__logo" src={ev.logo} alt={ev.name} width="748" height="304" loading="lazy" decoding="async" />
+        ) : (
+          <p className="event__short display">{ev.short}</p>
+        )}
+        <h3 className="event__title display">{ev.name}</h3>
         {ev.edition && <p className="event__edition">{tr(ev.edition)}</p>}
       </div>
       {ev.blocks.info && (
@@ -286,9 +286,7 @@ function Contacts({ lang }) {
 
 export default function Home() {
   const { lang } = usePrefs()
-  const [current, setCurrent] = useState('top')
   useReveal()
-  useEffect(() => observeSections(STOPS.map((s) => s.id), setCurrent), [])
 
   const upcoming = EVENTS.filter((e) => eventStatus(e) === 'upcoming')
   const recent = EVENTS.filter((e) => eventStatus(e) === 'recent')
@@ -299,7 +297,7 @@ export default function Home() {
       <Intro />
       <SiteHeader page="home" />
       <main className="home">
-        <Hero next={upcoming[0]} current={current} lang={lang} />
+        <Hero next={upcoming[0]} lang={lang} />
         <About lang={lang} />
         <Events lang={lang} upcoming={upcoming} recent={recent} />
         <Archive lang={lang} finished={finished} />
