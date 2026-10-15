@@ -4,7 +4,7 @@ export default function SiteFooter() {
   return (
     <footer className="site-footer">
       <img src="/brand/gmi-logo.webp" alt="" width="56" height="64" loading="lazy" />
-      <p className="site-footer__org">Giovani Musulmani d'Italia APS · Sezione di Torino</p>
+      <p className="site-footer__org">Giovani Musulmani d'Italia APS · <span className="nowrap">Sezione di Torino</span></p>
       <p className="site-footer__links">
         <a href={EVENT.instagram} target="_blank" rel="noopener noreferrer">
           @gmi.torino

@@ -133,22 +133,15 @@ em {
   position: sticky;
   top: 0;
   z-index: 20;
-  height: var(--header-h);
+  height: calc(var(--header-h) + env(safe-area-inset-top));
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 var(--gutter);
   padding-top: env(safe-area-inset-top);
-  background: rgba(243, 236, 223, 0.92);
+  /* opaco, niente backdrop-filter: sopra le sezioni sticky animate il blur costa un repaint a ogni frame */
+  background: var(--paper);
   border-bottom: 1px solid var(--line);
-}
-
-@supports (backdrop-filter: blur(1px)) {
-  .site-header {
-    background: rgba(243, 236, 223, 0.8);
-    backdrop-filter: saturate(1.2) blur(10px);
-    -webkit-backdrop-filter: saturate(1.2) blur(10px);
-  }
 }
 
 .site-header__brand {
@@ -222,6 +215,10 @@ em {
   gap: 4px 10px;
 }
 
+.site-footer__links {
+  align-items: center;
+}
+
 .site-footer__links a {
   text-underline-offset: 3px;
   padding: 6px 0;
@@ -271,4 +268,8 @@ em {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+.nowrap {
+  white-space: nowrap;
 }
