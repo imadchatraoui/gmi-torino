@@ -4,7 +4,9 @@
 
 Copyright (c) 2026 David Haz.
 
-The site includes the official React Bits JS/CSS variants of BlurText, Magnet, SpotlightCard and TiltedCard, adapted for GMI. Upstream: [reactbits.dev](https://reactbits.dev) and [DavidHDev/react-bits](https://github.com/DavidHDev/react-bits). Retrieved on 13 October 2026 from revision `496968c4117e21278f13917201b7d615bc5e7450`.
+The current site includes the official React Bits JS + CSS variant of **GradientText** (`src/components/react-bits/GradientText.jsx` and `.css`), unmodified, used for the main title of the home page. Upstream: [reactbits.dev](https://reactbits.dev) and [DavidHDev/react-bits](https://github.com/DavidHDev/react-bits). Added on 15 October 2026.
+
+The old site (now in `_unused/old-site/`) included the React Bits JS/CSS variants of BlurText, Magnet, SpotlightCard and TiltedCard, adapted for GMI, retrieved on 13 October 2026 from revision `496968c4117e21278f13917201b7d615bc5e7450`.
 
 Official sources:
 

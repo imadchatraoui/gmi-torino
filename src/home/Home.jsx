@@ -1,4 +1,3 @@
-import { useRef } from 'react'
 import { EVENTS } from '../data/events'
 import { CONTACTS, SECTIONS, WIP } from '../data/site'
 import { daysUntil, eventStatus } from '../data/when'
@@ -9,9 +8,13 @@ import { tornClip } from '../shared/Paper'
 import { useReveal } from '../shared/reveal'
 import SiteFooter from '../shared/SiteFooter'
 import SiteHeader from '../shared/SiteHeader'
-import HeroTitle, { titleVariant, useScrollProgress } from './HeroTitle'
+import GradientText from '../components/react-bits/GradientText'
 
-const VARIANT = titleVariant()
+// colori del titolo animato (React Bits GradientText): bordeaux e oro scuri su crema, crema e oro su scuro
+const TITLE_COLORS = {
+  light: ['#6E0B0E', '#A87A20', '#A8262B', '#A87A20'],
+  dark: ['#F7ECD4', '#E6BE6A', '#F4D0C0', '#FFF1C8'],
+}
 
 const NEXT_CLIP = tornClip(5, { depth: 5 })
 const CARD_CLIP = tornClip(9, { depth: 2.5, points: 40 })
@@ -24,15 +27,17 @@ function countdown(iso, lang) {
   return null
 }
 
-function Hero({ next, lang }) {
+function Hero({ next, lang, theme }) {
   const tr = (v) => t(v, lang)
-  const ref = useRef(null)
-  useScrollProgress(ref, VARIANT === 'parallax' || VARIANT === 'tutto')
   return (
-    <section id="top" className={`hero hero--${VARIANT}${VARIANT === 'tutto' ? ' hero--parallax' : ''}`} aria-labelledby="hero-title" ref={ref}>
+    <section id="top" className="hero" aria-labelledby="hero-title">
       <div className="hero__body">
         <p className="hero__kicker">GMI Torino</p>
-        <HeroTitle key={lang} variant={VARIANT} text={tr({ it: 'Prossimamente, inshallah', en: 'Coming soon, inshallah' })} />
+        <h1 id="hero-title" className="hero__title">
+          <GradientText colors={TITLE_COLORS[theme]} variant="flow" animationSpeed={10} scale={3}>
+            {tr({ it: 'Prossimamente, inshallah', en: 'Coming soon, inshallah' })}
+          </GradientText>
+        </h1>
         <p className="hero__ar" lang="ar" dir="rtl">
           إن شاء الله
         </p>
@@ -228,7 +233,7 @@ function Contacts({ lang }) {
 }
 
 export default function Home() {
-  const { lang } = usePrefs()
+  const { lang, theme } = usePrefs()
   useReveal()
 
   const upcoming = EVENTS.filter((e) => eventStatus(e) === 'upcoming')
@@ -240,7 +245,7 @@ export default function Home() {
       <Intro />
       <SiteHeader page="home" />
       <main className="home">
-        <Hero next={upcoming[0]} lang={lang} />
+        <Hero next={upcoming[0]} lang={lang} theme={theme} />
         <About lang={lang} />
         <Events lang={lang} upcoming={upcoming} recent={recent} />
         <Archive lang={lang} finished={finished} />

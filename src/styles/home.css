@@ -38,44 +38,17 @@
   color: var(--heading);
 }
 
-.hero__word {
-  display: inline-block;
-  white-space: nowrap;
-  margin-right: 0.24em;
+/* il titolo entra salendo; poi i colori scorrono di continuo (GradientText) */
+:root:not(.intro-on) .hero__title {
+  animation: rise 1s var(--ease-out) both;
 }
 
-/* ogni lettera sale al suo turno, poi ondeggia piano: un'onda che attraversa la scritta, di continuo */
-.hero__ch {
-  display: inline-block;
-  will-change: transform;
-}
-
-:root:not(.intro-on) .hero__ch {
-  animation:
-    ch-in 0.9s calc(var(--n) * 45ms) var(--ease-out) both,
-    ch-wave 4.2s calc(1.4s + var(--n) * 90ms) var(--ease-in-out) infinite;
-}
-
-:root.intro-on .hero__ch {
+:root.intro-on .hero__title {
   opacity: 0;
 }
 
-@keyframes ch-in {
-  from {
-    opacity: 0;
-    transform: translate3d(0, 0.5em, 0) rotate(4deg);
-  }
-}
-
-@keyframes ch-wave {
-  0%,
-  60%,
-  100% {
-    transform: none;
-  }
-  30% {
-    transform: translate3d(0, -0.07em, 0);
-  }
+.hero__title .gradient-text {
+  justify-content: flex-start;
 }
 
 .hero__ar {
@@ -570,7 +543,7 @@
 
 
 @media (prefers-reduced-motion: reduce) {
-  .hero__ch,
+  .hero__title,
   .hero__ar {
     animation: none !important;
     opacity: 1 !important;
