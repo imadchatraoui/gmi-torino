@@ -71,13 +71,13 @@ const PokeIllustration = forwardRef(function PokeIllustration({ items, label, ma
 
   useImperativeHandle(ref, () => ({
     update(p, tl) {
-      // coperchio: si solleva, poi scivola via in alto
+      // coperchio: si solleva, poi scivola via di lato (non copre il titolo)
       const lt = clamp01(p / tl.lidEnd)
       const lift = easeOut(clamp01(lt / 0.3))
       const slide = easeInOut(clamp01((lt - 0.25) / 0.75))
       if (lidRef.current) {
         lidRef.current.style.transform =
-          `translate3d(${-14 * slide}%, ${-112 * slide}%, 0) rotate(${-18 * slide}deg) scale(${1 + 0.05 * lift - 0.1 * slide})`
+          `translate3d(${118 * slide}%, ${-6 * lift - 16 * slide}%, 0) rotate(${26 * slide}deg) scale(${1 + 0.05 * lift - 0.06 * slide})`
         lidRef.current.style.opacity = String(1 - clamp01((lt - 0.7) / 0.3))
       }
 

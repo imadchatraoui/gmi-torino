@@ -30,7 +30,7 @@
 }
 
 :root[data-theme='dark'] .menu-hero::before {
-  opacity: 0.22;
+  opacity: 0.14;
 }
 
 .menu-hero__event {

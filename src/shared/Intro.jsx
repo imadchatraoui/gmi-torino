@@ -8,6 +8,7 @@ const KEY = 'gmi-intro'
 function shouldShow() {
   try {
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) return false
+    if (new URLSearchParams(location.search).has('nointro')) return false
     return !sessionStorage.getItem(KEY)
   } catch {
     return true

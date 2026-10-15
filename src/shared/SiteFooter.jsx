@@ -9,7 +9,7 @@ export default function SiteFooter() {
           <span className="logo" />
           <p>
             GMI Torino
-            <small>{t({ it: 'La sezione torinese dei Giovani Musulmani d’Italia', en: 'The Turin chapter of Young Muslims of Italy' })}</small>
+            <small>{t({ it: 'La sezione torinese dei Giovani Musulmani d’Italia', en: 'The Turin chapter of Giovani Musulmani d’Italia' })}</small>
           </p>
         </div>
         <ul className="site-footer__links">

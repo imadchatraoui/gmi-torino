@@ -70,3 +70,4 @@ Nuovo sito per GMI Torino per il prossimo evento **Young Mental Health Summit (Y
 - Hosting: **Vercel**. Come aggiungere eventi in futuro: da decidere più avanti (chiedere all'utente).
 - **Lingue IT + EN** (traduco io). **Tema chiaro/scuro**: segue il telefono, bottone luna/sole che si ricorda la scelta. Scuro = **bordeaux notte** (quasi cioccolato, testo crema, oro). **Entrambi i bottoni (lingua e tema) in alto a destra**, logo a sinistra.
 - Lavoro in autonomia finché c'è utilizzo; push del branch consentito a fine lavoro.
+- **Non tradurre** "Giovani Musulmani d’Italia" nella versione inglese: resta in italiano.

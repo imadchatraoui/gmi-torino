@@ -39,7 +39,7 @@ export default function SiteHeader({ page = 'home' }) {
         <span className="logo" />
         <span className="site-header__name">
           GMI Torino
-          <small>{t({ it: 'Giovani Musulmani d’Italia', en: 'Young Muslims of Italy' })}</small>
+          <small>Giovani Musulmani d’Italia</small>
         </span>
       </a>
       {page === 'home' && (
