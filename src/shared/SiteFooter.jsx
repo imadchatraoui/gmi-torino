@@ -63,7 +63,7 @@ export default function SiteFooter() {
           <ul className="site-footer__list site-footer__contacts">
             <li>
               {Icon.pin}
-              <span>Torino, Italia</span>
+              <span>{t({ it: 'Torino, Italia', en: 'Torino, Italy' }, lang)}</span>
             </li>
             <li>
               {Icon.mail}

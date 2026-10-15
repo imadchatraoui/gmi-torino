@@ -176,6 +176,14 @@ Nuova direzione decisa con l'utente (dettagli in YMHS_BRIEF.md, "Aggiornamento 1
   offline (provato in Chrome con rete spenta: menu, animazione e cuori in modalità locale). Utile se alla Casa del
   Quartiere il segnale è scarso. Solo nel sito pubblicato, mai in `npm run dev`.
 
+**Quarto giro (notte)**
+- Motori di ricerca: in build la home riceve la scheda schema.org dell'evento (nome, date, luogo, quota, link
+  d'iscrizione) presa da `src/data/events.js`; nascono anche `robots.txt` (esclude `/api/`) e `sitemap.xml`.
+  Va rifatto il build dopo un evento perché la scheda sparisca (succede da sé a ogni deploy).
+- Versione inglese riletta per intero: /design non ripete più "all'apertura… a ogni apertura", pesi dei video
+  corretti (114 e 166 KB), nomi dei colori tradotti (Cream, Burgundy, Gold…), footer "Torino, Italy".
+  "Torino" resta Torino anche in inglese, come il nome della sezione.
+
 ## Manca / idee per le prossime run
 - [ ] Provare su iPhone vero (sticky + barra di Safari, intro video in risparmio energetico).
 - [ ] Come aggiungere eventi in futuro (file dati, pannello admin o tramite Claude): da chiedere all'utente.

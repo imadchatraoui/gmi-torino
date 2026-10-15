@@ -14,14 +14,14 @@ import StarBorder from '../components/react-bits/StarBorder'
 // I valori sono gli stessi di src/styles/base.css.
 
 const COLORS = [
-  { name: 'Crema', hex: '#FFFCEB', role: { it: 'Fondo del tema chiaro. È il crema del logo.', en: 'Light theme background. The cream of the logo.' } },
-  { name: 'Bordeaux', hex: '#6E0B0E', role: { it: 'Colore del logo: titoli, bottoni, barra di navigazione.', en: 'The logo colour: headings, buttons, navigation bar.' } },
-  { name: 'Bordeaux vivo', hex: '#8F1A1E', role: { it: 'Stato premuto e passaggio del mouse.', en: 'Pressed and hover states.' } },
-  { name: 'Oro', hex: '#C99434', role: { it: 'Ornamenti e filetti. Mai per testo piccolo su crema.', en: 'Ornaments and rules. Never small text on cream.' } },
-  { name: 'Oro testo', hex: '#8A5F12', role: { it: 'Etichette e piccoli testi d’accento su crema.', en: 'Labels and small accent text on cream.' } },
-  { name: 'Bordeaux notte', hex: '#1C0709', role: { it: 'Fondo del tema scuro.', en: 'Dark theme background.' } },
-  { name: 'Inchiostro', hex: '#2B0A0C', role: { it: 'Testo principale nel tema chiaro.', en: 'Body text in the light theme.' } },
-  { name: 'Crema scuro', hex: '#FBF3DA', role: { it: 'Superfici: schede e bottoni secondari.', en: 'Surfaces: cards and secondary buttons.' } },
+  { name: { it: 'Crema', en: 'Cream' }, hex: '#FFFCEB', role: { it: 'Fondo del tema chiaro. È il crema del logo.', en: 'Light theme background. The cream of the logo.' } },
+  { name: { it: 'Bordeaux', en: 'Burgundy' }, hex: '#6E0B0E', role: { it: 'Colore del logo: titoli, bottoni, barra di navigazione.', en: 'The logo colour: headings, buttons, navigation bar.' } },
+  { name: { it: 'Bordeaux vivo', en: 'Bright burgundy' }, hex: '#8F1A1E', role: { it: 'Stato premuto e passaggio del mouse.', en: 'Pressed and hover states.' } },
+  { name: { it: 'Oro', en: 'Gold' }, hex: '#C99434', role: { it: 'Ornamenti e filetti. Mai per testo piccolo su crema.', en: 'Ornaments and rules. Never small text on cream.' } },
+  { name: { it: 'Oro testo', en: 'Text gold' }, hex: '#8A5F12', role: { it: 'Etichette e piccoli testi d’accento su crema.', en: 'Labels and small accent text on cream.' } },
+  { name: { it: 'Bordeaux notte', en: 'Night burgundy' }, hex: '#1C0709', role: { it: 'Fondo del tema scuro.', en: 'Dark theme background.' } },
+  { name: { it: 'Inchiostro', en: 'Ink' }, hex: '#2B0A0C', role: { it: 'Testo principale nel tema chiaro.', en: 'Body text in the light theme.' } },
+  { name: { it: 'Crema scuro', en: 'Deep cream' }, hex: '#FBF3DA', role: { it: 'Superfici: schede e bottoni secondari.', en: 'Surfaces: cards and secondary buttons.' } },
 ]
 
 const ACCENTS = [
@@ -47,7 +47,7 @@ function Swatch({ c, lang }) {
     <li className="swatch reveal">
       <button type="button" onClick={copy} aria-label={`${t({ it: 'Copia', en: 'Copy' }, lang)} ${c.hex}`}>
         <span className="swatch__chip" style={{ background: c.hex }} />
-        <span className="swatch__name">{c.name}</span>
+        <span className="swatch__name">{t(c.name, lang)}</span>
         <span className="swatch__hex">{copied ? t({ it: 'Copiato', en: 'Copied' }, lang) : c.hex}</span>
         <span className="swatch__role">{t(c.role, lang)}</span>
       </button>
@@ -124,8 +124,8 @@ export default function Design() {
           <h3 className="id-sub reveal">{tr({ it: 'Il logo che si costruisce', en: 'The logo building itself' })}</h3>
           <p className="id-sec__lede reveal">
             {tr({
-              it: 'All’apertura del sito si disegna prima la Mole, poi compare il logo. A ogni apertura, si salta con un tocco o un tasto. Due video (chiaro e scuro, 109 e 164 KB) al posto della GIF da 3 MB.',
-              en: 'When the site opens, the Mole is drawn first, then the logo appears. Every time the site opens, skippable with a tap or any key. Two videos (light and dark, 109 and 164 KB) instead of the 3 MB GIF.',
+              it: 'A ogni apertura del sito si disegna prima la Mole, poi compare il logo. Si salta con un tocco o un tasto. Due video (chiaro e scuro, 114 e 166 KB) al posto della GIF da 3 MB.',
+              en: 'Every time the site opens, the Mole is drawn first, then the logo appears. A tap or any key skips it. Two videos (light and dark, 114 and 166 KB) instead of the 3 MB GIF.',
             })}
           </p>
           <IntroDemo lang={lang} theme={theme} />

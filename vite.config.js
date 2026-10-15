@@ -4,6 +4,7 @@ import { defineConfig } from 'vite'
 import likesHandler from './api/likes.js'
 import { EVENTS } from './src/data/events.js'
 import { eventIcs } from './src/data/ics.js'
+import { eventJsonLd, robotsTxt, sitemapXml } from './src/data/seo.js'
 
 // In locale (npm run dev / preview) /api/likes usa la stessa funzione di Vercel con un finto Redis
 // in memoria: i like si condividono tra i dispositivi collegati al Mac finché il server resta acceso.
@@ -76,6 +77,27 @@ function eventCalendars() {
   }
 }
 
+// Motori di ricerca: eventi futuri come dati schema.org nella home, robots.txt e sitemap.xml nel build.
+function searchData() {
+  return {
+    name: 'gmi-search-data',
+    transformIndexHtml: {
+      order: 'post',
+      handler(html, ctx) {
+        if (ctx.path !== '/index.html') return html
+        const upcoming = EVENTS.filter((e) => e.end && new Date(e.end) > new Date())
+        if (!upcoming.length) return html
+        const json = JSON.stringify(upcoming.map(eventJsonLd)).replace(/</g, '\\u003c')
+        return html.replace('</head>', `    <script type="application/ld+json">${json}</script>\n  </head>`)
+      },
+    },
+    generateBundle() {
+      this.emitFile({ type: 'asset', fileName: 'robots.txt', source: robotsTxt() })
+      this.emitFile({ type: 'asset', fileName: 'sitemap.xml', source: sitemapXml(['/', '/menu/', '/design/']) })
+    },
+  }
+}
+
 // Pagine statiche (multi-page build):
 //   /           -> index.html           (home: Chi siamo, Eventi, Archivio, Contatti)
 //   /menu/      -> menu/index.html      (menu poke interattivo del YMHS)
@@ -84,7 +106,7 @@ function eventCalendars() {
 // Funziona su qualsiasi hosting statico senza regole di rewrite.
 // Preact (via preact/compat) al posto di React: stesso codice, ~60 KB gzip in meno.
 export default defineConfig({
-  plugins: [preact({ prerender: { enabled: false } }), devLikes(), eventCalendars()],
+  plugins: [preact({ prerender: { enabled: false } }), devLikes(), eventCalendars(), searchData()],
   build: {
     rollupOptions: {
       input: {
