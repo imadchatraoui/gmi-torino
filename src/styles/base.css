@@ -110,7 +110,7 @@
   --line: rgba(30, 46, 54, 0.16);
   --text: #1f2a30;
   --text-2: rgba(31, 42, 48, 0.76);
-  --text-3: rgba(31, 42, 48, 0.62);
+  --text-3: rgba(31, 42, 48, 0.72); /* ≥ 4.5:1 anche sul salvia chiaro */
   --heading: var(--ink);
   --brand: var(--ink);
   --brand-hover: #2c4049;
@@ -200,8 +200,25 @@ blockquote {
   margin: 0;
 }
 
+:root {
+  --focus: var(--gold-deep); /* ≥ 3:1 sul crema */
+}
+
+:root[data-theme='dark'] {
+  --focus: var(--gold-light);
+}
+
+.theme-ymhs {
+  --focus: var(--navy);
+}
+
+:root[data-theme='dark'] .theme-ymhs,
+:root[data-theme='dark'].theme-ymhs {
+  --focus: var(--sage-light);
+}
+
 :focus-visible {
-  outline: 2px solid var(--gold);
+  outline: 2px solid var(--focus);
   outline-offset: 3px;
   border-radius: 6px;
 }
