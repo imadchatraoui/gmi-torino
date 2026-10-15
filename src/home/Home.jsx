@@ -9,6 +9,7 @@ import { useReveal } from '../shared/reveal'
 import SiteFooter from '../shared/SiteFooter'
 import SiteHeader from '../shared/SiteHeader'
 import GradientText from '../components/react-bits/GradientText'
+import StarBorder from '../components/react-bits/StarBorder'
 
 // colori del titolo animato (React Bits GradientText): bordeaux e oro scuri su crema, crema e oro su scuro
 const TITLE_COLORS = {
@@ -95,7 +96,7 @@ function About({ lang }) {
 }
 
 // Template evento: stessa struttura per ogni evento; cambiano accento, banner, logo e blocchi accesi.
-function EventCard({ ev, lang }) {
+function EventCard({ ev, lang, theme }) {
   const tr = (v) => t(v, lang)
   const when = countdown(ev.start, lang)
   return (
@@ -145,9 +146,18 @@ function EventCard({ ev, lang }) {
       )}
       <div className="event__actions">
         {ev.blocks.signup && ev.signup && (
-          <a className="btn btn--primary" href={ev.signup.url} target="_blank" rel="noopener noreferrer">
+          <StarBorder
+            as="a"
+            className="signup-star"
+            color={theme === 'dark' ? '#ffffff' : '#e6a92c'}
+            speed="5s"
+            thickness={3}
+            href={ev.signup.url}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             {tr({ it: 'Iscriviti', en: 'Sign up' })}
-          </a>
+          </StarBorder>
         )}
         {ev.blocks.menu && ev.menu && (
           <a className="btn btn--ghost" href="/menu/">
@@ -159,13 +169,13 @@ function EventCard({ ev, lang }) {
   )
 }
 
-function Events({ lang, upcoming, recent }) {
+function Events({ lang, theme, upcoming, recent }) {
   const tr = (v) => t(v, lang)
   return (
     <section id="eventi" className="sec" aria-labelledby="eventi-title">
       <SectionHead id="eventi" title={tr(SECTIONS[1].label)} />
       {upcoming.map((ev) => (
-        <EventCard key={ev.id} ev={ev} lang={lang} />
+        <EventCard key={ev.id} ev={ev} lang={lang} theme={theme} />
       ))}
       {recent.map((ev) => (
         <a key={ev.id} className="event-recent reveal" href={`#arch-${ev.id}`}>
@@ -247,7 +257,7 @@ export default function Home() {
       <main className="home">
         <Hero next={upcoming[0]} lang={lang} theme={theme} />
         <About lang={lang} />
-        <Events lang={lang} upcoming={upcoming} recent={recent} />
+        <Events lang={lang} theme={theme} upcoming={upcoming} recent={recent} />
         <Archive lang={lang} finished={finished} />
         <Contacts lang={lang} />
       </main>
