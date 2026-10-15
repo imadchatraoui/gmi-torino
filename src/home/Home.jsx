@@ -1,34 +1,71 @@
-import { ABOUT, ARCHIVE, CONTACTS, UPCOMING } from '../data/site'
+import { useEffect, useState } from 'react'
+import { EVENTS } from '../data/events'
+import { ABOUT, ARCHIVE, CONTACTS, SECTIONS } from '../data/site'
+import { daysUntil, eventStatus } from '../data/when'
 import BottomNav from '../shared/BottomNav'
-import { useReveal } from '../shared/reveal'
+import Intro from '../shared/Intro'
+import MetroLine from '../shared/MetroLine'
+import { t, usePrefs } from '../shared/prefs'
+import { observeSections, useReveal } from '../shared/reveal'
 import SiteFooter from '../shared/SiteFooter'
 import SiteHeader from '../shared/SiteHeader'
+import Skyline from '../shared/Skyline'
 
-function daysTo(iso) {
-  const day = 24 * 60 * 60 * 1000
-  const d = new Date(iso)
-  const t = new Date()
-  const diff = Math.round(
-    (Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) - Date.UTC(t.getFullYear(), t.getMonth(), t.getDate())) /
-      day,
-  )
-  if (diff > 1) return `tra ${diff} giorni`
-  if (diff === 1) return 'domani'
-  if (diff === 0) return 'oggi'
+const STOPS = [{ id: 'top', label: { it: 'Prossimamente', en: 'Coming soon' } }, ...SECTIONS]
+
+function countdown(iso, lang) {
+  const n = daysUntil(iso)
+  if (n > 1) return t({ it: `tra ${n} giorni`, en: `in ${n} days` }, lang)
+  if (n === 1) return t({ it: 'domani', en: 'tomorrow' }, lang)
+  if (n === 0) return t({ it: 'oggi', en: 'today' }, lang)
   return null
 }
 
-function SectionHead({ id, index, title, children }) {
+function Hero({ next, current, lang }) {
+  const tr = (v) => t(v, lang)
+  return (
+    <section id="top" className="hero" aria-labelledby="hero-title">
+      <div className="hero__body">
+        <p className="hero__kicker">{tr({ it: 'Il nuovo sito di GMI Torino', en: 'The new GMI Torino website' })}</p>
+        <h1 id="hero-title" className="hero__title">
+          {tr({ it: 'Prossimamente, inshallah', en: 'Coming soon, inshallah' })}
+        </h1>
+        <p className="hero__ar" lang="ar" dir="rtl">
+          إن شاء الله
+        </p>
+        <p className="hero__lede">
+          {tr({
+            it: 'Stiamo costruendo la nuova casa online della sezione torinese di Giovani Musulmani d’Italia. Intanto qui trovi chi siamo, i prossimi eventi e come scriverci.',
+            en: 'We are building the new online home of the Turin chapter of Giovani Musulmani d’Italia. Meanwhile, here you can find who we are, our next events and how to reach us.',
+          })}
+        </p>
+        {next && (
+          <a className="hero__next" href="#eventi">
+            <span className="hero__next-label">{tr({ it: 'Prossimo evento', en: 'Next event' })}</span>
+            <span className="hero__next-name">{next.name}</span>
+            <span className="hero__next-date">
+              {tr(next.date)}
+              {countdown(next.start, lang) && <span className="hero__next-count">{countdown(next.start, lang)}</span>}
+            </span>
+          </a>
+        )}
+      </div>
+      <div className="hero__city">
+        <Skyline />
+        <MetroLine stops={STOPS} current={current} />
+      </div>
+    </section>
+  )
+}
+
+function SectionHead({ id, title, children }) {
   return (
     <header className="sec-head">
-      <p className="sec-head__index reveal" aria-hidden="true">
-        <span>{String(index).padStart(2, '0')}</span>
-      </p>
-      <h2 id={`${id}-title`} className="sec-head__title reveal" style={{ '--d': 1 }}>
+      <h2 id={`${id}-title`} className="sec-head__title reveal">
         {title}
       </h2>
       {children && (
-        <p className="sec-head__lede reveal" style={{ '--d': 2 }}>
+        <p className="sec-head__lede reveal" style={{ '--d': 1 }}>
           {children}
         </p>
       )}
@@ -36,76 +73,25 @@ function SectionHead({ id, index, title, children }) {
   )
 }
 
-function Hero({ next }) {
-  const arches = [-2, -1, 0, 1, 2]
-  return (
-    <section id="top" className="hero" aria-labelledby="hero-title">
-      <p className="hero__status">
-        <span className="hero__dot" aria-hidden="true" />
-        Sito in costruzione
-      </p>
-      <h1 id="hero-title" className="hero__title">
-        <span className="line">
-          <span>Protagonisti</span>
-        </span>
-        <span className="line">
-          <span>noi,</span>
-        </span>
-        <span className="line">
-          <span className="grad-text">a Torino.</span>
-        </span>
-      </h1>
-      <p className="hero__lede">
-        La sezione torinese di Giovani Musulmani d’Italia: incontri, talk e comunità per i giovani della città.
-      </p>
-
-      <div className="arcade" aria-label="Prossimo evento">
-        {arches.map((n) =>
-          n === 0 ? (
-            <a key={n} className="arcade__arch arcade__arch--door" href="#eventi" style={{ '--n': 0 }}>
-              <span className="arcade__door-text">
-                <span className="arcade__kicker">Prossimo evento</span>
-                <span className="arcade__big">{next.short}</span>
-                <span className="arcade__date">25.10</span>
-              </span>
-            </a>
-          ) : (
-            <span
-              key={n}
-              className={`arcade__arch${Math.abs(n) === 2 ? ' arcade__arch--far' : ''}`}
-              style={{ '--n': Math.abs(n) }}
-              aria-hidden="true"
-            />
-          ),
-        )}
-        <span className="arcade__ground" aria-hidden="true" />
-      </div>
-    </section>
-  )
-}
-
-function About() {
+function About({ lang }) {
+  const tr = (v) => t(v, lang)
   return (
     <section id="chi-siamo" className="sec" aria-labelledby="chi-siamo-title">
-      <SectionHead id="chi-siamo" index={1} title="Chi siamo">
-        {ABOUT.lede}
-      </SectionHead>
+      <SectionHead id="chi-siamo" title={tr(SECTIONS[0].label)} />
+      <p className="about__motto reveal">{ABOUT.motto}</p>
       <div className="about__body">
         {ABOUT.body.map((p, i) => (
           <p key={i} className="reveal" style={{ '--d': i }}>
-            {p}
+            {tr(p)}
           </p>
         ))}
       </div>
-      <h3 className="about__path-title reveal">Il cammino di crescita</h3>
+      <h3 className="about__path-title reveal">{tr({ it: 'Il nostro cammino', en: 'Our path' })}</h3>
       <ol className="path">
         {ABOUT.path.map((s, i) => (
           <li key={s.title} className="path__step reveal" style={{ '--d': i }}>
-            <span className="path__arch" aria-hidden="true">
-              {i + 1}
-            </span>
             <span className="path__title">{s.title}</span>
-            <span className="path__text">{s.text}</span>
+            <span className="path__text">{tr(s.text)}</span>
           </li>
         ))}
       </ol>
@@ -113,87 +99,136 @@ function About() {
   )
 }
 
-function Events() {
+// Template evento: stessa struttura per ogni evento; cambiano accento, banner, logo e blocchi accesi.
+function EventCard({ ev, lang }) {
+  const tr = (v) => t(v, lang)
+  const when = countdown(ev.start, lang)
+  return (
+    <article className="event reveal" style={{ '--accent': ev.accent }}>
+      {ev.banner && <img className="event__banner" src={ev.banner} alt="" loading="lazy" decoding="async" />}
+      <div className="event__head">
+        <p className="event__kicker">
+          {tr({ it: 'Prossimo evento', en: 'Next event' })}
+          {when && <span className="event__count">{when}</span>}
+        </p>
+        {ev.logo ? <img className="event__logo" src={ev.logo} alt={ev.name} /> : <p className="event__short">{ev.short}</p>}
+        <h3 className="event__title">{ev.name}</h3>
+        {ev.edition && <p className="event__edition">{tr(ev.edition)}</p>}
+      </div>
+      {ev.blocks.info && (
+        <dl className="event__facts">
+          <div>
+            <dt>{tr({ it: 'Quando', en: 'When' })}</dt>
+            <dd>
+              {tr(ev.date)}
+              <span>{ev.time}</span>
+            </dd>
+          </div>
+          <div>
+            <dt>{tr({ it: 'Dove', en: 'Where' })}</dt>
+            <dd>
+              <a href={ev.mapsUrl} target="_blank" rel="noopener noreferrer">
+                {ev.venue}
+              </a>
+              <span>{ev.city}</span>
+            </dd>
+          </div>
+          {ev.price && (
+            <div>
+              <dt>{tr({ it: 'Quota', en: 'Fee' })}</dt>
+              <dd>
+                {ev.price}
+                {ev.signup && <span>{tr(ev.signup.note)}</span>}
+              </dd>
+            </div>
+          )}
+        </dl>
+      )}
+      <div className="event__actions">
+        {ev.blocks.signup && ev.signup && (
+          <a className="btn btn--primary" href={ev.signup.url} target="_blank" rel="noopener noreferrer">
+            {tr({ it: 'Iscriviti', en: 'Sign up' })}
+          </a>
+        )}
+        {ev.blocks.menu && ev.menu && (
+          <a className="btn btn--ghost" href="/menu/">
+            {tr({ it: 'Il menu del pranzo', en: 'The lunch menu' })}
+          </a>
+        )}
+      </div>
+    </article>
+  )
+}
+
+function Events({ lang, upcoming, recent }) {
+  const tr = (v) => t(v, lang)
   return (
     <section id="eventi" className="sec" aria-labelledby="eventi-title">
-      <SectionHead id="eventi" index={2} title="Eventi" />
-      {UPCOMING.map((ev) => {
-        const when = daysTo(ev.dateISO)
-        return (
-          <article key={ev.id} className="event reveal">
-            <div className="event__top">
-              <p className="event__kicker">{ev.kicker}</p>
-              {when && <p className="event__count">{when}</p>}
-            </div>
-            <p className="event__short" aria-hidden="true">
-              {ev.short.split('').map((c, i) => (
-                <span key={i} style={{ '--i': i }}>
-                  {c}
-                </span>
-              ))}
-            </p>
-            <h3 className="event__title">{ev.title}</h3>
-            <p className="event__text">{ev.text}</p>
-            <dl className="event__facts">
-              <div>
-                <dt>Quando</dt>
-                <dd>
-                  {ev.date}
-                  <span>{ev.time}</span>
-                </dd>
-              </div>
-              <div>
-                <dt>Dove</dt>
-                <dd>
-                  <a href={ev.mapsUrl} target="_blank" rel="noopener noreferrer">
-                    {ev.venue}
-                  </a>
-                  <span>{ev.city}</span>
-                </dd>
-              </div>
-              <div>
-                <dt>Quota</dt>
-                <dd>
-                  {ev.price}
-                  <span>{ev.signup.note}</span>
-                </dd>
-              </div>
-            </dl>
-            <div className="event__actions">
-              <a className="btn btn--primary" href={ev.signup.url} target="_blank" rel="noopener noreferrer">
-                Iscriviti <span className="btn__arrow">↗</span>
-              </a>
-              <a className="btn btn--on-dark" href={ev.extra.href}>
-                {ev.extra.label} <span className="btn__arrow">→</span>
-              </a>
-            </div>
-          </article>
-        )
-      })}
+      <SectionHead id="eventi" title={tr(SECTIONS[1].label)} />
+      {upcoming.map((ev) => (
+        <EventCard key={ev.id} ev={ev} lang={lang} />
+      ))}
+      {recent.map((ev) => (
+        <a key={ev.id} className="event-recent reveal" href={`#arch-${ev.id}`}>
+          <span>{tr({ it: `${ev.name} è appena passato.`, en: `${ev.name} has just ended.` })}</span>
+          <strong>{tr({ it: 'Rivedi l’evento nell’archivio', en: 'Look back at it in the archive' })}</strong>
+        </a>
+      ))}
+      {!upcoming.length && !recent.length && (
+        <p className="sec-empty reveal">
+          {tr({
+            it: 'Il prossimo evento è in preparazione: lo annunciamo prima su Instagram.',
+            en: 'The next event is in the works: we announce it on Instagram first.',
+          })}
+        </p>
+      )}
     </section>
   )
 }
 
-function Archive() {
+function Archive({ lang, finished }) {
+  const tr = (v) => t(v, lang)
   return (
     <section id="archivio" className="sec" aria-labelledby="archivio-title">
-      <SectionHead id="archivio" index={3} title="Archivio">
-        Gli incontri che abbiamo già vissuto insieme.
+      <SectionHead id="archivio" title={tr(SECTIONS[2].label)}>
+        {tr({ it: 'Gli incontri che abbiamo già vissuto insieme.', en: 'The gatherings we have already shared.' })}
       </SectionHead>
+      {finished.map((ev) => (
+        <article key={ev.id} id={`arch-${ev.id}`} className="past past--auto reveal" style={{ '--accent': ev.accent }}>
+          <p className="past__date">{tr(ev.date)}</p>
+          <h3 className="past__title">{ev.name}</h3>
+          <p className="past__venue">
+            {ev.venue}
+            <span>{ev.city}</span>
+          </p>
+          {ev.blocks.menu && (
+            <a className="past__link" href="/menu/">
+              {tr({ it: 'Il menu del pranzo', en: 'The lunch menu' })}
+            </a>
+          )}
+        </article>
+      ))}
       {ARCHIVE.map((a) => (
-        <article key={a.id} className="past" aria-labelledby={`${a.id}-t`}>
-          <figure className="past__cover arch-frame" data-reveal>
+        <article key={a.id} id={`arch-${a.id}`} className="past" aria-labelledby={`${a.id}-t`}>
+          <figure className="past__cover" data-reveal>
             <span className="past__cover-in">
-              <img src={a.cover} alt={`Locandina di ${a.title}`} width="720" height="896" loading="lazy" decoding="async" />
+              <img
+                src={a.cover}
+                alt={tr({ it: `Locandina di ${a.title}`, en: `${a.title} poster` })}
+                width="720"
+                height="896"
+                loading="lazy"
+                decoding="async"
+              />
             </span>
           </figure>
           <div className="past__info">
-            <p className="eyebrow reveal">{a.date}</p>
+            <p className="past__date reveal">{tr(a.date)}</p>
             <h3 id={`${a.id}-t`} className="past__title reveal" style={{ '--d': 1 }}>
               {a.title}
             </h3>
             <p className="past__sub reveal" style={{ '--d': 2 }}>
-              {a.subtitle}
+              {tr(a.subtitle)}
             </p>
             <p className="past__venue reveal" style={{ '--d': 3 }}>
               {a.venue}
@@ -202,21 +237,14 @@ function Archive() {
           </div>
           <div className="talks">
             <p className="talks__label">
-              {a.talks.length} incontri <span aria-hidden="true">· scorri →</span>
+              {tr({ it: `${a.talks.length} incontri, scorri di lato`, en: `${a.talks.length} talks, swipe sideways` })}
             </p>
             <ul className="talks__rail">
-              {a.talks.map((t) => (
-                <li key={t.img} className="talk">
-                  <img
-                    src={`/archivio/${a.id}/${t.img}.webp`}
-                    alt=""
-                    width="560"
-                    height="700"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                  <p className="talk__title">{t.title}</p>
-                  <p className="talk__who">{t.who}</p>
+              {a.talks.map((tk) => (
+                <li key={tk.img} className="talk">
+                  <img src={`/archivio/${a.id}/${tk.img}.webp`} alt="" width="560" height="700" loading="lazy" decoding="async" />
+                  <p className="talk__title">{tk.title}</p>
+                  <p className="talk__who">{tk.who}</p>
                 </li>
               ))}
             </ul>
@@ -227,7 +255,8 @@ function Archive() {
   )
 }
 
-function Contacts() {
+function Contacts({ lang }) {
+  const tr = (v) => t(v, lang)
   const rows = [
     { href: CONTACTS.instagram.url, label: 'Instagram', value: CONTACTS.instagram.handle, ext: true },
     { href: `mailto:${CONTACTS.email}`, label: 'Email', value: CONTACTS.email },
@@ -235,8 +264,11 @@ function Contacts() {
   ]
   return (
     <section id="contatti" className="sec" aria-labelledby="contatti-title">
-      <SectionHead id="contatti" index={4} title="Contatti">
-        Vuoi partecipare, proporre un’idea o collaborare con noi? Scrivici.
+      <SectionHead id="contatti" title={tr(SECTIONS[3].label)}>
+        {tr({
+          it: 'Vuoi partecipare, proporre un’idea o collaborare con noi? Scrivici.',
+          en: 'Want to join, suggest an idea or work with us? Write to us.',
+        })}
       </SectionHead>
       <ul className="contacts">
         {rows.map((r, i) => (
@@ -244,9 +276,6 @@ function Contacts() {
             <a href={r.href} {...(r.ext ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
               <span className="contacts__label">{r.label}</span>
               <span className="contacts__value">{r.value}</span>
-              <span className="contacts__arrow" aria-hidden="true">
-                {r.ext ? '↗' : '→'}
-              </span>
             </a>
           </li>
         ))}
@@ -256,16 +285,25 @@ function Contacts() {
 }
 
 export default function Home() {
+  const { lang } = usePrefs()
+  const [current, setCurrent] = useState('top')
   useReveal()
+  useEffect(() => observeSections(STOPS.map((s) => s.id), setCurrent), [])
+
+  const upcoming = EVENTS.filter((e) => eventStatus(e) === 'upcoming')
+  const recent = EVENTS.filter((e) => eventStatus(e) === 'recent')
+  const finished = EVENTS.filter((e) => eventStatus(e) !== 'upcoming')
+
   return (
     <>
+      <Intro />
       <SiteHeader page="home" />
       <main className="home">
-        <Hero next={UPCOMING[0]} />
-        <About />
-        <Events />
-        <Archive />
-        <Contacts />
+        <Hero next={upcoming[0]} current={current} lang={lang} />
+        <About lang={lang} />
+        <Events lang={lang} upcoming={upcoming} recent={recent} />
+        <Archive lang={lang} finished={finished} />
+        <Contacts lang={lang} />
       </main>
       <SiteFooter />
       <BottomNav />

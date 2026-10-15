@@ -1,5 +1,4 @@
 // Contenuti del sito GMI Torino. Testi e link si cambiano solo qui.
-import { EVENT } from './event'
 
 export const SECTIONS = [
   { id: 'chi-siamo', label: { it: 'Chi siamo', en: 'About us' } },
@@ -9,45 +8,32 @@ export const SECTIONS = [
 ]
 
 export const ABOUT = {
-  lede: 'Siamo la sezione torinese di Giovani Musulmani d’Italia.',
+  motto: 'Protagonisti noi con l’aiuto di Dio',
   body: [
-    'GMI è l’associazione che dal 2001 accompagna i giovani musulmani italiani nel loro percorso di crescita spirituale, culturale e sociale.',
-    'A Torino organizziamo incontri, talk e momenti di comunità: spazi in cui raccontarci, confrontarci e fare la nostra parte nella città in cui viviamo.',
+    {
+      it: 'GMI Torino è la sezione torinese di Giovani Musulmani d’Italia, l’associazione che dal 2001 accompagna i giovani musulmani italiani nella crescita spirituale, culturale e sociale.',
+      en: 'GMI Torino is the Turin chapter of Giovani Musulmani d’Italia, the association that since 2001 has supported young Italian Muslims in their spiritual, cultural and social growth.',
+    },
+    {
+      it: 'Ci troviamo per stare insieme, imparare e fare la nostra parte nella città: incontri, talk ed eventi aperti a tutti.',
+      en: 'We meet to spend time together, learn and do our part in the city: meetups, talks and events open to everyone.',
+    },
   ],
-  // Il "cammino di crescita" di GMI Italia (gmitalia.org)
+  // il "cammino di crescita" di GMI Italia
   path: [
-    { title: 'Reconnect', text: 'Riscoprire la propria identità, musulmana e italiana insieme.' },
-    { title: 'Inform', text: 'Conoscere l’islam e viverlo nel contesto in cui cresciamo.' },
-    { title: 'Socialize', text: 'Un ambiente di amicizia, fiducia e accompagnamento.' },
-    { title: 'Empower', text: 'Diventare parte attiva e utile della comunità.' },
+    { title: 'Reconnect', text: { it: 'Riscoprire la propria identità, musulmana e italiana insieme.', en: 'Rediscover who we are, Muslim and Italian together.' } },
+    { title: 'Inform', text: { it: 'Conoscere l’islam e viverlo nel contesto in cui cresciamo.', en: 'Learn about Islam and live it where we grow up.' } },
+    { title: 'Socialize', text: { it: 'Un ambiente di amicizia, fiducia e accompagnamento.', en: 'A place of friendship, trust and mentoring.' } },
+    { title: 'Empower', text: { it: 'Diventare parte attiva e utile della comunità.', en: 'Become active, useful members of the community.' } },
   ],
 }
-
-export const UPCOMING = [
-  {
-    id: 'ymhs',
-    kicker: 'Prossimo evento',
-    title: EVENT.name,
-    short: EVENT.short,
-    date: EVENT.dateLabel,
-    dateISO: EVENT.dateISO,
-    time: EVENT.time,
-    venue: EVENT.venue,
-    city: EVENT.city,
-    mapsUrl: EVENT.mapsUrl,
-    price: EVENT.price,
-    signup: { url: EVENT.signupUrl, note: `Iscrizioni ${EVENT.signupDeadline}` },
-    text: 'Una giornata per mettere al centro noi: le pressioni, le domande, le relazioni e tutto quello che spesso non riusciamo a dire.',
-    extra: { href: '/menu/', label: 'Il menu del pranzo' },
-  },
-]
 
 export const ARCHIVE = [
   {
     id: 'raccontarci',
     title: 'Raccontarci',
-    subtitle: 'L’Italia, l’identità e le nuove generazioni musulmane',
-    date: 'Sabato 26 settembre 2026',
+    subtitle: { it: 'L’Italia, l’identità e le nuove generazioni musulmane', en: 'Italy, identity and the new generations of Muslims' },
+    date: { it: 'Sabato 26 settembre 2026', en: 'Saturday 26 September 2026' },
     year: '2026',
     venue: 'Sala conferenze Chiesa Valdese',
     address: 'Corso Vittorio Emanuele II 23, Torino',
@@ -66,7 +52,7 @@ export const ARCHIVE = [
 ]
 
 export const CONTACTS = {
-  instagram: { url: EVENT.instagram, handle: '@gmi.torino' },
+  instagram: { url: 'https://www.instagram.com/gmi.torino/', handle: '@gmi.torino' },
   email: 'gmitorino@gmail.com',
   national: { url: 'https://gmitalia.org', label: 'gmitalia.org' },
 }

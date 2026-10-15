@@ -29,6 +29,7 @@ export default function Intro() {
       /* niente */
     }
     document.documentElement.style.overflow = 'hidden'
+    document.documentElement.classList.add('intro-on')
     const finish = () => setDone(true)
     const v = video.current
     // se il telefono blocca l'autoplay (es. risparmio energetico) si chiude dopo un attimo
@@ -41,6 +42,7 @@ export default function Intro() {
   useEffect(() => {
     if (!done) return
     document.documentElement.style.overflow = ''
+    document.documentElement.classList.remove('intro-on')
     const id = setTimeout(() => setGone(true), 700)
     return () => clearTimeout(id)
   }, [done])
