@@ -78,13 +78,35 @@ Chi siamo, Eventi, Archivio, Contatti, nello stile di GMI Italia.
 - /menu/ allineato: Poppins, blu/teal, bollino del coperchio e numeri ricolorati.
 - 404 ristilizzata. Rimossi Bodoni/IBM Plex, HeroBowl, Ticker (restano nella storia git).
 
+### Sessione 15 ottobre (sera) — identità GMI Torino, menu, home Prossimamente, /design
+Nuova direzione decisa con l'utente (dettagli in YMHS_BRIEF.md, "Aggiornamento 15/10 sera").
+- **Logo ufficiale** scontornato (`public/brand/gmi-torino-160|320|640.png`, 7–43 KB). Nel tema scuro sta in un tondo crema.
+- **Intro**: il logo animato (Mole disegnata, poi logo) da GIF 3,1 MB a MP4 114 KB; una volta per visita, si salta con un tocco,
+  niente con "riduci movimento". `?nointro` nell'URL la salta (utile per screenshot).
+- **Colori GMI Torino** (bordeaux #6E0B0E, crema #FFFCEB, oro #C99434), **SF Pro** (font di sistema), tema **bordeaux notte**.
+- **Tema chiaro/scuro** (segue il telefono, si ricorda la scelta) e **IT/EN**: bottoni in alto a destra; script inline nell'head
+  evita il lampo di colore sbagliato. "Giovani Musulmani d'Italia" non si traduce.
+- **Menu /menu/**: intestazione evento con alone d'accento YMHS sfumato, due schede con mini-ciotola, poi per ogni poke la ciotola
+  kraft con coperchio e adesivo GMI Torino; il coperchio esce di lato e mostra il poke completo, poi giro degli ingredienti
+  (quello di turno si solleva, gli altri si attenuano). Illustrazioni vettoriali ridisegnate (ombre morbide senza filtri).
+  Nota allergie e versetto 2:172 in arabo + traduzione. Misurato: 251 fotogrammi a 16,7 ms con CPU 4x, 1 lento.
+- **Home /**: "Prossimamente, inshallah" + إن شاء الله in calligrafia (Aref Ruqaa ridotto a 8,7 KB), prossimo evento,
+  **skyline di Torino in stile pannello della metro** (Superga, Gran Madre, Mole, Alpi) con la **linea delle fermate**
+  (Prossimamente → Chi siamo → Eventi → Archivio → Contatti; la fermata corrente è vuota). All'apertura lo skyline sale e
+  la linea si disegna. Sotto: Chi siamo (testo mio + motto da Instagram), Eventi (**template** da `src/data/events.js`),
+  Archivio (automatico + Raccontarci), Contatti.
+- **/design/** al posto di /identita/: marchio, intro, colori (tocca per copiare), tipografia, Torino (demo linea metro),
+  template evento (accenti), movimento, componenti, voce.
+
 ## Manca / idee per le prossime run
-- [ ] Provare su un iPhone vero (scroll sticky + barra Safari): da fare quando il dev server/anteprima è disponibile.
-- [ ] Pulizia dipendenze non più usate (react, react-dom, @vitejs/plugin-react, three, ogl, gsap, framer-motion, tailwind) — solo dopo conferma dell'utente.
-- [ ] Decidere hosting e DNS (utente).
+- [ ] Provare su iPhone vero (sticky + barra di Safari, intro video in risparmio energetico).
+- [ ] Come aggiungere eventi in futuro (file dati, pannello admin o tramite Claude): da chiedere all'utente.
+- [ ] Programma e ospiti del YMHS (blocco `program` già previsto nel template, spento).
+- [ ] Logo/banner del YMHS se l'utente li manda (campi `logo` e `banner` in `src/data/events.js`).
+- [ ] Pulizia dipendenze non più usate (react, react-dom, three, ogl, gsap, framer-motion, tailwind, @fontsource/poppins).
 
 ## Da decidere (utente)
-- **Push** del branch `ymhs-site` su GitHub (non fatto).
+- **Push** del branch `ymhs-site` su GitHub: consentito dall'utente il 15/10, fatto a fine sessione.
 - **Deploy** su `gmitorino.org`: la cartella `dist/` è statica (`/`, `/menu/`, `404.html`), va bene su
   qualsiasi hosting statico; nessun rewrite necessario per `/menu`.
 - **Video/frame Higgsfield**: se arrivano, impostare `media` in `src/data/menu.js` (`type: 'video'` o `'frames'`),

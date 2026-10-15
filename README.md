@@ -1,17 +1,18 @@
 # GMI Torino · sito
 
-Base del sito ufficiale di GMI Torino, con l'identità visiva della sezione
-(sistema GMI Italia di [gmitalia.org](https://gmitalia.org) + l'arco dei portici torinesi).
+Sito di GMI Torino con l'identità della sezione: logo ufficiale, bordeaux, crema e oro,
+font di sistema SF Pro, Torino sullo sfondo (skyline e linea della metro). Italiano e inglese,
+tema chiaro e scuro (segue il telefono; bottoni in alto a destra).
 
 | URL | File | Cosa |
 | --- | --- | --- |
-| `gmitorino.org/` | `index.html` → `src/home/` | Chi siamo, Eventi, Archivio, Contatti (+ chip "Sito in costruzione") |
-| `gmitorino.org/menu/` | `menu/index.html` → `src/menu/` | menu del pranzo YMHS: due poke che si aprono con lo scroll |
-| `gmitorino.org/identita/` | `identita/index.html` → `src/identity/` | guida all'identità visiva: marchio, colori, tipografia, arco, movimento, voce |
+| `gmitorino.org/` | `index.html` → `src/home/` | "Prossimamente, inshallah" + Chi siamo, Eventi, Archivio, Contatti |
+| `gmitorino.org/menu/` | `menu/index.html` → `src/menu/` | menu del pranzo del prossimo evento: i poke si aprono con lo scroll |
+| `gmitorino.org/design/` | `design/index.html` → `src/design/` | guida all'identità: marchio, colori, tipografia, Torino, template evento, movimento, voce |
 
-Vite + Preact (codice scritto in stile React, girato su `preact/compat`): ~13 KB gzip di JS per pagina,
-nessuna libreria di animazione. Build multi-page (`vite.config.js`): ogni URL è un file statico vero,
-funziona su qualunque hosting statico senza regole di rewrite.
+Vite + Preact (codice scritto in stile React, girato su `preact/compat`), nessuna libreria di animazione.
+Build multi-page (`vite.config.js`): ogni URL è un file statico vero, funziona su Vercel o qualunque
+hosting statico senza regole di rewrite.
 
 ```bash
 npm install
@@ -22,11 +23,14 @@ npm run preview
 
 ## Dove si cambiano i contenuti
 
-- `src/data/site.js` — testi di Chi siamo, eventi in programma, archivio, contatti, voci di navigazione.
-- `src/data/event.js` — data, orari, luogo, quota, link iscrizioni del YMHS.
+- `src/data/events.js` — gli eventi (template): data, luogo, quota, iscrizione, colore d'accento, banner, logo,
+  blocchi accesi (`info`, `signup`, `program`, `menu`). Un giorno dopo la fine l'evento passa da solo in Archivio
+  e per 7 giorni in Eventi resta un avviso che rimanda lì (`src/data/when.js`).
+- `src/data/site.js` — Chi siamo, archivio storico (Raccontarci), contatti, voci di navigazione.
 - `src/data/menu.js` — le due opzioni poke e i loro ingredienti (testo esatto del menu).
-- `src/styles/` — identità e componenti comuni (`base.css`: colori, Poppins, bottoni, header, footer, comparse),
-  home (`home.css`), menu (`menu.css`), guida identità (`identity.css`).
+- Testi IT/EN: ogni testo è `{ it: '…', en: '…' }`. "Giovani Musulmani d'Italia" non si traduce.
+- `src/styles/` — `base.css` (colori, temi, header, footer, bottoni, intro), `torino.css` (skyline, linea della metro,
+  calligrafia), `home.css`, `menu.css`, `design.css`.
 - Nuovo evento in archivio: aggiungere un oggetto in `ARCHIVE` (`src/data/site.js`) e le immagini in
   `public/archivio/<id>/` (webp, ~560 px di larghezza, `cwebp -q 72 -resize 560 0`).
 
@@ -35,9 +39,10 @@ npm run preview
 `src/poke/PokeScroll.jsx` crea una sezione alta alcune schermate con uno stage
 `position: sticky`. Lo scroll produce un progresso `p` da 0 a 1 che guida:
 
-1. il coperchio che si solleva e scivola via;
-2. gli ingredienti, uno alla volta nell'ordine del menu: ognuno si stacca dalla bowl
-   e compare il suo numero, mentre nella lista sotto si accende il nome.
+1. il coperchio (kraft, con l'adesivo GMI Torino) che si solleva e scivola via di lato;
+2. il giro degli ingredienti, nell'ordine del menu: quello di turno si solleva, gli altri
+   si attenuano, compare il suo numero e nella lista sotto si accende il nome. Alla fine
+   resta la ciotola completa e numerata.
 
 Durante lo scroll React non fa re-render: vengono scritti solo `transform`/`opacity`
 sui livelli (un `<div>` con il suo SVG per ingrediente). Con `prefers-reduced-motion`
