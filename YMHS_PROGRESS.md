@@ -168,6 +168,14 @@ Nuova direzione decisa con l'utente (dettagli in YMHS_BRIEF.md, "Aggiornamento 1
 - **Nuovo: "Condividi il menu"** in fondo a /menu/: apre il foglio di condivisione del telefono (WhatsApp, ecc.),
   sul computer copia il link.
 
+**Terzo giro (notte)**
+- Controllo da computer (1280x800): home e menu a due colonne ok.
+- Like più sicuri: la funzione accetta solo gli ID dei poke del menu e al massimo 20 tocchi al minuto per indirizzo
+  (oltre: 429 e il cuore torna com'era). Provato: 20 ok, poi 429; ID inventati rifiutati.
+- **Nuovo: menu anche senza rete.** Service worker (`public/sw.js`): dopo la prima apertura home e menu funzionano
+  offline (provato in Chrome con rete spenta: menu, animazione e cuori in modalità locale). Utile se alla Casa del
+  Quartiere il segnale è scarso. Solo nel sito pubblicato, mai in `npm run dev`.
+
 ## Manca / idee per le prossime run
 - [ ] Provare su iPhone vero (sticky + barra di Safari, intro video in risparmio energetico).
 - [ ] Come aggiungere eventi in futuro (file dati, pannello admin o tramite Claude): da chiedere all'utente.

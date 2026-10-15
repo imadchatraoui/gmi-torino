@@ -114,6 +114,12 @@ Per accenderli davvero su Vercel: progetto Vercel → Storage / Marketplace → 
 collegarlo al progetto. Vercel aggiunge da solo `KV_REST_API_URL` e `KV_REST_API_TOKEN`
 (vanno bene anche `UPSTASH_REDIS_REST_URL` e `UPSTASH_REDIS_REST_TOKEN`). Il piano gratuito basta.
 
+## Senza rete
+
+`public/sw.js` (service worker, registrato solo nel sito pubblicato da `src/shared/offline.js`): dopo la prima visita
+home e menu si aprono anche senza rete. Pagine: prima la rete, poi la copia salvata; file statici: copia salvata
+aggiornata in background; `/api/` mai salvata. Per svuotare le copie dopo un cambio grosso: cambiare `CACHE` in `sw.js`.
+
 ## Asset
 
 - Logo: `public/brand/gmi-torino-{160,320,640}.png` (trasparente) e `gmi-torino-scuro-{160,320}.png` per il tema scuro.

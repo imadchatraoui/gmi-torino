@@ -1,5 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
+import { registerOffline } from '../shared/offline'
 import '../styles/base.css'
 import '../styles/torino.css'
 import '../styles/design.css'
@@ -10,3 +11,5 @@ createRoot(document.getElementById('root')).render(
     <Design />
   </StrictMode>,
 )
+
+registerOffline()
