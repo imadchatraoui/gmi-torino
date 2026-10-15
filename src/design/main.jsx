@@ -1,11 +1,12 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import '../styles/base.css'
-import '../styles/identity.css'
-import Identity from './Identity.jsx'
+import '../styles/torino.css'
+import '../styles/design.css'
+import Design from './Design.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <Identity />
+    <Design />
   </StrictMode>,
 )

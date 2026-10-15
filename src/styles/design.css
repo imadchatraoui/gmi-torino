@@ -1,0 +1,418 @@
+/* GMI Torino — /design/: guida all'identità */
+
+.id {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+  overflow-x: clip;
+}
+
+.id-hero {
+  padding: 32px 0 8px;
+}
+
+.id-kicker {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--gold-text);
+}
+
+.id-hero__title {
+  margin-top: 8px;
+  font-size: clamp(2.4rem, 11vw, 4.4rem);
+  font-weight: 600;
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+  color: var(--heading);
+}
+
+.id-hero__lede {
+  margin-top: 14px;
+  max-width: 34em;
+  font-size: 17px;
+  color: var(--text-2);
+}
+
+.id-sec {
+  padding-top: 64px;
+}
+
+.id-sec__title {
+  font-size: clamp(1.9rem, 8.4vw, 2.8rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  color: var(--heading);
+}
+
+.id-sec__lede {
+  margin-top: 10px;
+  max-width: 36em;
+  color: var(--text-2);
+}
+
+.id-sub {
+  margin-top: 32px;
+  font-size: 19px;
+  font-weight: 600;
+  color: var(--heading);
+}
+
+/* marchio */
+.marks {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.marks__box {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  border-radius: var(--radius-lg);
+  background: var(--cream);
+  border: 1px solid var(--line);
+}
+
+.marks__box img {
+  width: 52%;
+  height: auto;
+}
+
+.marks__box--dark {
+  background: var(--night);
+}
+
+.marks__disc {
+  display: grid;
+  place-items: center;
+  width: 70%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--cream);
+}
+
+.marks__disc img {
+  width: 66%;
+}
+
+.marks__item figcaption {
+  margin-top: 8px;
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--text-2);
+}
+
+.rules {
+  display: grid;
+  gap: 6px;
+  margin-top: 18px;
+  padding-left: 20px;
+  font-size: 15px;
+  color: var(--text-2);
+}
+
+.rules li::marker {
+  color: var(--gold);
+}
+
+.intro-demo {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-top: 16px;
+}
+
+.intro-demo__disc {
+  display: grid;
+  place-items: center;
+  width: 150px;
+  aspect-ratio: 1;
+  flex: none;
+  border-radius: 50%;
+  background: var(--cream);
+  overflow: hidden;
+}
+
+.intro-demo__disc video {
+  width: 78%;
+  height: auto;
+}
+
+/* colori */
+.swatches {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 18px;
+  padding: 0;
+  list-style: none;
+}
+
+.swatch button {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  padding: 0 0 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  text-align: left;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.25s var(--ease-out);
+}
+
+.swatch button:active {
+  transform: scale(0.98);
+}
+
+.swatch__chip {
+  display: block;
+  height: 64px;
+  border-bottom: 1px solid var(--line);
+}
+
+.swatch__name {
+  margin: 10px 12px 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--heading);
+}
+
+.swatch__hex {
+  margin: 0 12px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--gold-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.swatch__role {
+  margin: 6px 12px 0;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--text-2);
+}
+
+/* tipografia */
+.type-list {
+  margin-top: 18px;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--line);
+}
+
+.type-list li {
+  display: grid;
+  gap: 4px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.type-list__label {
+  font-size: 13px;
+  color: var(--text-3);
+}
+
+.type-h1 {
+  font-size: 44px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--heading);
+}
+
+.type-h2 {
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  color: var(--heading);
+}
+
+.type-body {
+  font-size: 17px;
+  color: var(--text-2);
+}
+
+.type-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--gold-text);
+}
+
+.type-ar {
+  font-family: 'Inshallah', var(--font);
+  font-weight: 700;
+  font-size: 44px;
+  line-height: 1.4;
+  color: var(--gold);
+  text-align: left;
+}
+
+/* torino */
+.metro-demo {
+  position: relative;
+  height: 210px;
+  margin: 20px calc(var(--gutter) * -1) 0;
+  overflow: hidden;
+}
+
+.metro-demo .metro__stop a {
+  pointer-events: none;
+}
+
+.metro-demo__buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.chip {
+  min-height: 40px;
+  padding: 0 14px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--heading);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.chip.is-on {
+  background: var(--brand);
+  border-color: var(--brand);
+  color: var(--on-brand);
+}
+
+/* template evento: accenti */
+.accents {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 18px;
+  padding: 0;
+  list-style: none;
+}
+
+.accent-card {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  height: 120px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  overflow: hidden;
+}
+
+.accent-card::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: -40% -40% auto auto;
+  width: 120%;
+  aspect-ratio: 1;
+  background: radial-gradient(closest-side, var(--accent), transparent);
+  opacity: 0.45;
+}
+
+.accent-card__name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--heading);
+}
+
+.accent-card__hex {
+  font-size: 12px;
+  color: var(--text-3);
+}
+
+/* movimento */
+.bowl-demo {
+  width: min(70vw, 300px);
+  margin: 20px auto 0;
+}
+
+.bowl-demo .poke-art {
+  width: 100%;
+}
+
+.motion {
+  margin-top: 16px;
+}
+
+.motion > div {
+  display: grid;
+  grid-template-columns: 90px 1fr;
+  gap: 12px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.motion dt {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--heading);
+}
+
+.motion dd {
+  font-size: 14px;
+  color: var(--text-2);
+}
+
+.motion code {
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+  font-size: 13px;
+  color: var(--gold-text);
+}
+
+/* componenti */
+.comp {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+/* voce */
+.voice {
+  display: grid;
+  gap: 10px;
+  margin: 18px 0 24px;
+  padding: 0;
+  list-style: none;
+}
+
+.voice li {
+  padding: 16px;
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  font-size: 15px;
+  color: var(--text-2);
+}
+
+.voice strong {
+  display: block;
+  font-weight: 600;
+  color: var(--heading);
+}
+
+@media (min-width: 860px) {
+  .marks {
+    max-width: 640px;
+  }
+  .swatches {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .accents {
+    max-width: 640px;
+  }
+}

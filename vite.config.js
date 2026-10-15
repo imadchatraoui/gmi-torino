@@ -5,7 +5,7 @@ import { defineConfig } from 'vite'
 // Pagine statiche (multi-page build):
 //   /           -> index.html           (home: Chi siamo, Eventi, Archivio, Contatti)
 //   /menu/      -> menu/index.html      (menu poke interattivo del YMHS)
-//   /identita/  -> identita/index.html  (guida all'identità visiva)
+//   /design/    -> design/index.html    (guida all'identità visiva di GMI Torino)
 //   404.html -> pagina di errore (servita in automatico dalla maggior parte degli hosting statici)
 // Funziona su qualsiasi hosting statico senza regole di rewrite.
 // Preact (via preact/compat) al posto di React: stesso codice, ~60 KB gzip in meno.
@@ -16,7 +16,7 @@ export default defineConfig({
       input: {
         home: resolve(import.meta.dirname, 'index.html'),
         menu: resolve(import.meta.dirname, 'menu/index.html'),
-        identity: resolve(import.meta.dirname, 'identita/index.html'),
+        design: resolve(import.meta.dirname, 'design/index.html'),
         notFound: resolve(import.meta.dirname, '404.html'),
       },
     },
