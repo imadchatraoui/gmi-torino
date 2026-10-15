@@ -1,24 +1,30 @@
 # GMI Torino · sito
 
-Sito di GMI Torino con l'identità della sezione: logo ufficiale, bordeaux, crema e oro,
-font di sistema SF Pro, Torino sullo sfondo (skyline e linea della metro). Italiano e inglese,
-tema chiaro e scuro (segue il telefono; bottoni in alto a destra).
+Sito di GMI Torino con l'identità della sezione: logo ufficiale (PNG trasparente), bordeaux, crema e oro,
+font di sistema SF Pro. Volutamente semplice: niente elementi decorativi "torinesi". Italiano e inglese,
+tema chiaro e scuro (segue il telefono; bottoni in alto a destra). Lo stile delle locandine YMHS (carta,
+salvia, blu, Bodoni) vale solo per le cose dell'evento: la sua scheda e la pagina `/menu/`.
 
 | URL | File | Cosa |
 | --- | --- | --- |
 | `gmitorino.org/` | `index.html` → `src/home/` | "Prossimamente, inshallah" + Chi siamo, Eventi, Archivio, Contatti |
 | `gmitorino.org/menu/` | `menu/index.html` → `src/menu/` | menu del pranzo del prossimo evento: i poke si aprono con lo scroll |
-| `gmitorino.org/design/` | `design/index.html` → `src/design/` | guida all'identità: marchio, colori, tipografia, Torino, template evento, movimento, voce |
+| `gmitorino.org/design/` | `design/index.html` → `src/design/` | guida all'identità: marchio, intro, colori, tipografia, stile evento, template, movimento, componenti, voce |
 
-Vite + Preact (codice scritto in stile React, girato su `preact/compat`), nessuna libreria di animazione.
+Vite + Preact (codice scritto in stile React: gli import di `react` puntano a `preact/compat`), nessuna libreria di animazione.
+Dipendenze: solo `preact` e `@hugeicons/core-free-icons` (le icone del cuore); in sviluppo `vite`, `@preact/preset-vite`, `oxlint`.
 Build multi-page (`vite.config.js`): ogni URL è un file statico vero, funziona su Vercel o qualunque
 hosting statico senza regole di rewrite.
 
 ```bash
 npm install
-npm run dev      # http://localhost:5173 e http://localhost:5173/menu/
+npm run dev      # http://localhost:5173 e http://localhost:5173/menu/  (?nointro salta l'intro)
 npm run build    # output in dist/
 npm run preview
+
+# controlli da telefono simulato (Chrome headless, 375x812 @2x)
+node scripts/shot-mobile.mjs http://localhost:5173/menu/?nointro /tmp/menu.png "0,#poke-1@0.5,100%" --dark --size=375x667 --en
+node scripts/perf-scroll.mjs http://localhost:4173/menu/?nointro   # CPU 4x, fotogrammi e dove rallenta
 ```
 
 ## Dove si cambiano i contenuti
@@ -26,13 +32,14 @@ npm run preview
 - `src/data/events.js` — gli eventi (template): data, luogo, quota, iscrizione, colore d'accento, banner, logo,
   blocchi accesi (`info`, `signup`, `program`, `menu`). Un giorno dopo la fine l'evento passa da solo in Archivio
   e per 7 giorni in Eventi resta un avviso che rimanda lì (`src/data/when.js`).
-- `src/data/site.js` — Chi siamo, archivio storico (Raccontarci), contatti, voci di navigazione.
+- `src/data/site.js` — testi "Ci stiamo lavorando" delle sezioni (`WIP`), contatti, voci di navigazione.
 - `src/data/menu.js` — le due opzioni poke e i loro ingredienti (testo esatto del menu).
 - Testi IT/EN: ogni testo è `{ it: '…', en: '…' }`. "Giovani Musulmani d'Italia" non si traduce.
-- `src/styles/` — `base.css` (colori, temi, header, footer, bottoni, intro), `torino.css` (skyline, linea della metro,
-  calligrafia), `home.css`, `menu.css`, `design.css`.
-- Nuovo evento in archivio: aggiungere un oggetto in `ARCHIVE` (`src/data/site.js`) e le immagini in
-  `public/archivio/<id>/` (webp, ~560 px di larghezza, `cwebp -q 72 -resize 560 0`).
+- `src/styles/` — `base.css` (colori, temi, header, footer, bottoni, intro, componenti condivisi), `torino.css`
+  (solo la calligrafia إن شاء الله), `home.css`, `menu.css`, `design.css`.
+- `src/components/react-bits/` — GradientText (titolo), StarBorder (Iscriviti), PulseHeart (like): sorgenti ufficiali
+  non modificate, ricolorate da fuori (vedi `THIRD_PARTY_NOTICES.md`).
+- L'archivio si riempie da solo: un giorno dopo la fine, un evento di `src/data/events.js` passa in Archivio.
 
 ## Animazione poke
 
@@ -109,12 +116,15 @@ collegarlo al progetto. Vercel aggiunge da solo `KV_REST_API_URL` e `KV_REST_API
 
 ## Asset
 
-- Logo: `public/brand/gmi-logo.webp` (320 px, ~20 KB) generato dal PNG originale.
+- Logo: `public/brand/gmi-torino-{160,320,640}.png` (trasparente) e `gmi-torino-scuro-{160,320}.png` per il tema scuro.
+  Mai dentro cerchi o riquadri.
+- Intro: `public/brand/gmi-torino-intro-l.mp4` / `-d.mp4` (chiaro/scuro), a ogni apertura, si salta con un tocco o un tasto.
 - Favicon/icone in `public/` (rigenerate dal logo).
 - Il vecchio sito (componenti WebGL, gif animate da 2–3 MB, foto evento di settembre) è
   in `_unused/old-site/`: non entra nel build.
 
 ## Deploy
 
-Non ancora fatto: va deciso dove pubblicare (`dist/` è un sito statico) e come puntare il
-DNS di `gmitorino.org`.
+Non ancora fatto (da decidere: vedi `YMHS_PROGRESS.md`). Su Vercel: progetto collegato al repo, preset Vite,
+build `npm run build`, output `dist/`; la cartella `api/` diventa la funzione dei like. Poi il dominio
+`gmitorino.org` va puntato a Vercel dal pannello del registrar.

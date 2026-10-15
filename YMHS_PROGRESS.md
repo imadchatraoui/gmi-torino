@@ -1,6 +1,6 @@
 # YMHS — stato lavori
 
-Branch: `ymhs-site` (creato da `main` dopo il commit "snapshot pre-YMHS"). Niente push, niente deploy, DNS non toccato.
+Branch: `ymhs-site` (creato da `main` dopo il commit "snapshot pre-YMHS"), con push su GitHub. Niente deploy, DNS non toccato.
 
 ## Fatto
 
@@ -110,14 +110,64 @@ Nuova direzione decisa con l'utente (dettagli in YMHS_BRIEF.md, "Aggiornamento 1
   Titolo "Prossimamente, inshallah" animato (lettere che salgono, poi un'onda continua; riflesso d'oro continuo sulla
   calligrafia). Intro col logo animato a **ogni** apertura (non più una volta per visita), bordi del video sfumati.
 
+### Notte 15→16 ottobre — loop di rifinitura (lavoro autonomo)
+**Like condivisi**
+- PulseHeart di React Bits (sorgente ufficiale, dipendenza `@hugeicons/core-free-icons`) su ogni poke: nella scheda
+  in alto (angolo destro) e nell'intestazione della sezione, accanto a "Salta". Colori del sito: rosso mattone
+  `#b3262c` (scuro `#ef7b7f`), pillola nel colore delle superfici.
+- `api/likes.js`: funzione Vercel con Upstash Redis via REST (nessuna dipendenza). Hash `gmi:likes`, non scende sotto 0,
+  ID validati, `no-store`. Funziona con le variabili che aggiunge Vercel Marketplace (`KV_REST_API_URL/TOKEN`) o con
+  quelle di Upstash (`UPSTASH_REDIS_REST_URL/TOKEN`). Senza chiavi risponde 503.
+- `src/shared/likes.js`: aggiornamento immediato, poi conferma dal server; se l'API non c'è → ripiego locale
+  (il cuore funziona, il numero vale solo su quel telefono). Il "mi piace" di ogni telefono resta in localStorage.
+- In `npm run dev`/`preview` l'API gira con un Redis finto in memoria (`vite.config.js`).
+
+**Menu**
+- Controllato a 375x667, 375x812, 430x932, chiaro/scuro, IT/EN, "riduci movimento": niente overflow, testi interi.
+- Schede delle proposte: testo ingredienti a tutta larghezza (lo spazio per il cuore solo accanto a etichetta e titolo);
+  la seconda scheda è tornata nel suo colore (il selettore si era rotto con il nuovo contenitore).
+- Luogo: "…San Salvario, Torino" (prima "To").
+- Il progresso dell'animazione ora parte quando lo stage si ferma sotto l'header (prima ~60 px dopo): "Salta"
+  atterra esattamente all'inizio dell'opzione successiva, coperchio ancora chiuso.
+- "Salta" nascosto con "riduci movimento" (la bowl è già aperta, non c'è niente da saltare).
+
+**iPhone / Safari** (senza Xcode sul Mac: niente simulatore, verifiche su codice e Chrome in emulazione)
+- Altezze in `svh` ovunque (niente salti quando la barra di Safari cambia), progresso ricalcolato a ogni resize.
+- Intro: se il link ha un'ancora (es. `/menu/#poke-2`) a fine intro si va lì invece che in cima; si chiude anche da tastiera.
+
+**Accessibilità**
+- Testi secondari nello stile YMHS da 4,06:1 a ≥ 4,5:1 (script che misura il contrasto di ogni testo, entrambi i temi).
+- Contorno di focus per tema: oro scuro su crema, oro chiaro su bordeaux notte, blu/salvia nelle parti YMHS.
+- Verificato: tutti i bottoni e link hanno un nome, un solo h1 per pagina, nessuna immagine senza alt.
+
+**Prestazioni**
+- Tolte le dipendenze inutilizzate: react, react-dom, three, ogl, gsap, framer-motion, clsx, tailwind-merge,
+  tailwindcss, postcss, autoprefixer, @fontsource/*, @vitejs/plugin-react, jsrepo (+ i loro file di configurazione).
+  Restano `preact` e le icone del cuore.
+- Menu con CPU 4x: fotogrammi oltre 33 ms da 4–7 a 0–1 per scroll. Cause trovate con un trace: i numeri degli
+  ingredienti erano dentro l'SVG del livello (ogni comparsa lo ridisegnava) → ora piccoli livelli propri; le sezioni
+  fuori schermo ora hanno `content-visibility: auto` (il browser non le ricompone a ogni fotogramma).
+  Home: 0–1 fotogrammi lenti.
+
+**Home, testi, /design**
+- "Prossimamente, inshallah" al centro dello schermo (prima restava un grande vuoto sotto), sezioni un po' più vicine.
+- Testi IT/EN riletti: corretti quelli di /design che descrivevano cose vecchie (intro "una volta per visita", pizzo).
+- /design: sezione Componenti con i componenti veri (GradientText, StarBorder, PulseHeart di prova che non conta,
+  nota "Ci stiamo lavorando"); scheda YMHS col logo PNG, senza pizzo né angolo.
+- README aggiornato (niente più skyline/metro/Raccontarci; like; deploy).
+
 ## Manca / idee per le prossime run
 - [ ] Provare su iPhone vero (sticky + barra di Safari, intro video in risparmio energetico).
 - [ ] Come aggiungere eventi in futuro (file dati, pannello admin o tramite Claude): da chiedere all'utente.
 - [ ] Programma e ospiti del YMHS (blocco `program` già previsto nel template, spento).
 - [ ] Logo/banner del YMHS se l'utente li manda (campi `logo` e `banner` in `src/data/events.js`).
-- [ ] Pulizia dipendenze non più usate (react, react-dom, three, ogl, gsap, framer-motion, tailwind, @fontsource/poppins).
+- [x] Pulizia dipendenze non più usate (fatto la notte del 16/10).
+- [ ] Like: collegare Upstash Redis al progetto Vercel (gratis) quando si fa il deploy; fino ad allora i numeri restano sul telefono.
 
 ## Da decidere (utente)
+- **Like**: il cuore va bene in quella posizione e con quel rosso? Vanno mostrati i numeri anche quando sono 0?
+- **Upstash**: per i like condivisi serve un database Upstash Redis (gratuito) collegato al progetto Vercel:
+  Vercel → Storage → Upstash Redis → Connect. Non l'ho creato io (niente account).
 - **Push** del branch `ymhs-site` su GitHub: consentito dall'utente il 15/10, fatto a fine sessione.
 - **Deploy** su `gmitorino.org`: la cartella `dist/` è statica (`/`, `/menu/`, `404.html`), va bene su
   qualsiasi hosting statico; nessun rewrite necessario per `/menu`.
