@@ -156,6 +156,18 @@ Nuova direzione decisa con l'utente (dettagli in YMHS_BRIEF.md, "Aggiornamento 1
   nota "Ci stiamo lavorando"); scheda YMHS col logo PNG, senza pizzo né angolo.
 - README aggiornato (niente più skyline/metro/Raccontarci; like; deploy).
 
+**Secondo giro (notte)**
+- Anteprime dei link (`public/og-home.jpg`, `og-menu.jpg`) rifatte: il logo era dentro un cerchio. Quella del menu
+  ora è nello stile YMHS con il logo YMHS e la bowl aperta.
+- Pagina 404: logo senza cerchio (versione chiara nel tema scuro) e testi in inglese se il sito è in inglese.
+- Barra del browser (theme-color) nel colore vero della pagina: crema/bordeaux notte, carta/blu notte nel menu.
+- Tolti i font Poppins rimasti in `public/fonts/` e un preload del logo che non serviva (avviso in console).
+- Barra in basso della home: provati i tocchi su tutte le sezioni, avanti e indietro: arriva sempre alla sezione giusta.
+- **Nuovo: "Aggiungi al calendario"** sotto la data dell'evento: file `/eventi/<id>.ics` generato in build da
+  `src/data/events.js` (orario giusto anche col cambio dell'ora del 25 ottobre), con link di iscrizione e del menu.
+- **Nuovo: "Condividi il menu"** in fondo a /menu/: apre il foglio di condivisione del telefono (WhatsApp, ecc.),
+  sul computer copia il link.
+
 ## Manca / idee per le prossime run
 - [ ] Provare su iPhone vero (sticky + barra di Safari, intro video in risparmio energetico).
 - [ ] Come aggiungere eventi in futuro (file dati, pannello admin o tramite Claude): da chiedere all'utente.
