@@ -52,22 +52,6 @@
   color: var(--gold-light);
 }
 
-.hero__fregio {
-  width: 150px;
-  margin: 2px 0 14px -4px;
-}
-
-/* la cupola ricamata chiude l'apertura, appoggiata sul bordo */
-.hero__cupola {
-  margin-top: auto;
-  padding: 8px var(--gutter) 0;
-}
-
-.sec-head__fregio {
-  width: 130px;
-  margin: 0 0 14px -4px;
-}
-
 .hero__lede {
   margin-top: 8px;
   max-width: 30em;

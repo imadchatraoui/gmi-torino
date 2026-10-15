@@ -98,6 +98,14 @@ Nuova direzione decisa con l'utente (dettagli in YMHS_BRIEF.md, "Aggiornamento 1
 - **/design/** al posto di /identita/: marchio, intro, colori (tocca per copiare), tipografia, Torino (demo linea metro),
   template evento (accenti), movimento, componenti, voce.
 
+### 15 ottobre (notte) — semplificazione su richiesta dell'utente
+- Logo sempre PNG trasparente, senza cerchio; nel tema scuro versione con bordeaux schiarito. Intro in due video (chiaro/scuro).
+- Stile delle locandine YMHS (carta, salvia strappata, blu, pizzo, Bodoni) **solo** per le cose dell'evento:
+  scheda in Eventi (con il logo YMHS al posto della scritta), "Prossimo evento" in home e pagina /menu/ (classe `.theme-ymhs`).
+  Il resto del sito resta nei colori GMI Torino.
+- Tolti skyline, linea della metro, cupola e fregio disegnati da me: l'utente vuole un sito **semplice, senza elementi caratteristici**.
+- Footer sulla struttura di gmitalia.org (presentazione, link rapidi, contatti, seguici, copyright) nei colori GMI Torino.
+
 ## Manca / idee per le prossime run
 - [ ] Provare su iPhone vero (sticky + barra di Safari, intro video in risparmio energetico).
 - [ ] Come aggiungere eventi in futuro (file dati, pannello admin o tramite Claude): da chiedere all'utente.

@@ -5,7 +5,6 @@ import BottomNav from '../shared/BottomNav'
 import Intro from '../shared/Intro'
 import { t, usePrefs } from '../shared/prefs'
 import { tornClip } from '../shared/Paper'
-import { Cupola, Fregio } from '../shared/Ricamo'
 import { useReveal } from '../shared/reveal'
 import SiteFooter from '../shared/SiteFooter'
 import SiteHeader from '../shared/SiteHeader'
@@ -33,7 +32,6 @@ function Hero({ next, lang }) {
         <p className="hero__ar" lang="ar" dir="rtl">
           إن شاء الله
         </p>
-        <Fregio className="hero__fregio" />
         <p className="hero__lede">
           {tr({
             it: 'Stiamo costruendo la nuova casa online della sezione torinese di Giovani Musulmani d’Italia. Intanto qui trovi chi siamo, i prossimi eventi e come scriverci.',
@@ -51,9 +49,6 @@ function Hero({ next, lang }) {
           </a>
         )}
       </div>
-      <div className="hero__cupola" data-reveal>
-        <Cupola />
-      </div>
     </section>
   )
 }
@@ -61,7 +56,6 @@ function Hero({ next, lang }) {
 function SectionHead({ id, title, children }) {
   return (
     <header className="sec-head">
-      <Fregio className="sec-head__fregio reveal" />
       <h2 id={`${id}-title`} className="sec-head__title reveal">
         {title}
       </h2>

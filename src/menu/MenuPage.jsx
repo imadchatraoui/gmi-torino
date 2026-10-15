@@ -5,7 +5,7 @@ import Intro from '../shared/Intro'
 import { t, usePrefs } from '../shared/prefs'
 import SiteFooter from '../shared/SiteFooter'
 import SiteHeader from '../shared/SiteHeader'
-import { Corner, Lace, tornClip } from '../shared/Paper'
+import { Corner, tornClip } from '../shared/Paper'
 
 // Il menu del prossimo evento con menu. gmitorino.org/menu resta sempre questo indirizzo.
 const EVENT = eventById('ymhs')
@@ -83,7 +83,6 @@ export default function MenuPage() {
             <figcaption>{tr({ it: 'Corano, Al-Baqarah 2:172', en: 'Quran, Al-Baqarah 2:172' })}</figcaption>
           </figure>
         </section>
-        <Lace className="menu-lace" />
       </main>
       <SiteFooter />
     </>

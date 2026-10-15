@@ -397,11 +397,6 @@
   color: var(--text-3);
 }
 
-/* pizzo in chiusura, appoggiato sul footer */
-.menu-lace {
-  margin: 48px 0 -48px;
-}
-
 /* ---------- desktop ---------- */
 @media (min-width: 860px) {
   .choices {
