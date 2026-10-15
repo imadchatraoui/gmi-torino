@@ -324,6 +324,151 @@ blockquote {
   background-image: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27160%27 height=%27160%27 viewBox=%270 0 160 160%27%3E%3Cg fill=%27none%27 stroke=%27%23eee6d6%27 stroke-opacity=%27.04%27 stroke-width=%271.1%27%3E%3Ccircle cx=%270%27 cy=%270%27 r=%2780%27/%3E%3Ccircle cx=%27160%27 cy=%270%27 r=%2780%27/%3E%3Ccircle cx=%270%27 cy=%27160%27 r=%2780%27/%3E%3Ccircle cx=%27160%27 cy=%27160%27 r=%2780%27/%3E%3Ccircle cx=%2780%27 cy=%2780%27 r=%2780%27/%3E%3Ccircle cx=%2780%27 cy=%2780%27 r=%2722%27/%3E%3C/g%3E%3C/svg%3E");
 }
 
+/* ---------- la cupola ricamata (src/shared/Ricamo.jsx) ---------- */
+.cupola {
+  display: block;
+  width: min(62vw, 280px);
+  height: auto;
+  margin: 0 auto;
+  overflow: visible;
+}
+
+.cupola path {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.cupola__line path {
+  stroke: var(--gold);
+  stroke-width: 1.8;
+}
+
+.cupola__ricamo path {
+  stroke: var(--bordeaux);
+  stroke-width: 2;
+}
+
+/* le spine (forme chiuse) sono piene */
+.cupola__ricamo .spina {
+  fill: var(--gold);
+  stroke-width: 1.2;
+}
+
+:root[data-theme='dark'] .cupola__ricamo .spina {
+  fill: var(--gold-light);
+}
+
+.cupola__luna path {
+  fill: var(--gold);
+  stroke: none;
+}
+
+:root[data-theme='dark'] .cupola__line path {
+  stroke: var(--gold-light);
+}
+
+:root[data-theme='dark'] .cupola__ricamo path {
+  stroke: #f4e0d5;
+}
+
+:root[data-theme='dark'] .cupola__luna path {
+  fill: var(--gold-light);
+}
+
+/* si disegna da sola, tratto dopo tratto, quando entra nello schermo
+   (il contenitore riceve .is-in da src/shared/reveal.js) e l'intro col logo è finita */
+.cupola .draw {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+
+:root:not(.intro-on) .is-in > .cupola .draw {
+  animation: ricamo 1.3s calc(0.1s + var(--i, 0) * 0.16s) var(--ease-in-out) forwards;
+}
+
+.cupola .spina {
+  fill-opacity: 0;
+  transition: fill-opacity 0.7s 1.5s var(--ease-out);
+}
+
+:root:not(.intro-on) .is-in > .cupola .spina {
+  fill-opacity: 1;
+}
+
+.cupola__luna {
+  opacity: 0;
+}
+
+:root:not(.intro-on) .is-in > .cupola .cupola__luna {
+  animation: luna 0.8s 1.8s var(--ease-out) forwards;
+}
+
+@keyframes ricamo {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes luna {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 6px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.fregio {
+  display: block;
+  width: 170px;
+  height: auto;
+}
+
+.fregio__ricamo path {
+  fill: none;
+  stroke: var(--gold);
+  stroke-width: 1.4;
+  stroke-linecap: round;
+}
+
+.fregio__ricamo path:last-child,
+.fregio__ricamo g path:last-child {
+  fill: var(--gold);
+  stroke: none;
+}
+
+.fregio__cupola {
+  fill: var(--bordeaux);
+}
+
+:root[data-theme='dark'] .fregio__ricamo path {
+  stroke: var(--gold-light);
+}
+
+:root[data-theme='dark'] .fregio__ricamo path:last-child,
+:root[data-theme='dark'] .fregio__ricamo g path:last-child {
+  fill: var(--gold-light);
+}
+
+:root[data-theme='dark'] .fregio__cupola {
+  fill: var(--gold-light);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cupola .draw {
+    stroke-dashoffset: 0;
+  }
+  .cupola .spina {
+    fill-opacity: 1;
+  }
+  .cupola__luna {
+    opacity: 1;
+  }
+}
+
 /* ---------- filetto con il rombo, come nelle locandine ---------- */
 .divider {
   position: relative;

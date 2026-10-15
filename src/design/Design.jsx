@@ -6,6 +6,7 @@ import { useReveal } from '../shared/reveal'
 import SiteFooter from '../shared/SiteFooter'
 import SiteHeader from '../shared/SiteHeader'
 import { Corner, Lace, tornClip } from '../shared/Paper'
+import { Cupola, Fregio } from '../shared/Ricamo'
 
 // Guida all'identità di GMI Torino: la base su cui costruire il sito ufficiale e ogni evento.
 // I valori sono gli stessi di src/styles/base.css.
@@ -188,6 +189,20 @@ export default function Design() {
               </span>
             </li>
           </ul>
+        </section>
+
+        <section className="id-sec" aria-labelledby="cu-t">
+          <h2 id="cu-t" className="id-sec__title reveal">{tr({ it: 'La cupola ricamata', en: 'The embroidered dome' })}</h2>
+          <p className="id-sec__lede reveal">
+            {tr({
+              it: 'Nel nostro logo la cupola della Mole è riempita da un arabesco: Torino e arte islamica nello stesso segno. Sul sito la ridisegniamo a tratto: la cupola intera chiude l’apertura della home e si disegna da sola; una fascia più piccola, il fregio, separa le sezioni.',
+              en: 'In our logo the dome of the Mole is filled with an arabesque: Turin and Islamic art in one sign. On the site we redraw it as line art: the whole dome closes the home page opening and draws itself; a smaller band, the frieze, separates sections.',
+            })}
+          </p>
+          <div className="cupola-demo" data-reveal>
+            <Cupola />
+          </div>
+          <Fregio className="fregio-demo" />
         </section>
 
         <section className="id-sec" aria-labelledby="to-t">
