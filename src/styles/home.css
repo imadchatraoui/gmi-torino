@@ -73,6 +73,10 @@
     sheen 5s 2s var(--ease-in-out) infinite;
 }
 
+.hero.is-off .hero__ar {
+  animation-play-state: paused;
+}
+
 :root[data-theme='dark'] .hero__ar {
   background-image: linear-gradient(100deg, var(--gold-light) 42%, #fff1c8 50%, var(--gold-light) 58%);
 }

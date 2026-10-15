@@ -184,6 +184,14 @@ Nuova direzione decisa con l'utente (dettagli in YMHS_BRIEF.md, "Aggiornamento 1
   corretti (114 e 166 KB), nomi dei colori tradotti (Cream, Burgundy, Gold…), footer "Torino, Italy".
   "Torino" resta Torino anche in inglese, come il nome della sezione.
 
+**Quinto giro (notte)**
+- Home: il riflesso d'oro sulla calligrafia si ferma quando l'hero esce dallo schermo (prima si ridisegnava a ogni
+  fotogramma anche fuori vista: da 144 a 40 ridisegni in uno scroll di prova).
+- Lo scatto singolo che restava nella misura della home capita solo se si scorre nei primi ~3 s dopo il caricamento
+  (la pagina finisce di prepararsi); sul telefono in quei secondi c'è l'intro. Con 1 s di attesa: 0 fotogrammi persi.
+- `scripts/perf-scroll.mjs` accetta un CSS di prova come terzo argomento (utile per capire cosa rallenta).
+- Home a 375x667 chiaro/scuro, IT/EN: ok, niente testo coperto dalla barra in basso.
+
 ## Manca / idee per le prossime run
 - [ ] Provare su iPhone vero (sticky + barra di Safari, intro video in risparmio energetico).
 - [ ] Come aggiungere eventi in futuro (file dati, pannello admin o tramite Claude): da chiedere all'utente.

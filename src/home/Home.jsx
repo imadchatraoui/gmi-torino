@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react'
 import { EVENTS } from '../data/events'
 import { CONTACTS, SECTIONS, WIP } from '../data/site'
 import { daysUntil, eventStatus } from '../data/when'
@@ -30,8 +31,17 @@ function countdown(iso, lang) {
 
 function Hero({ next, lang, theme }) {
   const tr = (v) => t(v, lang)
+  const ref = useRef(null)
+  // fuori schermo il riflesso sulla calligrafia si ferma: niente ridisegni inutili durante lo scroll
+  useEffect(() => {
+    const el = ref.current
+    if (!el || !('IntersectionObserver' in window)) return
+    const io = new IntersectionObserver(([e]) => el.classList.toggle('is-off', !e.isIntersecting))
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
   return (
-    <section id="top" className="hero" aria-labelledby="hero-title">
+    <section id="top" ref={ref} className="hero" aria-labelledby="hero-title">
       <div className="hero__body">
         <p className="hero__kicker">GMI Torino</p>
         <h1 id="hero-title" className="hero__title">

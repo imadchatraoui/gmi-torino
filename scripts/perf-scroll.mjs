@@ -13,6 +13,7 @@ const send=(method,params={})=>new Promise(r=>{const i=++id;pending.set(i,r);ws.
 await send('Emulation.setDeviceMetricsOverride',{width:375,height:812,deviceScaleFactor:2,mobile:true});
 await send('Emulation.setCPUThrottlingRate',{rate:4});
 await send('Page.enable'); await send('Page.navigate',{url}); await sleep(2500);
+if (process.argv[3]) { await send('Runtime.evaluate',{expression:`document.head.insertAdjacentHTML('beforeend', ${JSON.stringify('<style>'+process.argv[3]+'</style>')})`}); await sleep(300); }
 await send('Runtime.evaluate',{expression:`window.__f=[];window.__y=[];(function t(ts){__f.push(ts);__y.push(Math.round(scrollY));requestAnimationFrame(t)})(performance.now())`});
 await send('Input.synthesizeScrollGesture',{x:180,y:500,yDistance:-6000,speed:1500,gestureSourceType:'touch'});
 const r = await send('Runtime.evaluate',{expression:`(()=>{const d=[];for(let i=1;i<__f.length;i++)d.push(__f[i]-__f[i-1]);d.sort((a,b)=>a-b);return JSON.stringify({frames:d.length,p50:d[d.length>>1].toFixed(1),p95:d[Math.floor(d.length*.95)].toFixed(1),max:d[d.length-1].toFixed(1),over33:d.filter(x=>x>33).length, y:scrollY, slowAt:__f.map((f,i)=>i&&f-__f[i-1]>33?__y[i-1]:null).filter(v=>v!==null)})})()`,returnByValue:true});
