@@ -42,16 +42,40 @@ Branch: `ymhs-site` (creato da `main` dopo il commit "snapshot pre-YMHS"). Nient
   senza numeri), timbro spostato sulla colonna del testo. Mobile invariato.
 - Revisione finale di PokeScroll/HeroBowl: nessun problema trovato.
 
+### Run 2 — 2026-10-15
+- Verifica a 375x812 vera: Chrome headless su macOS non scende sotto 500 px di larghezza (gli screenshot con
+  `--window-size=375,...` erano tagliati, il sito no). Nuovi script con emulazione CDP:
+  `scripts/shot-mobile.mjs` (screenshot 375x812 @2x a varie posizioni di scroll, opzione `--reduce`) e
+  `scripts/perf-scroll.mjs` (scroll touch con CPU rallentata 4x, misura i frame).
+- Misurato: home e /menu/ a **16,7 ms/frame costanti, 0 frame persi** con CPU 4x durante lo scroll.
+- Header sticky reso opaco, senza `backdrop-filter` (il testo traspariva sotto e il blur sopra le sezioni sticky
+  animate costa a ogni frame); altezza header ora include `safe-area-inset-top` (iPhone con `viewport-fit=cover`).
+- Footer: punto separatore centrato, "Sezione di Torino" non va più a capo a metà.
+- Ricontrollati: entrambe le opzioni si aprono, testo ingredienti identico al brief, `prefers-reduced-motion`
+  (bowl aperte, niente sticky), nessun overflow orizzontale (scrollWidth = 375).
+- Il loop si è fermato qui: quello che resta richiede decisioni o un telefono vero (sotto).
+
 ## Manca / idee per le prossime run
 - [ ] Provare su un iPhone vero (scroll sticky + barra Safari): da fare quando il dev server/anteprima è disponibile.
 - [ ] Pulizia dipendenze non più usate (react, react-dom, @vitejs/plugin-react, three, ogl, gsap, framer-motion, tailwind) — solo dopo conferma dell'utente.
 - [ ] Decidere hosting e DNS (utente).
+
+## Da decidere (utente)
+- **Push** del branch `ymhs-site` su GitHub (non fatto).
+- **Deploy** su `gmitorino.org`: la cartella `dist/` è statica (`/`, `/menu/`, `404.html`), va bene su
+  qualsiasi hosting statico; nessun rewrite necessario per `/menu`.
+- **Video/frame Higgsfield**: se arrivano, impostare `media` in `src/data/menu.js` (`type: 'video'` o `'frames'`),
+  istruzioni nel README. Senza, resta l'animazione SVG in codice.
+- Titoli delle due opzioni e nota allergie (vedi "Decisioni prese").
 
 ## Come provare
 ```bash
 npm install
 npm run dev        # http://localhost:5173/  e  http://localhost:5173/menu/
 npm run build && npm run preview
+# screenshot mobile e test fluidità (con `npm run preview -- --port 4179` acceso):
+node scripts/shot-mobile.mjs http://localhost:4179/menu/ /tmp/menu.png 0,2000,4000
+node scripts/perf-scroll.mjs http://localhost:4179/menu/
 ```
 Su telefono: `npm run dev -- --host` e aprire l'IP del Mac dalla stessa rete Wi-Fi.
 
@@ -64,4 +88,4 @@ Su telefono: `npm run dev -- --host` e aprire l'IP del Mac dalla stessa rete Wi-
   cambiarli in `src/data/menu.js` se non piacciono. La lista ingredienti è il testo esatto.
 - Il numero del referente presente sul poster non è stato messo sul sito (dato personale).
 - Nota "Allergie o intolleranze? Chiedi allo staff al banco del pranzo." — da confermare.
-- Verifica visiva fatta con Chrome headless su copie statiche (375x812) perché l'avvio del dev server di anteprima è stato rifiutato.
+- Verifica visiva fatta con Chrome headless su copie statiche (375x812) perché l'avvio del dev server di anteprima è stato rifiutato (anche in run 2).
