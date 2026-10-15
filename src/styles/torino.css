@@ -111,35 +111,35 @@
 
 /* l'apertura: skyline che sale, binario che si disegna, fermate una dopo l'altra.
    Parte quando l'intro col logo è finita (classe .intro-on su <html>). */
-:root:not(.intro-on) .skyline__far {
+:root:not(.intro-on) .hero__city .skyline__far {
   animation: sky-up 1.4s var(--ease-out) both;
 }
 
-:root:not(.intro-on) .skyline__near {
+:root:not(.intro-on) .hero__city .skyline__near {
   animation: sky-up 1.2s 0.1s var(--ease-out) both;
 }
 
-:root:not(.intro-on) .metro__line::before {
+:root:not(.intro-on) .hero__city .metro__line::before {
   animation: rail 1s 0.35s var(--ease-in-out) both;
 }
 
-:root:not(.intro-on) .metro__stop {
+:root:not(.intro-on) .hero__city .metro__stop {
   animation: stop-in 0.6s var(--ease-out) both;
 }
 
-:root:not(.intro-on) .metro__stop:nth-child(1) {
+:root:not(.intro-on) .hero__city .metro__stop:nth-child(1) {
   animation-delay: 0.45s;
 }
-:root:not(.intro-on) .metro__stop:nth-child(2) {
+:root:not(.intro-on) .hero__city .metro__stop:nth-child(2) {
   animation-delay: 0.6s;
 }
-:root:not(.intro-on) .metro__stop:nth-child(3) {
+:root:not(.intro-on) .hero__city .metro__stop:nth-child(3) {
   animation-delay: 0.75s;
 }
-:root:not(.intro-on) .metro__stop:nth-child(4) {
+:root:not(.intro-on) .hero__city .metro__stop:nth-child(4) {
   animation-delay: 0.9s;
 }
-:root:not(.intro-on) .metro__stop:nth-child(5) {
+:root:not(.intro-on) .hero__city .metro__stop:nth-child(5) {
   animation-delay: 1.05s;
 }
 

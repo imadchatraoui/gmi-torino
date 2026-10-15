@@ -5,6 +5,7 @@ import Intro from '../shared/Intro'
 import { t, usePrefs } from '../shared/prefs'
 import SiteFooter from '../shared/SiteFooter'
 import SiteHeader from '../shared/SiteHeader'
+import Skyline from '../shared/Skyline'
 
 // Il menu del prossimo evento con menu. gmitorino.org/menu resta sempre questo indirizzo.
 const EVENT = eventById('ymhs')
@@ -77,6 +78,9 @@ export default function MenuPage() {
             <figcaption>{tr({ it: 'Corano, Al-Baqarah 2:172', en: 'Quran, Al-Baqarah 2:172' })}</figcaption>
           </figure>
         </section>
+        <div className="menu-city">
+          <Skyline />
+        </div>
       </main>
       <SiteFooter />
     </>

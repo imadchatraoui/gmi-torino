@@ -360,6 +360,17 @@
   color: var(--text-3);
 }
 
+/* Torino in chiusura, appoggiata sul footer */
+.menu-city {
+  position: relative;
+  height: 150px;
+  margin: 48px 0 -48px;
+}
+
+.menu-city .skyline {
+  height: 150px;
+}
+
 /* ---------- desktop ---------- */
 @media (min-width: 860px) {
   .choices {
