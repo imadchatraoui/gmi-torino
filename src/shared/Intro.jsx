@@ -18,11 +18,24 @@ export default function Intro() {
   const [done, setDone] = useState(false)
   const [gone, setGone] = useState(false)
   const video = useRef(null)
+  const cleanupLock = useRef(() => {})
 
   useEffect(() => {
     if (!show) return
-    document.documentElement.style.overflow = 'hidden'
-    document.documentElement.classList.add('intro-on')
+    // blocco dello scroll che funziona anche su iPhone (overflow: hidden da solo non basta):
+    // si parte sempre dall'inizio della pagina e il dito sull'intro non muove la pagina sotto
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual'
+    window.scrollTo(0, 0)
+    const html = document.documentElement
+    html.classList.add('intro-on', 'scroll-lock')
+    const block = (e) => e.preventDefault()
+    window.addEventListener('touchmove', block, { passive: false })
+    window.addEventListener('wheel', block, { passive: false })
+    cleanupLock.current = () => {
+      window.removeEventListener('touchmove', block)
+      window.removeEventListener('wheel', block)
+      html.classList.remove('scroll-lock')
+    }
     const finish = () => setDone(true)
     const v = video.current
     // se il telefono blocca l'autoplay (es. risparmio energetico) si chiude dopo un attimo
@@ -34,7 +47,8 @@ export default function Intro() {
 
   useEffect(() => {
     if (!done) return
-    document.documentElement.style.overflow = ''
+    cleanupLock.current()
+    window.scrollTo(0, 0)
     document.documentElement.classList.remove('intro-on')
     const id = setTimeout(() => setGone(true), 700)
     return () => clearTimeout(id)
