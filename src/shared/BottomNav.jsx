@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
 import { SECTIONS } from '../data/site'
+import { t, usePrefs } from './prefs'
 import { observeSections } from './reveal'
 
 // Barra di navigazione flottante per il telefono: compare dopo l'hero,
 // l'indicatore scivola sotto la sezione in vista.
 export default function BottomNav() {
+  usePrefs()
   const [active, setActive] = useState(null)
   const [shown, setShown] = useState(false)
   const nav = useRef(null)
@@ -44,7 +46,7 @@ export default function BottomNav() {
       <span ref={pill} className="bottom-nav__pill" aria-hidden="true" />
       {SECTIONS.map((s) => (
         <a key={s.id} href={`#${s.id}`} aria-current={active === s.id ? 'true' : undefined}>
-          {s.label}
+          {t(s.label)}
         </a>
       ))}
     </nav>

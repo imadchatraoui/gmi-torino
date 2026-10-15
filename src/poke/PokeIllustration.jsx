@@ -5,9 +5,9 @@ import { clamp01, easeInOut, easeOut } from './timeline'
 
 // Angoli (gradi, y verso il basso) dei 4 toppings attorno al riso.
 const SLOTS = [-135, -45, 45, 135]
-const SLOT_R = 92
-const EXPLODE = 84
-const ART_SCALE = 1.45
+const SLOT_R = 94
+const LIFT = 18 // quanto si stacca l'ingrediente in primo piano (unità del viewBox)
+const ART_SCALE = 1.6
 const pct = (v) => (v / VIEW) * 100
 
 const Svg = ({ children }) => (
@@ -19,15 +19,15 @@ const Svg = ({ children }) => (
 function Marker({ x, y, n }) {
   return (
     <g transform={`translate(${x.toFixed(1)} ${y.toFixed(1)})`}>
-      <circle r="15" fill="#004a73" />
-      <circle r="15" fill="none" stroke="#ffffff" strokeWidth="2" />
+      <circle r="15" fill="#6E0B0E" />
+      <circle r="15" fill="none" stroke="#FFFCEB" strokeWidth="2" />
       <text
         y="5"
         textAnchor="middle"
-        fontFamily="'Poppins', system-ui, sans-serif"
+        fontFamily="-apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, sans-serif"
         fontSize="14"
-        fontWeight="500"
-        fill="#ffffff"
+        fontWeight="600"
+        fill="#FFFCEB"
       >
         {n}
       </text>
@@ -42,7 +42,7 @@ function Marker({ x, y, n }) {
  *
  * API imperativa: ref.current.update(p, timeline)
  */
-const PokeIllustration = forwardRef(function PokeIllustration({ items, label, markers = true }, ref) {
+const PokeIllustration = forwardRef(function PokeIllustration({ items, label, markers = true, open = false }, ref) {
   const uid = useId().replace(/:/g, '')
   const lidRef = useRef(null)
   const ringRef = useRef(null)
@@ -81,20 +81,29 @@ const PokeIllustration = forwardRef(function PokeIllustration({ items, label, ma
         lidRef.current.style.opacity = String(1 - clamp01((lt - 0.7) / 0.3))
       }
 
+      // giro degli ingredienti: quello di turno si solleva, gli altri si attenuano
+      const focus = layout.map((l) => {
+        const t = tl.local(p, l.i)
+        return t > 0 && t < 1 ? Math.sin(t * Math.PI) : 0
+      })
+      const strongest = Math.max(0, ...focus)
+
       layout.forEach((l) => {
         const t = tl.local(p, l.i)
+        const f = focus[l.i]
         if (l.rice) {
-          if (ringRef.current) ringRef.current.style.opacity = String(t <= 0 ? 0 : t < 1 ? Math.sin(t * Math.PI) * 0.9 + 0.1 * t : 0.25)
-          if (riceMarkerRef.current) riceMarkerRef.current.style.opacity = String(clamp01((t - 0.35) / 0.4))
+          if (ringRef.current) ringRef.current.style.opacity = String(f)
+          if (riceMarkerRef.current) riceMarkerRef.current.style.opacity = String(clamp01((t - 0.35) / 0.3))
           return
         }
         const el = layerRefs.current[l.i]
         if (!el) return
-        const e = easeOut(t)
-        const pop = Math.sin(t * Math.PI) * 0.12
-        el.style.transform = `translate3d(${pct(l.dir.x * EXPLODE * e)}%, ${pct(l.dir.y * EXPLODE * e)}%, 0) scale(${1 + pop})`
+        const lift = easeOut(f)
+        const dim = 1 - 0.55 * Math.max(0, strongest - f)
+        el.style.transform = `translate3d(${pct(l.dir.x * LIFT * lift)}%, ${pct(l.dir.y * LIFT * lift)}%, 0) scale(${1 + 0.13 * lift})`
+        el.style.opacity = String(dim)
         const m = markerRefs.current[l.i]
-        if (m) m.style.opacity = String(clamp01((t - 0.55) / 0.35))
+        if (m) m.style.opacity = String(clamp01((t - 0.35) / 0.3))
       })
     },
   }), [layout])
@@ -106,13 +115,13 @@ const PokeIllustration = forwardRef(function PokeIllustration({ items, label, ma
       <div className="poke-art__layer">
         <Svg>
           <Bowl uid={uid} />
-          <RiceBed />
+          <RiceBed uid={uid} />
         </Svg>
       </div>
       {riceIndex >= 0 && (
         <div className="poke-art__layer poke-art__fade" ref={ringRef} style={{ opacity: 0 }}>
           <Svg>
-            <circle cx={C} cy={C} r={FOOD_R - 2} fill="none" stroke="#ffffff" strokeOpacity="0.5" strokeWidth="2.5" strokeDasharray="2 9" strokeLinecap="round" />
+            <circle cx={C} cy={C} r={FOOD_R - 2} fill="none" stroke="#E6BE6A" strokeOpacity="0.8" strokeWidth="2.5" strokeDasharray="2 9" strokeLinecap="round" />
           </Svg>
         </div>
       )}
@@ -137,18 +146,20 @@ const PokeIllustration = forwardRef(function PokeIllustration({ items, label, ma
               </g>
               {markers && (
                 <g ref={(el) => { markerRefs.current[l.i] = el }} style={{ opacity: 0 }}>
-                  <Marker x={l.cx + l.dir.x * 80} y={l.cy + l.dir.y * 80} n={l.i + 1} />
+                  <Marker x={l.cx + l.dir.x * 72} y={l.cy + l.dir.y * 72} n={l.i + 1} />
                 </g>
               )}
             </Svg>
           </div>
         ),
       )}
-      <div className="poke-art__layer poke-art__move poke-art__lid" ref={lidRef}>
-        <Svg>
-          <Lid uid={uid} label={label} />
-        </Svg>
-      </div>
+      {!open && (
+        <div className="poke-art__layer poke-art__move poke-art__lid" ref={lidRef}>
+          <Svg>
+            <Lid uid={uid} label={label} />
+          </Svg>
+        </div>
+      )}
     </div>
   )
 })

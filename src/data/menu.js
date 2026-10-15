@@ -1,19 +1,19 @@
 // Il menu del pranzo YMHS. I nomi degli ingredienti sono quelli esatti forniti da GMI.
 //
-// `art` sceglie il disegno SVG dell'ingrediente (vedi src/poke/art.jsx).
-// `media` (opzionale) sostituisce l'animazione disegnata in codice con frame o video
+// `art` sceglie il disegno vettoriale dell'ingrediente (vedi src/poke/art.jsx).
+// `media` (opzionale) sostituisce l'animazione disegnata con frame o video
 // scrubbati dallo scroll — istruzioni nel README, sezione "Animazione poke".
 export const POKES = [
   {
     id: 'poke-1',
-    label: 'Opzione 1',
-    title: 'Tonno & avocado al miele',
+    label: { it: 'Opzione 1', en: 'Option 1' },
+    title: { it: 'Tonno & avocado al miele', en: 'Tuna & honeyed avocado' },
     items: [
-      { name: 'Riso nero', art: 'rice' },
-      { name: 'Avocado + miele di acacia', art: 'avocadoHoney' },
-      { name: 'Tonno pescato', art: 'tuna' },
-      { name: 'Ricotta/formaggio light', art: 'ricotta' },
-      { name: 'Cavolo cappuccino rosso', art: 'redCabbage' },
+      { name: { it: 'Riso nero', en: 'Black rice' }, art: 'rice' },
+      { name: { it: 'Avocado + miele di acacia', en: 'Avocado + acacia honey' }, art: 'avocadoHoney' },
+      { name: { it: 'Tonno pescato', en: 'Wild-caught tuna' }, art: 'tuna' },
+      { name: { it: 'Ricotta/formaggio light', en: 'Ricotta/light cheese' }, art: 'ricotta' },
+      { name: { it: 'Cavolo cappuccino rosso', en: 'Red cabbage' }, art: 'redCabbage' },
     ],
     media: null,
     // Esempi:
@@ -22,14 +22,14 @@ export const POKES = [
   },
   {
     id: 'poke-2',
-    label: 'Opzione 2',
-    title: 'Hummus, pollo & barbabietola',
+    label: { it: 'Opzione 2', en: 'Option 2' },
+    title: { it: 'Hummus, pollo & barbabietola', en: 'Hummus, chicken & beetroot' },
     items: [
-      { name: 'Barbabietola', art: 'beet' },
-      { name: 'Ceci in hummus con un po\' di paprika', art: 'hummus' },
-      { name: 'Avocado con olio evo sale e limone', art: 'avocadoLemon' },
-      { name: 'Straccetti di pollo con salsa tahina', art: 'chicken' },
-      { name: 'Riso nero', art: 'rice' },
+      { name: { it: 'Barbabietola', en: 'Beetroot' }, art: 'beet' },
+      { name: { it: 'Ceci in hummus con un po\' di paprika', en: 'Chickpea hummus with a little paprika' }, art: 'hummus' },
+      { name: { it: 'Avocado con olio evo sale e limone', en: 'Avocado with extra virgin olive oil, salt and lemon' }, art: 'avocadoLemon' },
+      { name: { it: 'Straccetti di pollo con salsa tahina', en: 'Chicken strips with tahini sauce' }, art: 'chicken' },
+      { name: { it: 'Riso nero', en: 'Black rice' }, art: 'rice' },
     ],
     media: null,
   },

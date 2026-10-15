@@ -2,10 +2,10 @@
 import { EVENT } from './event'
 
 export const SECTIONS = [
-  { id: 'chi-siamo', label: 'Chi siamo' },
-  { id: 'eventi', label: 'Eventi' },
-  { id: 'archivio', label: 'Archivio' },
-  { id: 'contatti', label: 'Contatti' },
+  { id: 'chi-siamo', label: { it: 'Chi siamo', en: 'About us' } },
+  { id: 'eventi', label: { it: 'Eventi', en: 'Events' } },
+  { id: 'archivio', label: { it: 'Archivio', en: 'Archive' } },
+  { id: 'contatti', label: { it: 'Contatti', en: 'Contact' } },
 ]
 
 export const ABOUT = {

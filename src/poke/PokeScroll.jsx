@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef } from 'react'
+import { t, usePrefs } from '../shared/prefs'
 import FrameSequence from './FrameSequence'
 import PokeIllustration from './PokeIllustration'
 import VideoScrub from './VideoScrub'
@@ -14,7 +15,8 @@ const reducedMotion = () =>
  * e la lista degli ingredienti. Niente re-render React durante lo scroll:
  * solo transform/opacity scritti direttamente sugli elementi.
  */
-export default function PokeScroll({ poke, index }) {
+export default function PokeScroll({ poke }) {
+  const { lang } = usePrefs()
   const { id, label, title, items, media } = poke
   const sectionRef = useRef(null)
   const stickyRef = useRef(null)
@@ -101,7 +103,7 @@ export default function PokeScroll({ poke, index }) {
     ) : media?.type === 'video' ? (
       <VideoScrub ref={rendererRef} src={media.src} poster={media.poster} />
     ) : (
-      <PokeIllustration ref={rendererRef} items={items} label={label} />
+      <PokeIllustration ref={rendererRef} items={items} label={t(label, lang)} />
     )
 
   return (
@@ -117,26 +119,21 @@ export default function PokeScroll({ poke, index }) {
           <span ref={barRef} />
         </div>
         <header className="poke__head">
-          <p className="eyebrow">
-            {label} <span aria-hidden="true">·</span> {items.length} ingredienti
-          </p>
+          <p className="poke__label">{t(label, lang)}</p>
           <h2 id={`${id}-title`} className="poke__title">
-            <span className="poke__num" aria-hidden="true">
-              {String(index + 1).padStart(2, '0')}
-            </span>
-            {title}
+            {t(title, lang)}
           </h2>
         </header>
         <div className="poke__stage">
           {renderer}
           <p className="poke__hint" ref={hintRef} aria-hidden="true">
-            Scorri per aprire
+            {t({ it: 'Scorri per aprire', en: 'Scroll to open' }, lang)}
           </p>
         </div>
         <ol className="poke__list">
           {items.map((item, i) => (
             <li
-              key={item.name}
+              key={`${item.art}-${i}`}
               ref={(el) => {
                 itemRefs.current[i] = el
               }}
@@ -144,7 +141,7 @@ export default function PokeScroll({ poke, index }) {
               <span className="poke__badge" aria-hidden="true">
                 {i + 1}
               </span>
-              <span className="poke__name">{item.name}</span>
+              <span className="poke__name">{t(item.name, lang)}</span>
             </li>
           ))}
         </ol>
