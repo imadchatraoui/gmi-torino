@@ -343,59 +343,123 @@ function AvocadoLemon({ uid }) {
 
 /* ---------- cubetti (tonno, barbabietola) ---------- */
 
-function Cube({ s, top, side, front, lines, linesOpacity = 0.4 }) {
-  const d = s * 0.28 // spessore visibile
-  return (
-    <g>
-      <rect x={-s / 2 + d * 0.6} y={-s / 2 + d} width={s} height={s} rx="3" fill="#2A0B0D" opacity="0.22" />
-      <path d={`M ${-s / 2} ${s / 2} L ${-s / 2 + d * 0.5} ${s / 2 + d * 0.6} L ${s / 2 + d * 0.5} ${s / 2 + d * 0.6} L ${s / 2} ${s / 2} Z`} fill={front} />
-      <path d={`M ${s / 2} ${-s / 2} L ${s / 2 + d * 0.5} ${-s / 2 + d * 0.6} L ${s / 2 + d * 0.5} ${s / 2 + d * 0.6} L ${s / 2} ${s / 2} Z`} fill={side} />
-      <rect x={-s / 2} y={-s / 2} width={s} height={s} rx="2.5" fill={top} />
-      {lines && (
-        <path
-          d={`M ${-s / 2 + 2} ${-s * 0.12} Q 0 ${-s * 0.32} ${s / 2 - 2} ${-s * 0.1} M ${-s / 2 + 2} ${s * 0.16} Q 0 ${-s * 0.02} ${s / 2 - 2} ${s * 0.2}`}
-          fill="none"
-          stroke={lines}
-          strokeOpacity={linesOpacity}
-          strokeWidth="1.2"
-          strokeLinecap="round"
-        />
-      )}
-      <rect x={-s / 2 + 2.5} y={-s / 2 + 2} width={s * 0.5} height={s * 0.22} rx="1.5" fill="#FFFFFF" opacity="0.22" />
-    </g>
-  )
+// quadrilatero irregolare: i cubetti tagliati a mano non sono mai quadrati perfetti
+function jitterQuad(rand, s, amt = 0.14) {
+  const h = s / 2
+  const j = () => (rand() - 0.5) * 2 * amt * s
+  return [
+    [-h + j(), -h + j()],
+    [h + j(), -h + j()],
+    [h + j(), h + j()],
+    [-h + j(), h + j()],
+  ]
 }
 
-function Cubes({ uid, seed, count, size, ...look }) {
-  const pts = scatter(rng(seed), count, 38, size * 1.02).sort((a, b) => a.y - b.y)
+const quadPath = (q) => `M ${q.map((p) => `${f1(p[0])} ${f1(p[1])}`).join(' L ')} Z`
+
+function makeCubes(seed, count, size, minDist) {
+  const rand = rng(seed)
+  return scatter(rand, count, 38, minDist)
+    .sort((a, b) => a.y - b.y)
+    .map((p) => {
+      const sz = size * (0.82 + p.k * 0.34)
+      const top = jitterQuad(rand, sz)
+      // spessore visibile verso il basso a destra (luce da in alto a sinistra)
+      const dx = sz * 0.16
+      const dy = sz * 0.24
+      const side = [top[1], [top[1][0] + dx, top[1][1] + dy], [top[2][0] + dx, top[2][1] + dy], top[2]]
+      const front = [top[3], top[2], [top[2][0] + dx, top[2][1] + dy], [top[3][0] + dx, top[3][1] + dy]]
+      const bend = (rand() - 0.5) * sz * 0.5
+      return { ...p, sz, top, side, front, bend, rot: (p.rot % 50) - 25 }
+    })
+}
+
+const TUNA = makeCubes(11, 12, 19, 18)
+const BEET = makeCubes(23, 12, 16, 15)
+
+function Tuna({ uid }) {
   return (
     <g>
-      <SoftShadow id={`${uid}-cubes-sh`} rx={50} ry={46} dx={4} dy={6} opacity={0.22} />
-      {pts.map((p, i) => (
-        <g key={i} transform={`translate(${f1(p.x)} ${f1(p.y)}) rotate(${((p.rot % 40) - 20).toFixed(0)})`}>
-          <Cube s={size * (0.86 + p.k * 0.26)} {...look} />
+      <defs>
+        <radialGradient id={`${uid}-tuna`} cx="34%" cy="30%" r="80%">
+          <stop offset="0%" stopColor="#D2485A" />
+          <stop offset="55%" stopColor="#B02B3E" />
+          <stop offset="100%" stopColor="#8C1A2C" />
+        </radialGradient>
+      </defs>
+      <SoftShadow id={`${uid}-tuna-sh`} rx={50} ry={46} dx={4} dy={6} opacity={0.24} />
+      {TUNA.map((c, i) => (
+        <g key={i} transform={`translate(${f1(c.x)} ${f1(c.y)}) rotate(${c.rot.toFixed(0)})`}>
+          <path d={quadPath(c.top)} fill="#2A0B0D" opacity="0.25" transform={`translate(${f1(c.sz * 0.22)} ${f1(c.sz * 0.34)})`} />
+          <path d={quadPath(c.front)} fill="#741527" />
+          <path d={quadPath(c.side)} fill="#5E0F1F" />
+          <path d={quadPath(c.top)} fill={`url(#${uid}-tuna)`} />
+          {/* venature del tonno crudo */}
+          <path
+            d={`M ${f1(-c.sz * 0.42)} ${f1(-c.sz * 0.1)} Q ${f1(c.bend)} ${f1(-c.sz * 0.36)} ${f1(c.sz * 0.42)} ${f1(-c.sz * 0.05)}`}
+            fill="none"
+            stroke="#F2A3AA"
+            strokeOpacity="0.5"
+            strokeWidth="1.1"
+            strokeLinecap="round"
+          />
+          <path
+            d={`M ${f1(-c.sz * 0.4)} ${f1(c.sz * 0.2)} Q ${f1(c.bend * 0.6)} ${f1(c.sz * 0.02)} ${f1(c.sz * 0.38)} ${f1(c.sz * 0.24)}`}
+            fill="none"
+            stroke="#F2A3AA"
+            strokeOpacity="0.32"
+            strokeWidth="0.9"
+            strokeLinecap="round"
+          />
+          {/* lucido */}
+          <ellipse cx={f1(-c.sz * 0.18)} cy={f1(-c.sz * 0.24)} rx={f1(c.sz * 0.2)} ry={f1(c.sz * 0.08)} fill="#FFFFFF" opacity="0.35" transform={`rotate(-12 ${f1(-c.sz * 0.18)} ${f1(-c.sz * 0.24)})`} />
         </g>
       ))}
     </g>
   )
 }
 
-const Tuna = ({ uid }) => (
-  <Cubes uid={uid} seed={11} count={11} size={19} top="#B3313F" side="#7E1C29" front="#8F2232" lines="#E58C93" />
-)
-
-const Beet = ({ uid }) => (
-  <Cubes uid={uid} seed={23} count={12} size={17} top="#8A1C4E" side="#55102F" front="#6B143D" lines="#D06A9A" linesOpacity={0.55} />
-)
+function Beet({ uid }) {
+  return (
+    <g>
+      <defs>
+        <radialGradient id={`${uid}-beet`} cx="36%" cy="30%" r="80%">
+          <stop offset="0%" stopColor="#B4316E" />
+          <stop offset="60%" stopColor="#861A4D" />
+          <stop offset="100%" stopColor="#5F0F36" />
+        </radialGradient>
+      </defs>
+      <SoftShadow id={`${uid}-beet-sh`} rx={50} ry={46} dx={4} dy={6} opacity={0.24} />
+      {BEET.map((c, i) => (
+        <g key={i} transform={`translate(${f1(c.x)} ${f1(c.y)}) rotate(${c.rot.toFixed(0)})`}>
+          <path d={quadPath(c.top)} fill="#2A0B0D" opacity="0.25" transform={`translate(${f1(c.sz * 0.22)} ${f1(c.sz * 0.34)})`} />
+          <path d={quadPath(c.front)} fill="#4E0C2C" />
+          <path d={quadPath(c.side)} fill="#3F0823" />
+          <path d={quadPath(c.top)} fill={`url(#${uid}-beet)`} />
+          {/* anelli della barbabietola */}
+          <path
+            d={`M ${f1(-c.sz * 0.38)} ${f1(c.sz * 0.36)} Q ${f1(c.sz * 0.05)} ${f1(c.sz * 0.02)} ${f1(c.sz * 0.36)} ${f1(-c.sz * 0.36)} M ${f1(-c.sz * 0.1)} ${f1(c.sz * 0.38)} Q ${f1(c.sz * 0.18)} ${f1(c.sz * 0.18)} ${f1(c.sz * 0.38)} ${f1(-c.sz * 0.05)}`}
+            fill="none"
+            stroke="#E07BAD"
+            strokeOpacity="0.4"
+            strokeWidth="0.9"
+            strokeLinecap="round"
+          />
+          <ellipse cx={f1(-c.sz * 0.16)} cy={f1(-c.sz * 0.22)} rx={f1(c.sz * 0.18)} ry={f1(c.sz * 0.08)} fill="#FFFFFF" opacity="0.4" />
+        </g>
+      ))}
+    </g>
+  )
+}
 
 /* ---------- ricotta ---------- */
 
 // contorno "a grumi": un cerchio deformato e smussato
-function lumpyPath(rand, r, bumps = 11, amp = 0.14) {
+function lumpyPath(rand, r, bumps = 11, amp = 0.14, squash = 0.86) {
   const pts = Array.from({ length: bumps }, (_, i) => {
     const a = (i / bumps) * Math.PI * 2
     const rr = r * (1 + (rand() - 0.5) * 2 * amp)
-    return [Math.cos(a) * rr, Math.sin(a) * rr * 0.86]
+    return [Math.cos(a) * rr, Math.sin(a) * rr * squash]
   })
   const mid = (p, q) => [(p[0] + q[0]) / 2, (p[1] + q[1]) / 2]
   let d = `M ${f1(mid(pts[bumps - 1], pts[0])[0])} ${f1(mid(pts[bumps - 1], pts[0])[1])}`
@@ -406,44 +470,41 @@ function lumpyPath(rand, r, bumps = 11, amp = 0.14) {
   return `${d} Z`
 }
 
+// un mucchietto morbido fatto di tanti piccoli grumi: si legge come ricotta, non come mozzarella
 const RICOTTA = (() => {
   const rand = rng(5)
-  const scoops = [
-    { x: -14, y: -12, r: 27 },
-    { x: 18, y: 6, r: 23 },
-    { x: -8, y: 22, r: 19 },
-  ].map((sc) => ({ ...sc, body: lumpyPath(rand, sc.r), top: lumpyPath(rand, sc.r * 0.55, 8, 0.2) }))
-  const crumbs = scatter(rand, 9, 44, 6).filter((c) => Math.hypot(c.x, c.y) > 30)
-  const grain = scatter(rand, 90, 40)
-  return { scoops, crumbs, grain }
+  const base = lumpyPath(rand, 40, 14, 0.12, 0.9)
+  const curds = scatter(rand, 95, 37, 4.2)
+    .map((c) => ({ ...c, r: 3.4 + c.k * 3.4, lift: 1 - Math.hypot(c.x, c.y) / 40 }))
+    .sort((a, b) => a.y - b.y)
+  const crumbs = scatter(rand, 8, 50, 6).filter((c) => Math.hypot(c.x, c.y) > 42)
+  return { base, curds, crumbs }
 })()
 
 function Ricotta({ uid }) {
   return (
     <g>
       <defs>
-        <radialGradient id={`${uid}-ric`} cx="38%" cy="32%" r="72%">
+        <radialGradient id={`${uid}-ric`} cx="40%" cy="34%" r="70%">
           <stop offset="0%" stopColor="#FFFFFF" />
-          <stop offset="60%" stopColor="#F7F2E6" />
-          <stop offset="100%" stopColor="#E4D9C3" />
+          <stop offset="70%" stopColor="#F3ECDD" />
+          <stop offset="100%" stopColor="#DCCFB5" />
         </radialGradient>
       </defs>
-      <SoftShadow id={`${uid}-ric-sh`} rx={52} ry={48} dx={4} dy={6} opacity={0.22} />
-      {RICOTTA.scoops.map((sc, i) => (
-        <g key={i} transform={`translate(${sc.x} ${sc.y})`}>
-          <path d={sc.body} fill="#B9AA8D" opacity="0.5" transform="translate(2.5 3.5)" />
-          <path d={sc.body} fill={`url(#${uid}-ric)`} />
-          <path d={sc.top} fill="#FFFFFF" opacity="0.75" transform={`translate(${f1(-sc.r * 0.22)} ${f1(-sc.r * 0.24)})`} />
+      <SoftShadow id={`${uid}-ric-sh`} rx={52} ry={48} dx={4} dy={6} opacity={0.26} />
+      <path d={RICOTTA.base} fill={`url(#${uid}-ric)`} />
+      {RICOTTA.curds.map((c, i) => (
+        <g key={i}>
+          <circle cx={f1(c.x + 0.8)} cy={f1(c.y + 1.1)} r={f1(c.r)} fill="#CDBFA2" opacity={f1(0.35 + 0.25 * (1 - c.lift))} />
+          <circle cx={f1(c.x)} cy={f1(c.y)} r={f1(c.r)} fill={c.lift > 0.55 ? '#FFFFFF' : '#F6F0E3'} />
+          <circle cx={f1(c.x - c.r * 0.3)} cy={f1(c.y - c.r * 0.35)} r={f1(c.r * 0.35)} fill="#FFFFFF" opacity="0.9" />
         </g>
       ))}
       {RICOTTA.crumbs.map((c, i) => (
-        <g key={i} transform={`translate(${f1(c.x)} ${f1(c.y)})`}>
-          <circle cx="1" cy="1.4" r={f1(2.6 + c.k * 2)} fill="#B9AA8D" opacity="0.45" />
-          <circle r={f1(2.6 + c.k * 2)} fill="#F6F0E3" />
+        <g key={`c${i}`} transform={`translate(${f1(c.x)} ${f1(c.y)})`}>
+          <circle cx="0.8" cy="1.2" r={f1(2.4 + c.k * 1.6)} fill="#B9AA8D" opacity="0.45" />
+          <circle r={f1(2.4 + c.k * 1.6)} fill="#F6F0E3" />
         </g>
-      ))}
-      {RICOTTA.grain.map((g, i) => (
-        <circle key={i} cx={f1(g.x)} cy={f1(g.y)} r={f1(0.5 + g.k * 0.7)} fill="#D8CCB2" opacity="0.65" />
       ))}
     </g>
   )
@@ -531,41 +592,54 @@ function Hummus({ uid }) {
 
 /* ---------- straccetti di pollo con salsa tahina ---------- */
 
-const STRIPS = [
-  [-20, -31, 28, 36], [9, -33, 20, 30], [-35, -7, 34, 32], [-6, -9, 24, 38], [23, -11, 16, 30],
-  [-22, 18, 30, 36], [5, 16, 22, 34], [29, 15, 34, 28], [-6, 39, 26, 32],
-]
-const TAHINI = 'M -32 -36 C -14 -28 -24 -12 -6 -8 S 4 10 18 12 S 36 26 30 40'
+// straccetti: strisce sottili e irregolari, bordi rosolati, segni della piastra
+const STRIPS = (() => {
+  const rand = rng(61)
+  const place = [
+    [-22, -30, 24], [8, -34, 16], [-36, -8, 32], [-8, -10, 20], [22, -12, 12],
+    [-24, 16, 28], [4, 14, 18], [28, 14, 30], [-8, 36, 22],
+  ]
+  return place.map(([x, y, r]) => {
+    const w = 30 + rand() * 12
+    const h = 10 + rand() * 3
+    const n = 6
+    const topEdge = Array.from({ length: n + 1 }, (_, i) => [-w / 2 + (w * i) / n, -h / 2 + (rand() - 0.5) * 3])
+    const botEdge = Array.from({ length: n + 1 }, (_, i) => [w / 2 - (w * i) / n, h / 2 + (rand() - 0.5) * 3])
+    const pts = [...topEdge, ...botEdge]
+    const d = `M ${pts.map((p) => `${f1(p[0])} ${f1(p[1])}`).join(' L ')} Z`
+    return { x, y, r: r + (rand() - 0.5) * 10, w, h, d }
+  })
+})()
+const TAHINI = 'M -34 -34 C -22 -36 -24 -20 -12 -20 S -2 -6 8 -6 S 20 8 28 8 S 38 22 32 36'
 
 function Chicken({ uid }) {
-  // straccetti appoggiati quasi paralleli, con i segni della piastra
   return (
     <g>
       <defs>
         <linearGradient id={`${uid}-chk`} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#E8B873" />
-          <stop offset="60%" stopColor="#CF9450" />
-          <stop offset="100%" stopColor="#B37636" />
+          <stop offset="0%" stopColor="#EDC07C" />
+          <stop offset="55%" stopColor="#D49A55" />
+          <stop offset="100%" stopColor="#B07033" />
         </linearGradient>
       </defs>
-      <SoftShadow id={`${uid}-chk-sh`} rx={52} ry={50} dx={4} dy={6} opacity={0.24} />
-      {STRIPS.map(([x, y, r, w], i) => (
-        <g key={i} transform={`translate(${x} ${y}) rotate(${r})`}>
-          <rect x={-w / 2 + 1} y="-4.5" width={w} height="12.5" rx="4" fill="#7A4A1F" opacity="0.4" />
-          <rect x={-w / 2} y="-6.5" width={w} height="12.5" rx="4" fill={`url(#${uid}-chk)`} />
+      <SoftShadow id={`${uid}-chk-sh`} rx={52} ry={50} dx={4} dy={6} opacity={0.26} />
+      {STRIPS.map((st, i) => (
+        <g key={i} transform={`translate(${st.x} ${st.y}) rotate(${st.r.toFixed(0)})`}>
+          <path d={st.d} fill="#5E3413" opacity="0.4" transform="translate(1.4 2.4)" />
+          <path d={st.d} fill={`url(#${uid}-chk)`} stroke="#9A5A22" strokeOpacity="0.7" strokeWidth="1.3" strokeLinejoin="round" />
           <path
-            d={`M ${-w / 2 + 7} -5 l -4 9 M ${-w / 2 + 15} -5 l -4 9 M ${-w / 2 + 23} -5 l -4 9`}
-            stroke="#7E461A"
-            strokeOpacity="0.75"
-            strokeWidth="2.2"
+            d={`M ${f1(-st.w / 2 + 7)} ${f1(-st.h / 2 + 1)} l -3 ${f1(st.h - 2)} M ${f1(-st.w / 2 + 16)} ${f1(-st.h / 2 + 1)} l -3 ${f1(st.h - 2)} M ${f1(-st.w / 2 + 25)} ${f1(-st.h / 2 + 1)} l -3 ${f1(st.h - 2)}`}
+            stroke="#6E3812"
+            strokeOpacity="0.7"
+            strokeWidth="2"
             strokeLinecap="round"
           />
-          <path d={`M ${-w / 2 + 4} -4 L ${w / 2 - 5} -4`} stroke="#F6D9A6" strokeOpacity="0.55" strokeWidth="1.2" strokeLinecap="round" />
+          <path d={`M ${f1(-st.w / 2 + 4)} ${f1(-st.h / 2 + 2)} L ${f1(st.w / 2 - 6)} ${f1(-st.h / 2 + 2.5)}`} stroke="#FBE3B6" strokeOpacity="0.6" strokeWidth="1.1" strokeLinecap="round" />
         </g>
       ))}
-      <path d={TAHINI} fill="none" stroke="#8C7550" strokeOpacity="0.4" strokeWidth="6.5" strokeLinecap="round" strokeLinejoin="round" transform="translate(1.2 2)" />
-      <path d={TAHINI} fill="none" stroke="#EBDDB9" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" />
-      <path d={TAHINI} fill="none" stroke="#FFFAEB" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" transform="translate(-1 -1.2)" />
+      <path d={TAHINI} fill="none" stroke="#8C7550" strokeOpacity="0.4" strokeWidth="5.5" strokeLinecap="round" strokeLinejoin="round" transform="translate(1.2 2)" />
+      <path d={TAHINI} fill="none" stroke="#E9DAB4" strokeWidth="4.2" strokeLinecap="round" strokeLinejoin="round" />
+      <path d={TAHINI} fill="none" stroke="#FFFAEB" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" transform="translate(-0.9 -1)" />
     </g>
   )
 }

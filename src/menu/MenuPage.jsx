@@ -57,11 +57,11 @@ export default function MenuPage() {
           ))}
         </section>
 
-        {options.map((p) => (
-          <PokeScroll key={p.id} poke={p} />
+        {options.map((p, i) => (
+          <PokeScroll key={p.id} poke={p} skipTo={i < options.length - 1 ? `#${options[i + 1].id}` : '#menu-end'} />
         ))}
 
-        <section className="menu-end" aria-label={tr(meal)}>
+        <section id="menu-end" className="menu-end" aria-label={tr(meal)}>
           <p className="menu-note">{tr(note)}</p>
           <figure className="verse">
             <blockquote>

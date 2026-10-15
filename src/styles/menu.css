@@ -16,7 +16,8 @@
   padding: 28px var(--gutter) 24px;
 }
 
-/* alone dell'evento: gradiente fermo e sfumato, niente filtri (costo zero durante lo scroll) */
+/* alone dell'evento: una macchia nel colore dell'evento e una in oro GMI.
+   Gradienti fermi e sfumati, niente filtri (costo zero durante lo scroll) */
 .menu-hero::before {
   content: '';
   position: absolute;
@@ -28,8 +29,8 @@
   /* ogni macchia sfuma a zero dentro il suo riquadro: nessun bordo netto */
   background:
     radial-gradient(closest-side, var(--accent), transparent) 100% 0 / min(70vw, 620px) 90% no-repeat,
-    radial-gradient(closest-side, var(--accent), transparent) 0 100% / min(60vw, 520px) 70% no-repeat;
-  opacity: 0.3;
+    radial-gradient(closest-side, var(--gold-light), transparent) 0 100% / min(60vw, 520px) 70% no-repeat;
+  opacity: 0.24;
   pointer-events: none;
 }
 
@@ -174,9 +175,28 @@
 }
 
 .poke__label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
   font-size: 14px;
   font-weight: 600;
   color: var(--gold-text);
+}
+
+/* per chi è in fila e ha fretta: salta l'animazione */
+.poke__skip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  margin: -6px 0;
+  padding: 0 14px;
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--heading);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
 }
 
 .poke__title {

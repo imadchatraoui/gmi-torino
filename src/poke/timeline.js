@@ -1,8 +1,8 @@
 // Timeline dell'animazione, in "schermate" di scroll.
 // Prima si apre il coperchio, poi ogni ingrediente ha il suo tratto di scroll.
-export const LID = 0.8 // schermate per aprire il coperchio
-export const STEP = 0.6 // schermate per ingrediente
-export const TAIL = 0.5 // pausa finale con la bowl aperta
+export const LID = 0.7 // schermate per aprire il coperchio
+export const STEP = 0.45 // schermate per ingrediente
+export const TAIL = 0.4 // pausa finale con la ciotola completa
 
 export const clamp01 = (v) => (v < 0 ? 0 : v > 1 ? 1 : v)
 export const easeOut = (t) => 1 - (1 - t) ** 3
