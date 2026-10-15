@@ -106,6 +106,10 @@ Nuova direzione decisa con l'utente (dettagli in YMHS_BRIEF.md, "Aggiornamento 1
 - Tolti skyline, linea della metro, cupola e fregio disegnati da me: l'utente vuole un sito **semplice, senza elementi caratteristici**.
 - Footer sulla struttura di gmitalia.org (presentazione, link rapidi, contatti, seguici, copyright) nei colori GMI Torino.
 
+- (dopo) Tolto l'archivio "Raccontarci" e le sue immagini; Chi siamo/Archivio/Contatti mostrano solo "Ci stiamo lavorando".
+  Titolo "Prossimamente, inshallah" animato (lettere che salgono, poi un'onda continua; riflesso d'oro continuo sulla
+  calligrafia). Intro col logo animato a **ogni** apertura (non più una volta per visita), bordi del video sfumati.
+
 ## Manca / idee per le prossime run
 - [ ] Provare su iPhone vero (sticky + barra di Safari, intro video in risparmio energetico).
 - [ ] Come aggiungere eventi in futuro (file dati, pannello admin o tramite Claude): da chiedere all'utente.

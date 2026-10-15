@@ -1,15 +1,13 @@
 import { useEffect, useRef, useState } from 'react'
 import { getTheme, t } from './prefs'
 
-// Intro: il logo di GMI Torino che si costruisce (la Mole disegnata, poi il logo).
-// Una volta per visita; si salta con un tocco; niente intro con "riduci movimento".
-const KEY = 'gmi-intro'
-
+// Intro: il logo animato di GMI Torino che si costruisce (la Mole disegnata, poi il logo).
+// A ogni apertura del sito; si salta con un tocco; niente intro con "riduci movimento".
+// ?nointro nell'indirizzo la salta (utile per gli screenshot).
 function shouldShow() {
   try {
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) return false
-    if (new URLSearchParams(location.search).has('nointro')) return false
-    return !sessionStorage.getItem(KEY)
+    return !new URLSearchParams(location.search).has('nointro')
   } catch {
     return true
   }
@@ -23,11 +21,6 @@ export default function Intro() {
 
   useEffect(() => {
     if (!show) return
-    try {
-      sessionStorage.setItem(KEY, '1')
-    } catch {
-      /* niente */
-    }
     document.documentElement.style.overflow = 'hidden'
     document.documentElement.classList.add('intro-on')
     const finish = () => setDone(true)

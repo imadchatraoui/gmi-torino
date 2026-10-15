@@ -606,6 +606,9 @@ blockquote {
 
 .intro video,
 .intro img {
+  /* bordi sfumati: il riquadro del video non si vede mai, qualunque sia il fondo */
+  -webkit-mask-image: radial-gradient(closest-side, #000 78%, transparent 100%);
+  mask-image: radial-gradient(closest-side, #000 78%, transparent 100%);
   width: 100%;
   height: auto;
   aspect-ratio: 400 / 456;

@@ -1,5 +1,5 @@
 import { EVENTS } from '../data/events'
-import { ABOUT, ARCHIVE, CONTACTS, SECTIONS, WIP } from '../data/site'
+import { CONTACTS, SECTIONS, WIP } from '../data/site'
 import { daysUntil, eventStatus } from '../data/when'
 import BottomNav from '../shared/BottomNav'
 import Intro from '../shared/Intro'
@@ -20,22 +20,38 @@ function countdown(iso, lang) {
   return null
 }
 
+// Titolo principale: le lettere salgono una dopo l'altra, poi ondeggiano piano, di continuo.
+function AnimatedTitle({ text }) {
+  let n = 0
+  return (
+    <h1 id="hero-title" className="hero__title" aria-label={text}>
+      {text.split(' ').map((word, w) => (
+        <span key={w} className="hero__word" aria-hidden="true">
+          {[...word].map((ch, i) => (
+            <span key={i} className="hero__ch" style={{ '--n': n++ }}>
+              {ch}
+            </span>
+          ))}
+        </span>
+      ))}
+    </h1>
+  )
+}
+
 function Hero({ next, lang }) {
   const tr = (v) => t(v, lang)
   return (
     <section id="top" className="hero" aria-labelledby="hero-title">
       <div className="hero__body">
-        <p className="hero__kicker">{tr({ it: 'Il nuovo sito di GMI Torino', en: 'The new GMI Torino website' })}</p>
-        <h1 id="hero-title" className="hero__title">
-          {tr({ it: 'Prossimamente, inshallah', en: 'Coming soon, inshallah' })}
-        </h1>
+        <p className="hero__kicker">GMI Torino</p>
+        <AnimatedTitle key={lang} text={tr({ it: 'Prossimamente, inshallah', en: 'Coming soon, inshallah' })} />
         <p className="hero__ar" lang="ar" dir="rtl">
           إن شاء الله
         </p>
         <p className="hero__lede">
           {tr({
-            it: 'Stiamo costruendo la nuova casa online della sezione torinese di Giovani Musulmani d’Italia. Intanto qui trovi chi siamo, i prossimi eventi e come scriverci.',
-            en: 'We are building the new online home of the Turin chapter of Giovani Musulmani d’Italia. Meanwhile, here you can find who we are, our next events and how to reach us.',
+            it: 'Stiamo costruendo il nuovo sito della sezione torinese di Giovani Musulmani d’Italia.',
+            en: 'We are building the new website of the Turin chapter of Giovani Musulmani d’Italia.',
           })}
         </p>
         {next && (
@@ -78,27 +94,9 @@ function SectionHead({ id, title, children }) {
 }
 
 function About({ lang }) {
-  const tr = (v) => t(v, lang)
   return (
     <section id="chi-siamo" className="sec" aria-labelledby="chi-siamo-title">
-      <SectionHead id="chi-siamo" title={tr(SECTIONS[0].label)} />
-      <p className="about__motto reveal">{ABOUT.motto}</p>
-      <div className="about__body">
-        {ABOUT.body.map((p, i) => (
-          <p key={i} className="reveal" style={{ '--d': i }}>
-            {tr(p)}
-          </p>
-        ))}
-      </div>
-      <h3 className="about__path-title reveal">{tr({ it: 'Il nostro cammino', en: 'Our path' })}</h3>
-      <ol className="path">
-        {ABOUT.path.map((s, i) => (
-          <li key={s.title} className="path__step reveal" style={{ '--d': i }}>
-            <span className="path__title">{s.title}</span>
-            <span className="path__text">{tr(s.text)}</span>
-          </li>
-        ))}
-      </ol>
+      <SectionHead id="chi-siamo" title={t(SECTIONS[0].label, lang)} />
     </section>
   )
 }
@@ -198,9 +196,7 @@ function Archive({ lang, finished }) {
   const tr = (v) => t(v, lang)
   return (
     <section id="archivio" className="sec" aria-labelledby="archivio-title">
-      <SectionHead id="archivio" title={tr(SECTIONS[2].label)}>
-        {tr({ it: 'Gli incontri che abbiamo già vissuto insieme.', en: 'The gatherings we have already shared.' })}
-      </SectionHead>
+      <SectionHead id="archivio" title={tr(SECTIONS[2].label)} />
       {finished.map((ev) => (
         <article key={ev.id} id={`arch-${ev.id}`} className="past past--auto reveal" style={{ '--accent': ev.accent }}>
           <p className="past__date">{tr(ev.date)}</p>
@@ -216,49 +212,6 @@ function Archive({ lang, finished }) {
           )}
         </article>
       ))}
-      {ARCHIVE.map((a) => (
-        <article key={a.id} id={`arch-${a.id}`} className="past" aria-labelledby={`${a.id}-t`}>
-          <figure className="past__cover" data-reveal>
-            <span className="past__cover-in">
-              <img
-                src={a.cover}
-                alt={tr({ it: `Locandina di ${a.title}`, en: `${a.title} poster` })}
-                width="720"
-                height="896"
-                loading="lazy"
-                decoding="async"
-              />
-            </span>
-          </figure>
-          <div className="past__info">
-            <p className="past__date reveal">{tr(a.date)}</p>
-            <h3 id={`${a.id}-t`} className="past__title reveal" style={{ '--d': 1 }}>
-              {a.title}
-            </h3>
-            <p className="past__sub reveal" style={{ '--d': 2 }}>
-              {tr(a.subtitle)}
-            </p>
-            <p className="past__venue reveal" style={{ '--d': 3 }}>
-              {a.venue}
-              <span>{a.address}</span>
-            </p>
-          </div>
-          <div className="talks">
-            <p className="talks__label">
-              {tr({ it: `${a.talks.length} incontri, scorri di lato`, en: `${a.talks.length} talks, swipe sideways` })}
-            </p>
-            <ul className="talks__rail">
-              {a.talks.map((tk) => (
-                <li key={tk.img} className="talk">
-                  <img src={`/archivio/${a.id}/${tk.img}.webp`} alt="" width="560" height="700" loading="lazy" decoding="async" />
-                  <p className="talk__title">{tk.title}</p>
-                  <p className="talk__who">{tk.who}</p>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </article>
-      ))}
     </section>
   )
 }
@@ -268,16 +221,10 @@ function Contacts({ lang }) {
   const rows = [
     { href: CONTACTS.instagram.url, label: 'Instagram', value: CONTACTS.instagram.handle, ext: true },
     { href: `mailto:${CONTACTS.email}`, label: 'Email', value: CONTACTS.email },
-    { href: CONTACTS.national.url, label: 'GMI Italia', value: CONTACTS.national.label, ext: true },
   ]
   return (
     <section id="contatti" className="sec" aria-labelledby="contatti-title">
-      <SectionHead id="contatti" title={tr(SECTIONS[3].label)}>
-        {tr({
-          it: 'Vuoi partecipare, proporre un’idea o collaborare con noi? Scrivici.',
-          en: 'Want to join, suggest an idea or work with us? Write to us.',
-        })}
-      </SectionHead>
+      <SectionHead id="contatti" title={tr(SECTIONS[3].label)} />
       <ul className="contacts">
         {rows.map((r, i) => (
           <li key={r.label} className="reveal" style={{ '--d': i }}>
