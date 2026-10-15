@@ -5,7 +5,7 @@ import Intro from '../shared/Intro'
 import { t, usePrefs } from '../shared/prefs'
 import SiteFooter from '../shared/SiteFooter'
 import SiteHeader from '../shared/SiteHeader'
-import { Corner, tornClip } from '../shared/Paper'
+import { tornClip } from '../shared/Paper'
 
 // Il menu del prossimo evento con menu. gmitorino.org/menu resta sempre questo indirizzo.
 const EVENT = eventById('ymhs')
@@ -23,9 +23,8 @@ export default function MenuPage() {
       <SiteHeader page="menu" />
       <main className="menu" style={{ '--accent': ev.accent }}>
         <section className="menu-hero" aria-labelledby="menu-title">
-          <Corner />
           {ev.logo ? (
-            <img className="menu-hero__logo" src={ev.logo} alt={ev.name} width="748" height="304" />
+            <img className="menu-hero__logo" src={ev.logo} alt={ev.name} width="682" height="267" />
           ) : (
             <p className="menu-hero__event">{ev.name}</p>
           )}

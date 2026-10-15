@@ -30,7 +30,7 @@ export const EVENTS = [
     theme: 'ymhs',
     accent: '#8f9c7d',
     banner: null,
-    logo: '/eventi/ymhs/logo.webp',
+    logo: '/eventi/ymhs/logo.png',
     blocks: { info: true, signup: true, program: false, menu: true },
     menu: {
       meal: { it: 'Il pranzo', en: 'Lunch' },

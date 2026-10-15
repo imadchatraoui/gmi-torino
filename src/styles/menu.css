@@ -35,18 +35,16 @@
   opacity: 0.14;
 }
 
-.menu-hero .corner {
-  z-index: -1;
-  top: -1px;
-}
-
 /* logo dell'evento: i bordi della foto sfumano nella carta */
 .menu-hero__logo {
-  width: min(100%, 440px);
+  display: block;
+  width: calc(100% + 2 * var(--gutter));
+  max-width: 600px;
   height: auto;
   margin: 0 auto;
-  -webkit-mask-image: radial-gradient(72% 68% at 50% 50%, #000 60%, transparent 100%);
-  mask-image: radial-gradient(72% 68% at 50% 50%, #000 60%, transparent 100%);
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .menu-hero__event {

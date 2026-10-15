@@ -108,7 +108,7 @@ function EventCard({ ev, lang, theme }) {
           {when && <span className="event__count">{when}</span>}
         </p>
         {ev.logo ? (
-          <img className="event__logo" src={ev.logo} alt={ev.name} width="748" height="304" loading="lazy" decoding="async" />
+          <img className="event__logo" src={ev.logo} alt={ev.name} width="682" height="267" loading="lazy" decoding="async" />
         ) : (
           <p className="event__short display">{ev.short}</p>
         )}
