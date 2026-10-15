@@ -1,3 +1,4 @@
+import { useRef } from 'react'
 import { EVENTS } from '../data/events'
 import { CONTACTS, SECTIONS, WIP } from '../data/site'
 import { daysUntil, eventStatus } from '../data/when'
@@ -8,6 +9,9 @@ import { tornClip } from '../shared/Paper'
 import { useReveal } from '../shared/reveal'
 import SiteFooter from '../shared/SiteFooter'
 import SiteHeader from '../shared/SiteHeader'
+import HeroTitle, { titleVariant, useScrollProgress } from './HeroTitle'
+
+const VARIANT = titleVariant()
 
 const NEXT_CLIP = tornClip(5, { depth: 5 })
 const CARD_CLIP = tornClip(9, { depth: 2.5, points: 40 })
@@ -20,31 +24,15 @@ function countdown(iso, lang) {
   return null
 }
 
-// Titolo principale: le lettere salgono una dopo l'altra, poi ondeggiano piano, di continuo.
-function AnimatedTitle({ text }) {
-  let n = 0
-  return (
-    <h1 id="hero-title" className="hero__title" aria-label={text}>
-      {text.split(' ').map((word, w) => (
-        <span key={w} className="hero__word" aria-hidden="true">
-          {[...word].map((ch, i) => (
-            <span key={i} className="hero__ch" style={{ '--n': n++ }}>
-              {ch}
-            </span>
-          ))}
-        </span>
-      ))}
-    </h1>
-  )
-}
-
 function Hero({ next, lang }) {
   const tr = (v) => t(v, lang)
+  const ref = useRef(null)
+  useScrollProgress(ref, VARIANT === 'parallax' || VARIANT === 'tutto')
   return (
-    <section id="top" className="hero" aria-labelledby="hero-title">
+    <section id="top" className={`hero hero--${VARIANT}${VARIANT === 'tutto' ? ' hero--parallax' : ''}`} aria-labelledby="hero-title" ref={ref}>
       <div className="hero__body">
         <p className="hero__kicker">GMI Torino</p>
-        <AnimatedTitle key={lang} text={tr({ it: 'Prossimamente, inshallah', en: 'Coming soon, inshallah' })} />
+        <HeroTitle key={lang} variant={VARIANT} text={tr({ it: 'Prossimamente, inshallah', en: 'Coming soon, inshallah' })} />
         <p className="hero__ar" lang="ar" dir="rtl">
           إن شاء الله
         </p>
