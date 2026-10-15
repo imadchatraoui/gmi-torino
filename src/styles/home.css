@@ -10,7 +10,9 @@
   position: relative;
   display: flex;
   flex-direction: column;
+  justify-content: center; /* il "prossimamente" sta al centro dello schermo, senza vuoto sotto */
   min-height: calc(100svh - var(--header-h) - env(safe-area-inset-top));
+  padding-bottom: 56px; /* spazio per la barra in basso */
 }
 
 .hero__body {
@@ -150,7 +152,7 @@
 .sec {
   max-width: var(--max);
   margin: 0 auto;
-  padding: 72px var(--gutter) 8px;
+  padding: 56px var(--gutter) 8px;
 }
 
 .sec-head {
