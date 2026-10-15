@@ -1,5 +1,5 @@
 import { EVENTS } from '../data/events'
-import { ABOUT, ARCHIVE, CONTACTS, SECTIONS } from '../data/site'
+import { ABOUT, ARCHIVE, CONTACTS, SECTIONS, WIP } from '../data/site'
 import { daysUntil, eventStatus } from '../data/when'
 import BottomNav from '../shared/BottomNav'
 import Intro from '../shared/Intro'
@@ -54,6 +54,7 @@ function Hero({ next, lang }) {
 }
 
 function SectionHead({ id, title, children }) {
+  const { lang } = usePrefs()
   return (
     <header className="sec-head">
       <h2 id={`${id}-title`} className="sec-head__title reveal">
@@ -62,6 +63,14 @@ function SectionHead({ id, title, children }) {
       {children && (
         <p className="sec-head__lede reveal" style={{ '--d': 1 }}>
           {children}
+        </p>
+      )}
+      {WIP[id] && (
+        <p className="wip reveal" style={{ '--d': 2 }}>
+          <span className="wip__dot" aria-hidden="true" />
+          <span>
+            <strong>{t({ it: 'Ci stiamo lavorando.', en: 'We are working on it.' }, lang)}</strong> {t(WIP[id], lang)}
+          </span>
         </p>
       )}
     </header>

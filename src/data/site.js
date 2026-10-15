@@ -7,6 +7,26 @@ export const SECTIONS = [
   { id: 'contatti', label: { it: 'Contatti', en: 'Contact' } },
 ]
 
+// Per ogni sezione: cosa stiamo preparando (il sito è ancora in costruzione).
+export const WIP = {
+  'chi-siamo': {
+    it: 'Presto qui la nostra storia, le persone che portano avanti GMI Torino e come unirti a noi.',
+    en: 'Soon: our story, the people behind GMI Torino and how to join us.',
+  },
+  eventi: {
+    it: 'Stiamo preparando il calendario dei prossimi incontri: intanto li annunciamo su Instagram.',
+    en: 'We are putting together the calendar of upcoming events: for now we announce them on Instagram.',
+  },
+  archivio: {
+    it: 'Stiamo raccogliendo foto e racconti degli incontri passati: l’archivio crescerà evento dopo evento.',
+    en: 'We are collecting photos and stories from past events: the archive will grow event by event.',
+  },
+  contatti: {
+    it: 'Presto potrai scriverci anche da un modulo qui sul sito.',
+    en: 'Soon you will also be able to write to us through a form right here.',
+  },
+}
+
 export const ABOUT = {
   motto: 'Protagonisti noi con l’aiuto di Dio',
   body: [

@@ -131,6 +131,45 @@
   color: var(--text-2);
 }
 
+/* nota "ci stiamo lavorando" sotto il titolo di ogni sezione */
+.wip {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  max-width: 34em;
+  margin-top: 14px;
+  padding: 12px 14px;
+  border-radius: var(--radius);
+  background: var(--surface);
+  font-size: 15px;
+  line-height: 1.45;
+  color: var(--text-2);
+}
+
+.wip strong {
+  font-weight: 600;
+  color: var(--heading);
+}
+
+.wip__dot {
+  position: relative;
+  flex: none;
+  width: 8px;
+  height: 8px;
+  margin-top: 7px;
+  border-radius: 50%;
+  background: var(--gold);
+}
+
+.wip__dot::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: var(--gold);
+  animation: ping 2.4s var(--ease-out) infinite;
+}
+
 .sec-empty {
   padding: 18px;
   border-radius: var(--radius-lg);
