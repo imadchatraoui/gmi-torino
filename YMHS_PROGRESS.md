@@ -201,6 +201,11 @@ Nuova direzione decisa con l'utente (dettagli in YMHS_BRIEF.md, "Aggiornamento 1
 - `scripts/perf-scroll.mjs` accetta un CSS di prova come terzo argomento (utile per capire cosa rallenta).
 - Home a 375x667 chiaro/scuro, IT/EN: ok, niente testo coperto dalla barra in basso.
 
+**Sesto giro (notte)**
+- **Nuovo: menu stampabile.** Stampando /menu/ (o "Salva come PDF") esce un foglio A4: logo YMHS, data e luogo, le due
+  bowl aperte e numerate affiancate con gli ingredienti, nota allergie e l'indirizzo gmitorino.org/menu. Sempre in
+  chiaro anche col telefono in tema scuro. Esempio in `anteprime/menu-stampa.pdf`. Utile da appendere al banco del pranzo.
+
 ## Manca / idee per le prossime run
 - [ ] Provare su un iPhone vero (sul Mac non c'è Xcode, quindi niente simulatore: tutto verificato con Chrome in
   emulazione). Da guardare: intro in risparmio energetico, barra di Safari durante lo scroll del menu, tocchi sulla barra in basso.

@@ -509,3 +509,110 @@
 .menu-share:active {
   transform: scale(0.97);
 }
+
+/* ---------- stampa: il menu su un foglio A4 per il banco del pranzo ---------- */
+@media print {
+  @page {
+    size: A4;
+    margin: 12mm;
+  }
+  /* sempre i colori chiari, anche se il telefono è in tema scuro */
+  :root.theme-ymhs[data-theme] {
+    --bg: #fff;
+    --surface: #f3ede2;
+    --line: rgba(30, 46, 54, 0.2);
+    --text: #1f2a30;
+    --text-2: rgba(31, 42, 48, 0.8);
+    --heading: #1e2e36;
+    --label: #27396a;
+    --card: #fff;
+    --on-card: #1e2e36;
+    --ornament: rgba(30, 46, 54, 0.45);
+  }
+  html,
+  body,
+  .menu {
+    min-height: 0 !important;
+    background: #fff !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .site-header,
+  .site-footer,
+  .intro,
+  .choices,
+  .like,
+  .poke__actions,
+  .poke__bar,
+  .poke__hint,
+  .poke-art__lid,
+  .menu-share,
+  .menu-hero__lede,
+  .verse {
+    display: none !important;
+  }
+  .menu-hero {
+    padding: 0 0 4mm;
+  }
+  .menu-hero__logo {
+    width: 60mm !important;
+    max-width: 60mm;
+    position: static !important;
+    transform: none !important;
+    margin: 0 auto;
+  }
+  .menu-hero__title {
+    font-size: 26pt;
+  }
+  .menu-hero__date {
+    font-size: 20pt;
+  }
+  /* le due bowl una accanto all'altra, aperte e numerate */
+  .menu > .poke {
+    display: inline-block;
+    width: 49%;
+    height: auto !important;
+    vertical-align: top;
+    content-visibility: visible;
+    break-inside: avoid;
+    border: 0 !important;
+  }
+  .poke__sticky {
+    position: static !important;
+    height: auto !important;
+    padding: 0 4mm !important;
+    overflow: visible;
+  }
+  .poke__title {
+    font-size: 16pt;
+  }
+  .poke__stage {
+    flex: none !important;
+    height: 78mm !important;
+    margin: 4mm 0;
+  }
+  .poke-art__move,
+  .poke-art__pin,
+  .poke-art__fade,
+  .poke__list li {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .poke__list li {
+    font-size: 10.5pt;
+  }
+  .menu-end {
+    padding: 4mm 0 0;
+  }
+  .menu-note {
+    font-size: 11pt;
+  }
+  .menu-end::after {
+    content: 'GMI Torino · Giovani Musulmani d’Italia · gmitorino.org/menu';
+    display: block;
+    margin-top: 6mm;
+    text-align: center;
+    font-size: 9pt;
+    color: rgba(31, 42, 48, 0.7);
+  }
+}
