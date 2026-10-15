@@ -37,18 +37,26 @@ export default function Intro() {
       html.classList.remove('scroll-lock')
     }
     const finish = () => setDone(true)
+    // da tastiera: un tasto qualsiasi entra nel sito
+    window.addEventListener('keydown', finish, { once: true })
     const v = video.current
     // se il telefono blocca l'autoplay (es. risparmio energetico) si chiude dopo un attimo
     const p = v?.play()
     if (p?.catch) p.catch(() => setTimeout(finish, 900))
     const safety = setTimeout(finish, 5200)
-    return () => clearTimeout(safety)
+    return () => {
+      clearTimeout(safety)
+      window.removeEventListener('keydown', finish)
+    }
   }, [show])
 
   useEffect(() => {
     if (!done) return
     cleanupLock.current()
-    window.scrollTo(0, 0)
+    // link con un'ancora (es. /menu/#poke-2): finita l'intro si va lì, altrimenti in cima
+    const target = location.hash.length > 1 && document.getElementById(decodeURIComponent(location.hash.slice(1)))
+    if (target) target.scrollIntoView({ behavior: 'instant' })
+    else window.scrollTo(0, 0)
     document.documentElement.classList.remove('intro-on')
     const id = setTimeout(() => setGone(true), 700)
     return () => clearTimeout(id)

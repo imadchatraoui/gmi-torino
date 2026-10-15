@@ -32,6 +32,12 @@ export default function PokeScroll({ poke, skipTo }) {
     const sticky = stickyRef.current
     let active = -2
     let lastP = -1
+    // lo stage si ferma sotto l'header (top dello sticky), non al bordo dello schermo:
+    // p = 0 quando inizia a restare fermo, p = 1 quando riparte
+    let stickTop = 0
+    const measure = () => {
+      stickTop = parseFloat(getComputedStyle(sticky).top) || 0
+    }
 
     const render = (p) => {
       rendererRef.current?.update(p, tl)
@@ -65,12 +71,13 @@ export default function PokeScroll({ poke, skipTo }) {
     const update = () => {
       const rect = section.getBoundingClientRect()
       const range = rect.height - sticky.offsetHeight
-      const p = range > 0 ? clamp01(-rect.top / range) : 0
+      const p = range > 0 ? clamp01((stickTop - rect.top) / range) : 0
       if (Math.abs(p - lastP) < 0.0005) return
       lastP = p
       render(p)
     }
     const onResize = () => {
+      measure()
       lastP = -1
       update()
     }
@@ -88,6 +95,7 @@ export default function PokeScroll({ poke, skipTo }) {
       },
       { rootMargin: '20% 0px' },
     )
+    measure()
     io.observe(section)
     window.addEventListener('resize', onResize)
     render(0)

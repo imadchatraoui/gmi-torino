@@ -31,7 +31,7 @@ console.log(logs.result.result.value);
 const list = scrolls.split(',');
 for (let k=0;k<list.length;k++) {
   const y = list[k];
-  await send('Runtime.evaluate', { expression: `(() => { const v='${y}'; let t = v.includes('@') ? (() => { const [sel, f] = v.split('@'); const s = document.querySelector(sel); const st = s.querySelector('.poke__sticky'); return s.offsetTop + (s.offsetHeight - st.offsetHeight) * parseFloat(f); })() : v.startsWith('#') ? document.querySelector(v).getBoundingClientRect().top+scrollY : (v.endsWith('%') ? (document.documentElement.scrollHeight-innerHeight)*parseFloat(v)/100 : +v); window.scrollTo(0,t); dispatchEvent(new Event('scroll')); })()` });
+  await send('Runtime.evaluate', { expression: `(() => { const v='${y}'; let t = v.includes('@') ? (() => { const [sel, f] = v.split('@'); const s = document.querySelector(sel); const st = s.querySelector('.poke__sticky'); return s.offsetTop - parseFloat(getComputedStyle(st).top) + (s.offsetHeight - st.offsetHeight) * parseFloat(f); })() : v.startsWith('#') ? document.querySelector(v).getBoundingClientRect().top+scrollY : (v.endsWith('%') ? (document.documentElement.scrollHeight-innerHeight)*parseFloat(v)/100 : +v); window.scrollTo(0,t); dispatchEvent(new Event('scroll')); })()` });
   await sleep(700);
   const r = await send('Page.captureScreenshot', { format: 'png' });
   const f = list.length > 1 ? out.replace('.png', `-${k}.png`) : out;
