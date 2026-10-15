@@ -84,6 +84,42 @@
   color: var(--text);
 }
 
+/* ---------- like condivisi ---------- */
+.menu {
+  --like: #b3262c;
+  --like-idle: rgba(31, 42, 48, 0.55);
+  --like-pill: rgba(255, 255, 255, 0.55);
+  --like-text: var(--heading);
+}
+
+:root[data-theme='dark'] .menu {
+  --like: #ef7b7f;
+  --like-idle: rgba(238, 230, 214, 0.6);
+  --like-pill: rgba(255, 255, 255, 0.08);
+}
+
+.choice-wrap {
+  position: relative;
+}
+
+.choice-wrap .choice__like {
+  position: absolute;
+  top: 12px;
+  right: 10px;
+}
+
+.poke__titlerow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.poke__titlerow .like {
+  flex: none;
+  margin-top: 4px;
+}
+
 /* ---------- le due proposte ---------- */
 .choices {
   display: grid;
@@ -99,7 +135,7 @@
   grid-template-columns: 104px 1fr;
   align-items: center;
   gap: 14px;
-  padding: 18px 16px 18px 10px;
+  padding: 18px 58px 18px 10px;
   background: var(--card);
   color: var(--on-card);
   text-decoration: none;

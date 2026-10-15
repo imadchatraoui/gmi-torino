@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef } from 'react'
 import { t, usePrefs } from '../shared/prefs'
+import LikeButton from './LikeButton'
 import FrameSequence from './FrameSequence'
 import PokeIllustration from './PokeIllustration'
 import VideoScrub from './VideoScrub'
@@ -127,9 +128,12 @@ export default function PokeScroll({ poke, skipTo }) {
               </a>
             )}
           </p>
-          <h2 id={`${id}-title`} className="poke__title display">
-            {t(title, lang)}
-          </h2>
+          <div className="poke__titlerow">
+            <h2 id={`${id}-title`} className="poke__title display">
+              {t(title, lang)}
+            </h2>
+            <LikeButton poke={poke} size={20} />
+          </div>
         </header>
         <div className="poke__stage">
           {renderer}

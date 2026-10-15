@@ -1,5 +1,6 @@
 import { eventById } from '../data/events'
 import PokeIllustration from '../poke/PokeIllustration'
+import LikeButton from '../poke/LikeButton'
 import PokeScroll from '../poke/PokeScroll'
 import Intro from '../shared/Intro'
 import { t, usePrefs } from '../shared/prefs'
@@ -48,7 +49,8 @@ export default function MenuPage() {
 
         <section className="choices" aria-label={tr({ it: 'Le due proposte', en: 'The two options' })}>
           {options.map((p, i) => (
-            <a key={p.id} className="choice" href={`#${p.id}`} style={{ clipPath: CHOICE_CLIPS[i % 2] }}>
+            <div key={p.id} className="choice-wrap">
+            <a className="choice" href={`#${p.id}`} style={{ clipPath: CHOICE_CLIPS[i % 2] }}>
               <span className="choice__bowl" aria-hidden="true">
                 <PokeIllustration items={p.items} label={tr(p.label)} open markers={false} />
               </span>
@@ -58,6 +60,8 @@ export default function MenuPage() {
                 <span className="choice__items">{p.items.map((it) => tr(it.name)).join(', ')}</span>
               </span>
             </a>
+            <LikeButton poke={p} className="choice__like" />
+            </div>
           ))}
         </section>
 

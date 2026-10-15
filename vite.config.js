@@ -1,6 +1,49 @@
 import { resolve } from 'node:path'
 import preact from '@preact/preset-vite'
 import { defineConfig } from 'vite'
+import likesHandler from './api/likes.js'
+
+// In locale (npm run dev / preview) /api/likes usa la stessa funzione di Vercel con un finto Redis
+// in memoria: i like si condividono tra i dispositivi collegati al Mac finché il server resta acceso.
+function devLikes() {
+  const store = new Map()
+  const fakeRedis = async (command) => {
+    const [op, , ...args] = command
+    if (op === 'HMGET') return args.map((id) => (store.has(id) ? String(store.get(id)) : null))
+    if (op === 'HINCRBY') {
+      store.set(args[0], (store.get(args[0]) ?? 0) + Number(args[1]))
+      return store.get(args[0])
+    }
+    if (op === 'HSET') {
+      store.set(args[0], Number(args[1]))
+      return 1
+    }
+    return null
+  }
+  const middleware = (req, res, next) => {
+    if (!req.url.startsWith('/api/likes')) return next()
+    const realFetch = globalThis.fetch
+    process.env.UPSTASH_REDIS_REST_URL ||= 'http://dev.local/redis'
+    process.env.UPSTASH_REDIS_REST_TOKEN ||= 'dev'
+    globalThis.fetch = async (url, init) =>
+      String(url).startsWith('http://dev.local/')
+        ? new Response(JSON.stringify({ result: await fakeRedis(JSON.parse(init.body)) }))
+        : realFetch(url, init)
+    Promise.resolve(likesHandler(req, res)).finally(() => {
+      globalThis.fetch = realFetch
+    })
+  }
+  return {
+    name: 'gmi-dev-likes',
+    // registrato prima dei middleware di Vite, così /api/likes non viene servito come file JS
+    configureServer: (server) => {
+      server.middlewares.stack.unshift({ route: '', handle: middleware })
+    },
+    configurePreviewServer: (server) => {
+      server.middlewares.stack.unshift({ route: '', handle: middleware })
+    },
+  }
+}
 
 // Pagine statiche (multi-page build):
 //   /           -> index.html           (home: Chi siamo, Eventi, Archivio, Contatti)
@@ -10,7 +53,7 @@ import { defineConfig } from 'vite'
 // Funziona su qualsiasi hosting statico senza regole di rewrite.
 // Preact (via preact/compat) al posto di React: stesso codice, ~60 KB gzip in meno.
 export default defineConfig({
-  plugins: [preact({ prerender: { enabled: false } })],
+  plugins: [preact({ prerender: { enabled: false } }), devLikes()],
   build: {
     rollupOptions: {
       input: {

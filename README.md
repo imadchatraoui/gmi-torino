@@ -92,6 +92,21 @@ ffmpeg -i input.mp4 -an -vf "scale=720:-1" -c:v libx264 -g 1 -crf 26 -movflags +
 media: { type: 'frames', frames: framesFor('option-1', 96), cues: [0.2, 0.34, 0.48, 0.62, 0.76] },
 ```
 
+## Like condivisi sui poke
+
+Ogni poke ha un cuore (PulseHeart di React Bits) nella scelta in alto e accanto al titolo.
+- `api/likes.js` — funzione Vercel: `GET /api/likes?ids=poke-1,poke-2` → `{ counts }`,
+  `POST /api/likes` con `{ id, delta: 1 | -1 }` → `{ id, count }`. Salva in Upstash Redis (hash `gmi:likes`).
+- `src/shared/likes.js` — lato telefono: il "mi piace" di questo telefono resta in localStorage,
+  i numeri arrivano dall'API. Se l'API non risponde (chiavi mancanti, rete assente) passa al
+  ripiego locale: il cuore funziona lo stesso ma il numero vale solo su quel telefono.
+- In locale (`npm run dev` / `npm run preview`) `/api/likes` gira con un Redis finto in memoria
+  (`vite.config.js`), condiviso tra i dispositivi collegati al Mac finché il server resta acceso.
+
+Per accenderli davvero su Vercel: progetto Vercel → Storage / Marketplace → Upstash Redis →
+collegarlo al progetto. Vercel aggiunge da solo `KV_REST_API_URL` e `KV_REST_API_TOKEN`
+(vanno bene anche `UPSTASH_REDIS_REST_URL` e `UPSTASH_REDIS_REST_TOKEN`). Il piano gratuito basta.
+
 ## Asset
 
 - Logo: `public/brand/gmi-logo.webp` (320 px, ~20 KB) generato dal PNG originale.
