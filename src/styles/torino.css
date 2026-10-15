@@ -105,6 +105,10 @@
   color: var(--brand);
 }
 
+:root[data-theme='dark'] .metro__stop.is-here .metro__name {
+  color: var(--gold-light);
+}
+
 /* l'apertura: skyline che sale, binario che si disegna, fermate una dopo l'altra.
    Parte quando l'intro col logo è finita (classe .intro-on su <html>). */
 :root:not(.intro-on) .skyline__far {

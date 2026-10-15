@@ -21,10 +21,14 @@
   content: '';
   position: absolute;
   z-index: -1;
-  inset: -80px -40px -20px;
+  top: -80px;
+  bottom: -20px;
+  left: calc(50% - 50vw);
+  right: calc(50% - 50vw);
+  /* ogni macchia sfuma a zero dentro il suo riquadro: nessun bordo netto */
   background:
-    radial-gradient(55% 45% at 88% 8%, var(--accent), transparent 72%),
-    radial-gradient(45% 40% at 0% 70%, var(--accent), transparent 75%);
+    radial-gradient(closest-side, var(--accent), transparent) 100% 0 / min(70vw, 620px) 90% no-repeat,
+    radial-gradient(closest-side, var(--accent), transparent) 0 100% / min(60vw, 520px) 70% no-repeat;
   opacity: 0.3;
   pointer-events: none;
 }
