@@ -268,8 +268,11 @@
   font-size: 22px;
 }
 
-.paper-demo .lace {
-  margin-top: 20px;
+.paper-demo__logo {
+  display: block;
+  width: min(100%, 340px);
+  height: auto;
+  margin: -40px 0 14px;
 }
 
 /* template evento: accenti */
@@ -364,6 +367,27 @@
   align-items: center;
   gap: 12px;
   margin-top: 18px;
+}
+
+.comp--stack {
+  display: grid;
+  max-width: 340px;
+}
+
+.comp__title {
+  font-size: clamp(2.2rem, 10vw, 3.4rem);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+}
+
+.comp__title .gradient-text {
+  justify-content: flex-start;
+}
+
+.comp__note {
+  font-size: 14px;
+  color: var(--text-2);
 }
 
 /* voce */

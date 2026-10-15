@@ -5,7 +5,10 @@ import { t, usePrefs } from '../shared/prefs'
 import { useReveal } from '../shared/reveal'
 import SiteFooter from '../shared/SiteFooter'
 import SiteHeader from '../shared/SiteHeader'
-import { Corner, Lace, tornClip } from '../shared/Paper'
+import { tornClip } from '../shared/Paper'
+import GradientText from '../components/react-bits/GradientText'
+import PulseHeart from '../components/react-bits/PulseHeart'
+import StarBorder from '../components/react-bits/StarBorder'
 
 // Guida all'identità di GMI Torino: la base su cui costruire il sito ufficiale e ogni evento.
 // I valori sono gli stessi di src/styles/base.css.
@@ -121,8 +124,8 @@ export default function Design() {
           <h3 className="id-sub reveal">{tr({ it: 'Il logo che si costruisce', en: 'The logo building itself' })}</h3>
           <p className="id-sec__lede reveal">
             {tr({
-              it: 'All’apertura del sito si disegna prima la Mole, poi compare il logo. Una volta per visita, si salta con un tocco. Due video (chiaro e scuro, 109 e 164 KB) al posto della GIF da 3 MB.',
-              en: 'When the site opens, the Mole is drawn first, then the logo appears. Once per visit, skippable with a tap. Two videos (light and dark, 109 and 164 KB) instead of the 3 MB GIF.',
+              it: 'All’apertura del sito si disegna prima la Mole, poi compare il logo. A ogni apertura, si salta con un tocco o un tasto. Due video (chiaro e scuro, 109 e 164 KB) al posto della GIF da 3 MB.',
+              en: 'When the site opens, the Mole is drawn first, then the logo appears. Every time the site opens, skippable with a tap or any key. Two videos (light and dark, 109 and 164 KB) instead of the 3 MB GIF.',
             })}
           </p>
           <IntroDemo lang={lang} theme={theme} />
@@ -194,18 +197,17 @@ export default function Design() {
           <h2 id="to-t" className="id-sec__title reveal">{tr({ it: 'Lo stile di un evento: YMHS', en: 'An event’s own style: YMHS' })}</h2>
           <p className="id-sec__lede reveal">
             {tr({
-              it: 'Un evento può avere il suo stile, ma solo dentro le sue cose: la sua scheda in Eventi e la sua pagina del menu. Per il YMHS è lo stile delle locandine: carta, salvia strappata, blu, pizzo, filetti col rombo, titoli in serif. Il resto del sito resta GMI Torino.',
-              en: 'An event can have its own style, but only inside its own things: its card in Events and its menu page. For YMHS it is the poster style: paper, torn sage, blue, lace, diamond rules, serif titles. The rest of the site stays GMI Torino.',
+              it: 'Un evento può avere il suo stile, ma solo dentro le sue cose: la sua scheda in Eventi e la sua pagina del menu. Per il YMHS è lo stile delle locandine: carta, salvia strappata, blu, filetti col rombo, titoli in serif, il logo YMHS in PNG scontornato. Il resto del sito resta GMI Torino.',
+              en: 'An event can have its own style, but only inside its own things: its card in Events and its menu page. For YMHS it is the poster style: paper, torn sage, blue, diamond rules, serif titles, the YMHS logo as a cut-out PNG. The rest of the site stays GMI Torino.',
             })}
           </p>
           <div className="paper-demo theme-ymhs reveal">
-            <Corner />
+            <img className="paper-demo__logo" src="/eventi/ymhs/logo.png" alt="YMHS · Youth Mental Health Summit" width="682" height="267" loading="lazy" decoding="async" />
             <div className="paper-demo__card" style={{ clipPath: DEMO_CLIP }}>
               <span className="paper-demo__label">{tr({ it: 'Prossimo evento', en: 'Next event' })}</span>
               <span className="paper-demo__title display">Youth Mental Health Summit</span>
             </div>
             <div className="divider" aria-hidden="true" />
-            <Lace />
           </div>
         </section>
 
@@ -231,8 +233,8 @@ export default function Design() {
           <h2 id="mo-t" className="id-sec__title reveal">{tr({ it: 'Movimento', en: 'Motion' })}</h2>
           <p className="id-sec__lede reveal">
             {tr({
-              it: 'Un solo momento forte per pagina: all’apertura il logo che si costruisce, nel menu la ciotola che si apre. Si animano solo posizione e trasparenza, così resta fluido anche su telefoni economici. Con “riduci movimento” tutto è fermo.',
-              en: 'One strong moment per page: the logo building itself when the site opens, the bowl opening on the menu. Only position and opacity are animated, so it stays smooth on cheap phones. With “reduce motion” everything stands still.',
+              it: 'Un solo momento forte per pagina: all’apertura il logo che si costruisce, nel menu la ciotola che si apre. Si animano solo posizione e trasparenza, così resta fluido anche su telefoni economici. In più, piccoli dettagli: il titolo della home che scorre piano nei colori del logo, il cuore dei like che pulsa. Con “riduci movimento” tutto è fermo.',
+              en: 'One strong moment per page: the logo building itself when the site opens, the bowl opening on the menu. Only position and opacity are animated, so it stays smooth on cheap phones. Plus a few small touches: the home title slowly flowing through the logo colours, the like heart pulsing. With “reduce motion” everything stands still.',
             })}
           </p>
           <div className="bowl-demo reveal">
@@ -254,18 +256,51 @@ export default function Design() {
 
         <section className="id-sec" aria-labelledby="co-t">
           <h2 id="co-t" className="id-sec__title reveal">{tr({ it: 'Componenti', en: 'Components' })}</h2>
+          <p className="id-sec__lede reveal">
+            {tr({
+              it: 'Tre componenti di React Bits, ricolorati con la nostra palette: il titolo (GradientText), il bottone per iscriversi (StarBorder), i like sul menu (PulseHeart).',
+              en: 'Three React Bits components, recoloured with our palette: the title (GradientText), the sign-up button (StarBorder), the likes on the menu (PulseHeart).',
+            })}
+          </p>
           <div className="comp reveal">
-            <a className="btn btn--primary" href="#co-t">
+            <p className="comp__title">
+              <GradientText
+                colors={theme === 'dark' ? ['#F7ECD4', '#E6BE6A', '#F4D0C0', '#FFF1C8'] : ['#6E0B0E', '#A87A20', '#A8262B', '#A87A20']}
+                variant="flow"
+                animationSpeed={10}
+              >
+                {tr({ it: 'Prossimamente', en: 'Coming soon' })}
+              </GradientText>
+            </p>
+          </div>
+          <div className="comp comp--stack reveal">
+            <StarBorder as="a" className="signup-star" color={theme === 'dark' ? '#ffffff' : '#e6a92c'} speed="5s" thickness={3} href="#co-t">
               {tr({ it: 'Iscriviti', en: 'Sign up' })}
-            </a>
+            </StarBorder>
             <a className="btn btn--ghost" href="#co-t">
               {tr({ it: 'Il menu del pranzo', en: 'The lunch menu' })}
             </a>
-            <p className="hero__status">
-              <span className="hero__dot" aria-hidden="true" />
-              {tr({ it: 'Sito in costruzione', en: 'Site under construction' })}
-            </p>
           </div>
+          <div className="comp reveal">
+            <PulseHeart
+              count={12}
+              size={22}
+              corner={999}
+              likedColor={theme === 'dark' ? '#ef7b7f' : '#b3262c'}
+              idleColor="var(--text-2)"
+              pillColor="var(--surface)"
+              textColor="var(--heading)"
+              label={tr({ it: 'Mi piace (esempio)', en: 'Like (example)' })}
+            />
+            <span className="comp__note">{tr({ it: 'Toccalo: qui è solo una prova, non conta.', en: 'Tap it: this one is just a demo, it does not count.' })}</span>
+          </div>
+          <p className="wip reveal">
+            <span className="wip__dot" aria-hidden="true" />
+            <span>
+              <strong>{tr({ it: 'Ci stiamo lavorando.', en: 'We are working on it.' })}</strong>{' '}
+              {tr({ it: 'La nota che chiude le sezioni ancora in costruzione.', en: 'The note at the end of sections still under construction.' })}
+            </span>
+          </p>
         </section>
 
         <section className="id-sec" aria-labelledby="v-t">
