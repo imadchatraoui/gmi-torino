@@ -122,6 +122,9 @@
 
 /* ---------- le due proposte ---------- */
 .choices {
+  /* fuori schermo il browser salta disegno e composizione delle due bowl piccole */
+  content-visibility: auto;
+  contain-intrinsic-size: auto 560px;
   display: grid;
   gap: 12px;
   max-width: var(--max);
@@ -196,6 +199,8 @@
 .poke {
   position: relative;
   height: calc((var(--poke-screens) + 1) * (100svh - var(--header-h)));
+  /* la sezione ha già un'altezza fissa: fuori schermo si salta tutto il lavoro dello stage */
+  content-visibility: auto;
 }
 
 .poke + .poke {

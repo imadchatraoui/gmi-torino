@@ -29,10 +29,27 @@
 }
 
 .poke-art__move {
-  will-change: transform;
+  will-change: transform, opacity; /* anche l'opacità: niente repaint quando un ingrediente si attenua */
 }
 
 .poke-art__lid {
   will-change: transform, opacity;
 }
 
+.poke-art__fade {
+  will-change: opacity;
+}
+
+/* numeri degli ingredienti: livelli piccoli, solo opacità */
+.poke-art__pin {
+  position: absolute;
+  aspect-ratio: 1;
+  will-change: opacity;
+}
+
+.poke-art__pin svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}

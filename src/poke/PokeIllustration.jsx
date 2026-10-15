@@ -35,6 +35,22 @@ function Marker({ x, y, n }) {
   )
 }
 
+// Numero su un suo piccolo livello HTML: la sua opacità cambia senza ridisegnare l'SVG dell'ingrediente.
+const PIN = 17
+const Pin = forwardRef(function Pin({ x, y, n }, ref) {
+  return (
+    <div
+      ref={ref}
+      className="poke-art__pin"
+      style={{ left: `${pct(x - PIN)}%`, top: `${pct(y - PIN)}%`, width: `${pct(PIN * 2)}%`, opacity: 0 }}
+    >
+      <svg viewBox={`${-PIN} ${-PIN} ${PIN * 2} ${PIN * 2}`} aria-hidden="true" focusable="false">
+        <Marker x={0} y={0} n={n} />
+      </svg>
+    </div>
+  )
+})
+
 /**
  * Bowl poke disegnata in SVG, divisa in livelli HTML sovrapposti
  * (ognuno con il suo SVG) così ogni livello si muove solo con transform/opacity
@@ -125,13 +141,7 @@ const PokeIllustration = forwardRef(function PokeIllustration({ items, label, ma
           </Svg>
         </div>
       )}
-      {markers && riceIndex >= 0 && (
-        <div className="poke-art__layer poke-art__fade" ref={riceMarkerRef} style={{ opacity: 0 }}>
-          <Svg>
-            <Marker x={C} y={C + FOOD_R + 2} n={riceIndex + 1} />
-          </Svg>
-        </div>
-      )}
+      {markers && riceIndex >= 0 && <Pin ref={riceMarkerRef} x={C} y={C + FOOD_R + 2} n={riceIndex + 1} />}
       {layout.map((l) =>
         l.rice ? null : (
           <div
@@ -144,12 +154,15 @@ const PokeIllustration = forwardRef(function PokeIllustration({ items, label, ma
               <g transform={`translate(${l.cx.toFixed(1)} ${l.cy.toFixed(1)}) scale(${ART_SCALE})`}>
                 <l.Art uid={`${uid}-${l.i}`} />
               </g>
-              {markers && (
-                <g ref={(el) => { markerRefs.current[l.i] = el }} style={{ opacity: 0 }}>
-                  <Marker x={l.cx + l.dir.x * 72} y={l.cy + l.dir.y * 72} n={l.i + 1} />
-                </g>
-              )}
             </Svg>
+            {markers && (
+              <Pin
+                ref={(el) => { markerRefs.current[l.i] = el }}
+                x={l.cx + l.dir.x * 72}
+                y={l.cy + l.dir.y * 72}
+                n={l.i + 1}
+              />
+            )}
           </div>
         ),
       )}
