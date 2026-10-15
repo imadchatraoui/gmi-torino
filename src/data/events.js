@@ -4,7 +4,7 @@
 //   banner  — immagine in alto (opzionale), logo — logo dell'evento (opzionale)
 //   blocks  — quali blocchi mostrare: info, signup, program, menu
 // Il giorno dopo la data di fine l'evento passa da solo in Archivio (src/data/when.js).
-import { POKES } from './menu'
+import { POKES } from './menu.js'
 
 export const EVENTS = [
   {

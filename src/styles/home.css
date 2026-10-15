@@ -302,6 +302,16 @@
   text-decoration-color: var(--gold);
 }
 
+.event__facts .event__cal {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  margin-top: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--heading);
+}
+
 .event__actions {
   display: grid;
   gap: 10px;

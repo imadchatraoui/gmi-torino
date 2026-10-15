@@ -122,6 +122,11 @@ function EventCard({ ev, lang, theme }) {
             <dd>
               {tr(ev.date)}
               <span>{ev.time}</span>
+              {ev.end && (
+                <a className="event__cal" href={`/eventi/${ev.id}.ics`} download={`${ev.slug}.ics`}>
+                  {tr({ it: 'Aggiungi al calendario', en: 'Add to calendar' })}
+                </a>
+              )}
             </dd>
           </div>
           <div>

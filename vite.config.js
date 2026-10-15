@@ -2,6 +2,8 @@ import { resolve } from 'node:path'
 import preact from '@preact/preset-vite'
 import { defineConfig } from 'vite'
 import likesHandler from './api/likes.js'
+import { EVENTS } from './src/data/events.js'
+import { eventIcs } from './src/data/ics.js'
 
 // In locale (npm run dev / preview) /api/likes usa la stessa funzione di Vercel con un finto Redis
 // in memoria: i like si condividono tra i dispositivi collegati al Mac finché il server resta acceso.
@@ -45,6 +47,29 @@ function devLikes() {
   }
 }
 
+// "Aggiungi al calendario": un file /eventi/<id>.ics per ogni evento, sempre allineato a src/data/events.js.
+function eventCalendars() {
+  const serve = (server) => {
+    server.middlewares.use((req, res, next) => {
+      const m = req.url.match(/^\/eventi\/([a-z0-9-]+)\.ics$/)
+      const ev = m && EVENTS.find((e) => e.id === m[1])
+      if (!ev) return next()
+      res.setHeader('Content-Type', 'text/calendar; charset=utf-8')
+      res.end(eventIcs(ev))
+    })
+  }
+  return {
+    name: 'gmi-event-calendars',
+    configureServer: serve,
+    configurePreviewServer: serve,
+    generateBundle() {
+      for (const ev of EVENTS) {
+        if (ev.start && ev.end) this.emitFile({ type: 'asset', fileName: `eventi/${ev.id}.ics`, source: eventIcs(ev) })
+      }
+    },
+  }
+}
+
 // Pagine statiche (multi-page build):
 //   /           -> index.html           (home: Chi siamo, Eventi, Archivio, Contatti)
 //   /menu/      -> menu/index.html      (menu poke interattivo del YMHS)
@@ -53,7 +78,7 @@ function devLikes() {
 // Funziona su qualsiasi hosting statico senza regole di rewrite.
 // Preact (via preact/compat) al posto di React: stesso codice, ~60 KB gzip in meno.
 export default defineConfig({
-  plugins: [preact({ prerender: { enabled: false } }), devLikes()],
+  plugins: [preact({ prerender: { enabled: false } }), devLikes(), eventCalendars()],
   build: {
     rollupOptions: {
       input: {
