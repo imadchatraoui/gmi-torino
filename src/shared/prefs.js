@@ -38,15 +38,17 @@ function notify() {
   listeners.forEach((fn) => fn())
 }
 
-function setThemeColor(theme) {
+// colore della barra di Safari/Chrome = fondo della pagina (crema, bordeaux notte, o carta/blu notte nel menu)
+function setThemeColor() {
   const meta = document.querySelector('meta[name="theme-color"]')
-  if (meta) meta.setAttribute('content', theme === 'dark' ? '#1c0709' : '#fffceb')
+  const bg = getComputedStyle(document.documentElement).getPropertyValue('--bg').trim()
+  if (meta && bg) meta.setAttribute('content', bg)
 }
 
 export function toggleTheme() {
   const next = getTheme() === 'dark' ? 'light' : 'dark'
   document.documentElement.dataset.theme = next
-  setThemeColor(next)
+  setThemeColor()
   write(KEY_THEME, next)
   notify()
 }
@@ -60,11 +62,11 @@ export function toggleLang() {
 
 // Senza una scelta salvata il tema segue il telefono, anche se cambia mentre la pagina è aperta.
 if (typeof window !== 'undefined' && typeof matchMedia === 'function') {
-  setThemeColor(getTheme())
+  setThemeColor()
   matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change', () => {
     if (read(KEY_THEME)) return
     document.documentElement.dataset.theme = systemDark() ? 'dark' : 'light'
-    setThemeColor(getTheme())
+    setThemeColor()
     notify()
   })
 }

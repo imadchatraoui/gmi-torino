@@ -3,7 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="theme-color" content="#fffceb" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fffceb" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#1c0709" />
     <meta name="robots" content="noindex" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <title>Pagina non trovata · GMI Torino</title>
@@ -11,6 +12,7 @@
       try {
         var t = localStorage.getItem('gmi-theme')
         document.documentElement.dataset.theme = t || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+        if (localStorage.getItem('gmi-lang') === 'en') document.documentElement.lang = 'en'
       } catch (e) {}
     </script>
     <style>
@@ -18,22 +20,28 @@
       :root[data-theme='dark'] { --bg: #1c0709; --text: #f7ecd4; --text-2: rgba(247, 236, 212, 0.72); --btn: #a8262b; --on-btn: #fff6e2; --soft: #2a0d10; }
       html, body { margin: 0; min-height: 100svh; background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, 'Segoe UI', Roboto, sans-serif; -webkit-font-smoothing: antialiased; }
       main { min-height: 100svh; display: grid; place-content: center; justify-items: center; gap: 14px; padding: 24px; text-align: center; }
-      .logo { width: 88px; aspect-ratio: 1; border-radius: 50%; background: #fffceb url('/brand/gmi-torino-160.png') center / 62% no-repeat; }
+      .logo { width: 72px; aspect-ratio: 320 / 394; background: url('/brand/gmi-torino-160.png') center / contain no-repeat; }
+      :root[data-theme='dark'] .logo { background-image: url('/brand/gmi-torino-scuro-160.png'); }
       h1 { margin: 6px 0 0; font-size: clamp(2rem, 9vw, 3rem); font-weight: 600; letter-spacing: -0.03em; line-height: 1.05; }
       p { margin: 0; font-size: 17px; color: var(--text-2); }
       nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 10px; }
       a { display: inline-flex; align-items: center; min-height: 50px; padding: 0 22px; border-radius: 999px; background: var(--btn); color: var(--on-btn); text-decoration: none; font-size: 16px; font-weight: 600; }
       a + a { background: var(--soft); color: var(--text); }
+      [data-en] { display: none; }
+      :root[lang='en'] [data-it] { display: none; }
+      :root[lang='en'] [data-en] { display: revert; }
     </style>
   </head>
   <body>
     <main>
       <span class="logo" role="img" aria-label="GMI Torino"></span>
-      <h1>Questa pagina non c’è.</h1>
-      <p>Forse il link è vecchio. Da qui puoi tornare al sito.</p>
+      <h1 data-it>Questa pagina non c’è.</h1>
+      <h1 data-en>This page doesn’t exist.</h1>
+      <p data-it>Forse il link è vecchio. Da qui puoi tornare al sito.</p>
+      <p data-en>The link may be old. You can go back to the site from here.</p>
       <nav>
-        <a href="/">Pagina iniziale</a>
-        <a href="/menu/">Il menu</a>
+        <a href="/"><span data-it>Pagina iniziale</span><span data-en>Home page</span></a>
+        <a href="/menu/"><span data-it>Il menu</span><span data-en>The menu</span></a>
       </nav>
     </main>
   </body>
