@@ -209,7 +209,7 @@ Nuova direzione decisa con l'utente (dettagli in YMHS_BRIEF.md, "Aggiornamento 1
 **16/10 — grafica meno "da AI" (richiesta di Imad)**
 Via i segni tipici dei siti generati: pillole colorate, cerchi pieni dietro le icone, riquadri arrotondati con puntino.
 Al loro posto uno stile da rivista: righe sottili, etichette in maiuscoletto spaziato, oro usato come trattino.
-- Header: "IT / EN" in testo (la lingua attiva piena, l'altra accennata) e un cerchio sottile metà pieno per il tema,
+- Header: "IT / EN" in testo (la lingua attiva piena, l'altra accennata) e la luna/il sole per il tema (senza cerchio dietro),
   separati da una riga; niente più bottoni tondi.
 - "Ci stiamo lavorando": niente riquadro né puntino; riga sottile, etichetta oro in maiuscoletto con un trattino
   che si allunga piano.

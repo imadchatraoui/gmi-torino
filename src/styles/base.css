@@ -482,14 +482,32 @@ blockquote {
   background: var(--line);
 }
 
-.tool--theme svg {
-  width: 17px;
-  height: 17px;
-  transition: transform 0.6s var(--ease-out);
+.tool--theme {
+  display: inline-grid;
+  place-items: center;
 }
 
-:root[data-theme='dark'] .tool--theme svg {
-  transform: rotate(180deg);
+/* sole e luna si scambiano ruotando */
+.tool--theme svg {
+  grid-area: 1 / 1;
+  width: 19px;
+  height: 19px;
+  transition: transform 0.5s var(--ease-out), opacity 0.3s;
+}
+
+.tool--theme .sun {
+  transform: rotate(-90deg) scale(0.6);
+  opacity: 0;
+}
+
+:root[data-theme='dark'] .tool--theme .sun {
+  transform: none;
+  opacity: 1;
+}
+
+:root[data-theme='dark'] .tool--theme .moon {
+  transform: rotate(90deg) scale(0.6);
+  opacity: 0;
 }
 
 .tool:active {
