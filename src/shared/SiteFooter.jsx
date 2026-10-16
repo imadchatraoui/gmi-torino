@@ -74,8 +74,9 @@ export default function SiteFooter() {
 
         <div className="site-footer__col">
           <h2 className="site-footer__title">{tr({ it: 'Seguici', en: 'Follow us' })}</h2>
-          <a className="site-footer__social" href={CONTACTS.instagram.url} target="_blank" rel="noopener noreferrer" aria-label="Instagram @gmi.torino">
+          <a className="site-footer__social" href={CONTACTS.instagram.url} target="_blank" rel="noopener noreferrer">
             {Icon.instagram}
+            <span>@gmi.torino</span>
           </a>
           <p className="site-footer__note">
             {tr({ it: 'Resta aggiornato sui nostri eventi.', en: 'Stay up to date with our events.' })}

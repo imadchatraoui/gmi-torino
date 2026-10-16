@@ -206,6 +206,20 @@ Nuova direzione decisa con l'utente (dettagli in YMHS_BRIEF.md, "Aggiornamento 1
   bowl aperte e numerate affiancate con gli ingredienti, nota allergie e l'indirizzo gmitorino.org/menu. Sempre in
   chiaro anche col telefono in tema scuro. Esempio in `anteprime/menu-stampa.pdf`. Utile da appendere al banco del pranzo.
 
+**16/10 — grafica meno "da AI" (richiesta di Imad)**
+Via i segni tipici dei siti generati: pillole colorate, cerchi pieni dietro le icone, riquadri arrotondati con puntino.
+Al loro posto uno stile da rivista: righe sottili, etichette in maiuscoletto spaziato, oro usato come trattino.
+- Header: "IT / EN" in testo (la lingua attiva piena, l'altra accennata) e un cerchio sottile metà pieno per il tema,
+  separati da una riga; niente più bottoni tondi.
+- "Ci stiamo lavorando": niente riquadro né puntino; riga sottile, etichetta oro in maiuscoletto con un trattino
+  che si allunga piano.
+- Conto alla rovescia: testo ("Prossimo evento — tra 9 giorni"), non più pillola.
+- Barra in basso: appoggiata al bordo, fondo pieno, voci in maiuscoletto, trattino d'oro che scivola sulla sezione.
+- Footer: titoli in maiuscoletto, Instagram con icona e @gmi.torino senza cerchio.
+- Menu: "Salta ↓" e "Condividi il menu" in testo, cuori senza pillola, nota allergie tra due righe sottili.
+- /design: marchio su due campi di colore (niente riquadri arrotondati), "Voce" come elenco con righe, "Riproduci" in testo.
+Verificato: contrasti AA, tocchi della barra in basso, scroll fluido.
+
 ## Manca / idee per le prossime run
 - [ ] Provare su un iPhone vero (sul Mac non c'è Xcode, quindi niente simulatore: tutto verificato con Chrome in
   emulazione). Da guardare: intro in risparmio energetico, barra di Safari durante lo scroll del menu, tocchi sulla barra in basso.

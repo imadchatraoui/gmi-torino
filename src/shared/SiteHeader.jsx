@@ -3,17 +3,13 @@ import { SECTIONS } from '../data/site'
 import { t, toggleLang, toggleTheme, usePrefs } from './prefs'
 import { observeSections } from './reveal'
 
-function ThemeIcons() {
+// tema: un cerchio sottile metà pieno, che gira di mezzo giro a ogni cambio
+function ThemeIcon() {
   return (
-    <>
-      <svg className="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-        <path d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5a8.5 8.5 0 1 0 10.7 10.7Z" />
-      </svg>
-      <svg className="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true">
-        <circle cx="12" cy="12" r="4.2" />
-        <path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6" />
-      </svg>
-    </>
+    <svg viewBox="0 0 20 20" aria-hidden="true">
+      <circle cx="10" cy="10" r="7.25" fill="none" stroke="currentColor" strokeWidth="1.2" />
+      <path d="M10 2.75a7.25 7.25 0 0 1 0 14.5Z" fill="currentColor" />
+    </svg>
   )
 }
 
@@ -58,8 +54,11 @@ export default function SiteHeader({ page = 'home' }) {
           onClick={toggleLang}
           aria-label={lang === 'it' ? 'Switch to English' : 'Passa all’italiano'}
         >
-          {lang === 'it' ? 'EN' : 'IT'}
+          <span className={lang === 'it' ? 'is-on' : undefined}>IT</span>
+          <span className="tool__sep" aria-hidden="true">/</span>
+          <span className={lang === 'en' ? 'is-on' : undefined}>EN</span>
         </button>
+        <span className="tool__rule" aria-hidden="true" />
         <button
           type="button"
           className="tool tool--theme"
@@ -70,7 +69,7 @@ export default function SiteHeader({ page = 'home' }) {
               : t({ it: 'Passa al tema scuro', en: 'Switch to dark theme' })
           }
         >
-          <ThemeIcons />
+          <ThemeIcon />
         </button>
       </div>
     </header>

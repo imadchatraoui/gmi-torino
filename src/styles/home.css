@@ -144,12 +144,18 @@
 }
 
 .hero__next-count {
-  padding: 2px 9px;
-  border-radius: 999px;
-  background: var(--brand);
-  color: var(--on-brand);
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
+  color: var(--label);
+}
+
+/* conto alla rovescia: testo, separato da un trattino sottile, niente pillola */
+.hero__next-count::before,
+.event__count::before {
+  content: '—';
+  margin-right: 8px;
+  font-weight: 300;
+  opacity: 0.6;
 }
 
 /* ---------- sezioni ---------- */
@@ -221,20 +227,22 @@
 
 .event__kicker {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  font-size: 14px;
+  gap: 4px 8px;
+  font-size: 11px;
   font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
   color: var(--gold-text);
 }
 
 .event__count {
-  padding: 3px 10px;
-  border-radius: 999px;
-  background: var(--brand);
-  color: var(--on-brand);
-  font-size: 12px;
+  color: var(--text-2);
+}
+
+.event__count::before {
+  margin-right: 8px;
 }
 
 .event__short {
@@ -407,8 +415,10 @@
 }
 
 .contacts__label {
-  font-size: 14px;
+  font-size: 11px;
   font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
   color: var(--gold-text);
 }
 
@@ -420,62 +430,73 @@
 }
 
 /* ---------- barra di navigazione (telefono) ---------- */
+/* appoggiata al bordo come un indice: fondo pieno, riga sottile, voci in maiuscoletto,
+   un trattino d'oro che scivola sulla sezione in vista */
 .bottom-nav {
   position: fixed;
   z-index: 40;
-  left: 50%;
-  bottom: calc(14px + env(safe-area-inset-bottom));
+  left: 0;
+  right: 0;
+  bottom: 0;
   display: flex;
-  padding: 5px;
-  border-radius: 999px;
-  background: var(--bordeaux);
-  box-shadow: 0 12px 30px -10px rgba(43, 10, 12, 0.55);
-  transform: translate3d(-50%, 150%, 0);
+  padding: 0 calc(var(--gutter) - 8px) env(safe-area-inset-bottom);
+  border-top: 1px solid var(--line);
+  background: var(--bg);
+  transform: translate3d(0, 100%, 0);
   transition: transform 0.55s var(--ease-out);
 }
 
-:root[data-theme='dark'] .bottom-nav {
-  background: #3a1417;
-  box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.8), inset 0 0 0 1px rgba(247, 236, 212, 0.08);
-}
-
 .bottom-nav.is-shown {
-  transform: translate3d(-50%, 0, 0);
+  transform: translate3d(0, 0, 0);
 }
 
 .bottom-nav a {
   position: relative;
   z-index: 1;
-  padding: 10px 13px;
-  border-radius: 999px;
-  font-size: 14px;
-  font-weight: 500;
+  flex: 1 1 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
   white-space: nowrap;
   text-decoration: none;
-  color: rgba(255, 252, 235, 0.78);
+  color: var(--text-3);
   transition: color 0.3s;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .bottom-nav a[aria-current='true'] {
-  color: var(--bordeaux);
+  color: var(--heading);
 }
 
 .bottom-nav__pill {
   position: absolute;
-  top: 5px;
-  bottom: 5px;
+  top: -1px;
   left: 0;
   width: 0;
-  border-radius: 999px;
-  background: var(--cream);
+  height: 2px;
   opacity: 0;
   transition: transform 0.45s var(--ease-out), width 0.45s var(--ease-out), opacity 0.3s;
 }
 
+.bottom-nav__pill::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  width: 26px;
+  height: 100%;
+  margin-left: -13px;
+  background: var(--gold);
+}
+
 @media (max-width: 359px) {
   .bottom-nav a {
-    padding: 9px 9px;
-    font-size: 12px;
+    font-size: 10px;
+    letter-spacing: 0.08em;
   }
 }
 

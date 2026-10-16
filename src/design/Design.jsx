@@ -71,7 +71,7 @@ function IntroDemo({ lang, theme }) {
           height="456"
         />
       </div>
-      <button type="button" className="btn btn--ghost" onClick={() => setK((v) => v + 1)}>
+      <button type="button" className="intro-demo__again" onClick={() => setK((v) => v + 1)}>
         {t({ it: 'Riproduci', en: 'Play again' }, lang)}
       </button>
     </div>
@@ -288,7 +288,7 @@ export default function Design() {
               corner={999}
               likedColor={theme === 'dark' ? '#ef7b7f' : '#b3262c'}
               idleColor="var(--text-2)"
-              pillColor="var(--surface)"
+              pillColor="transparent"
               textColor="var(--heading)"
               label={tr({ it: 'Mi piace (esempio)', en: 'Like (example)' })}
             />
@@ -297,7 +297,7 @@ export default function Design() {
           <p className="wip reveal">
             <span className="wip__dot" aria-hidden="true" />
             <span>
-              <strong>{tr({ it: 'Ci stiamo lavorando.', en: 'We are working on it.' })}</strong>{' '}
+              <strong>{tr({ it: 'Ci stiamo lavorando', en: 'Work in progress' })}</strong>{' '}
               {tr({ it: 'La nota che chiude le sezioni ancora in costruzione.', en: 'The note at the end of sections still under construction.' })}
             </span>
           </p>

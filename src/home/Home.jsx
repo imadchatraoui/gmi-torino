@@ -89,7 +89,7 @@ function SectionHead({ id, title, children }) {
         <p className="wip reveal" style={{ '--d': 2 }}>
           <span className="wip__dot" aria-hidden="true" />
           <span>
-            <strong>{t({ it: 'Ci stiamo lavorando.', en: 'We are working on it.' }, lang)}</strong> {t(WIP[id], lang)}
+            <strong>{t({ it: 'Ci stiamo lavorando', en: 'Work in progress' }, lang)}</strong> {t(WIP[id], lang)}
           </span>
         </p>
       )}
