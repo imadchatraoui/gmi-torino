@@ -107,6 +107,8 @@ function searchData() {
 // Preact (via preact/compat) al posto di React: stesso codice, ~60 KB gzip in meno.
 export default defineConfig({
   plugins: [preact({ prerender: { enabled: false } }), devLikes(), eventCalendars(), searchData()],
+  // anteprima raggiungibile da fuori casa con un tunnel Cloudflare temporaneo (*.trycloudflare.com)
+  preview: { allowedHosts: ['.trycloudflare.com'] },
   build: {
     rollupOptions: {
       input: {
