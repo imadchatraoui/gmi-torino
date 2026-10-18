@@ -244,11 +244,24 @@ Verificato: contrasti AA, tocchi della barra in basso, scroll fluido.
   Contatti; che il sito sia in costruzione lo dicono già "Prossimamente" e la frase sotto il titolo. Barra in basso con
   Eventi e Contatti. L'Archivio ricompare da solo quando c'è un evento passato. Chi siamo tornerà con un testo vero.
 
+**18/10 sera (2) — richieste di Imad**
+- Evento in un colore solo: la scheda in Eventi ora è salvia come il "Prossimo evento" in cima (prima una era verde e
+  l'altra blu). Testi secondari sul salvia scuriti per restare sopra 4,5:1.
+- Titolo: si scrive "in sha Allah" (staccato) ovunque, anche nell'anteprima dei link. Animazione semplificata:
+  in sha Allah → إن شاء الله → se Dio vuole con una dissolvenza e un piccolo spostamento (niente più morph liquido).
+- Loghi GMI Torino · Umma Rise · Bayna, solo per lo YMHS: in fondo alla scheda evento, in fondo al menu e in /design.
+  Umma Rise e Bayna ricavati in vettoriale (potrace) dalle immagini mandate: nitidi a qualsiasi dimensione, tinti col
+  colore del testo del tema; il logo GMI resta il PNG originale (`public/eventi/ymhs/partner/`, `src/shared/Partners.jsx`).
+- Tornano **Chi siamo** (testo breve: chi siamo + incontri e talk, eventi, uscite, link a gmitalia.org; in
+  `src/data/site.js` → `ABOUT`, da correggere se serve) e **Archivio** (una riga, poi la linea del tempo con il
+  primo posto già segnato: 25.10 Youth Mental Health Summit). Nessuna nota ripetuta, niente sfocature.
+- Computer (≥960 px): titolo a sinistra e prossimo evento a destra, la prima schermata non è più vuota a metà.
+
 ## Manca / idee per le prossime run
 - [ ] Provare su un iPhone vero (sul Mac non c'è Xcode, quindi niente simulatore: tutto verificato con Chrome in
   emulazione). Da guardare: intro in risparmio energetico, barra di Safari durante lo scroll del menu, tocchi sulla barra in basso.
 - [ ] Deploy (Vercel) e collegamento di Upstash Redis per i like condivisi: poi controllare che `/api/likes` risponda 200.
-- [ ] Testo vero per Chi siamo (poi si rimette la sezione in `src/data/site.js`).
+- [ ] Chi siamo: rileggere il mio testo (`ABOUT` in `src/data/site.js`) e aggiungere le persone del direttivo.
 - [ ] Programma e ospiti del YMHS (blocco `program` già previsto nel template, spento).
 - [ ] Come aggiungere eventi in futuro (file dati, pannello, o tramite Claude).
 - [x] Pulizia dipendenze, like, calendario, condivisione, sito senza rete, anteprime dei link, 404, dati per Google.

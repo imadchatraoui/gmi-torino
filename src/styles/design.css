@@ -287,6 +287,10 @@
   font-size: 22px;
 }
 
+.paper-demo__partners {
+  padding: 22px 0 26px;
+}
+
 .paper-demo__logo {
   display: block;
   width: min(100%, 340px);

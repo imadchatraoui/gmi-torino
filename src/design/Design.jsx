@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import PokeIllustration from '../poke/PokeIllustration'
+import { eventById } from '../data/events'
+import Partners from '../shared/Partners'
 import { t, usePrefs } from '../shared/prefs'
 import { useReveal } from '../shared/reveal'
 import SiteFooter from '../shared/SiteFooter'
@@ -207,7 +209,14 @@ export default function Design() {
               <span className="paper-demo__title display">Youth Mental Health Summit</span>
             </div>
             <div className="divider" aria-hidden="true" />
+            <Partners ev={eventById('ymhs')} className="paper-demo__partners" />
           </div>
+          <p className="id-sec__lede reveal">
+            {tr({
+              it: 'In fondo alla scheda dell’evento e al menu: i loghi di chi lo organizza con GMI Torino (Umma Rise, Bayna), a un colore, ricavati in vettoriale dalle locandine. Solo per l’evento che li indica.',
+              en: 'At the bottom of the event card and the menu: the logos of those organising it with GMI Torino (Umma Rise, Bayna), in one colour, redrawn as vectors from the posters. Only for the event that lists them.',
+            })}
+          </p>
         </section>
 
         <section className="id-sec" aria-labelledby="e-t">

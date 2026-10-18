@@ -633,6 +633,9 @@
     grid-column: 2;
     grid-template-columns: 1fr 1fr;
   }
+  .event__partners {
+    grid-column: 1 / -1;
+  }
   .contacts {
     max-width: 640px;
   }
@@ -644,5 +647,33 @@
   .hero__morph {
     animation: none !important;
     opacity: 1 !important;
+  }
+}
+
+/* schermi larghi: il prossimo evento accanto al titolo, così la prima schermata è piena */
+@media (min-width: 960px) {
+  .hero__body {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    column-gap: 72px;
+    align-items: center;
+  }
+  .hero__kicker,
+  .hero__title,
+  .hero__lede {
+    grid-column: 1;
+  }
+  .hero__title {
+    font-size: clamp(3.4rem, 6.2vw, 5.2rem);
+  }
+  .hero__next {
+    grid-column: 2;
+    grid-row: 1 / span 3;
+    max-width: none;
+    margin-top: 0;
+    padding: 34px 32px 36px;
+  }
+  .hero__next-name {
+    font-size: 34px;
   }
 }
