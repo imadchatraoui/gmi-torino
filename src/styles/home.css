@@ -562,3 +562,32 @@
   font-family: var(--display);
   font-size: 1.1875rem;
 }
+
+/* invito a seguirci su Instagram, sotto gli eventi */
+.follow {
+  display: grid;
+  gap: 4px;
+  margin-top: 26px;
+  padding: 16px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  text-decoration: none;
+}
+
+.follow__label {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold-text);
+}
+
+.follow__text {
+  font-size: 1.125rem;
+  color: var(--text);
+}
+
+.follow__text strong {
+  font-weight: 600;
+  color: var(--heading);
+}

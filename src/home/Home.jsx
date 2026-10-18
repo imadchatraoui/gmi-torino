@@ -37,7 +37,7 @@ function countdown(iso, lang) {
   return null
 }
 
-function Hero({ next, lang, theme }) {
+function Hero({ next, recent, lang, theme }) {
   const tr = (v) => t(v, lang)
   const ref = useRef(null)
   // fuori schermo la parola che cambia si ferma (WordCycle guarda la classe is-off)
@@ -78,6 +78,7 @@ function Hero({ next, lang, theme }) {
             </span>
           </a>
         )}
+        {!next && <ThankYou ev={recent} lang={lang} />}
       </div>
     </section>
   )
@@ -118,20 +119,54 @@ function directionsUrl(ev) {
 }
 
 // alle 13:00 del giorno dell'evento compare un avviso che porta al menu (fino alla fine dell'evento)
+// striscia sotto l'header nel giorno dell'evento: dall'inizio "è iniziato" (con indicazioni),
+// dalle 13:00 "il menu è svelato", fino alla fine dell'evento
 function MenuReveal({ ev, lang }) {
   const [now, setNow] = useState(() => Date.now())
   useEffect(() => {
     const id = setInterval(() => setNow(Date.now()), 30000)
     return () => clearInterval(id)
   }, [])
-  if (!ev?.menu?.revealAt) return null
-  const from = new Date(ev.menu.revealAt).getTime()
-  const to = new Date(ev.end ?? ev.start).getTime()
-  if (now < from || now > to) return null
-  return (
+  if (!ev) return null
+  const start = new Date(ev.start).getTime()
+  const end = new Date(ev.end ?? ev.start).getTime()
+  if (now < start || now > end) return null
+  const menuOpen = ev.menu?.revealAt && now >= new Date(ev.menu.revealAt).getTime()
+  return menuOpen ? (
     <a className="menu-reveal theme-ymhs" href="/menu/">
       <span className="menu-reveal__label">{t({ it: 'È ora di pranzo', en: 'It’s lunchtime' }, lang)}</span>
       <span className="menu-reveal__text">{t({ it: 'Il menu è svelato →', en: 'The menu is revealed →' }, lang)}</span>
+    </a>
+  ) : (
+    <a className="menu-reveal theme-ymhs" href={directionsUrl(ev)} target="_blank" rel="noopener noreferrer">
+      <span className="menu-reveal__label">{t({ it: `${ev.short ?? ev.name} è iniziato`, en: `${ev.short ?? ev.name} has started` }, lang)}</span>
+      <span className="menu-reveal__text">{t({ it: 'Indicazioni →', en: 'Directions →' }, lang)}</span>
+    </a>
+  )
+}
+
+// nei 7 giorni dopo un evento, in cima alla home: grazie e invito a seguirci
+function ThankYou({ ev, lang }) {
+  if (!ev) return null
+  return (
+    <a className="hero__next hero__thanks theme-ymhs" href={CONTACTS.instagram.url} target="_blank" rel="noopener noreferrer" style={{ clipPath: NEXT_CLIP }}>
+      <span className="hero__next-label">{t({ it: 'Grazie a chi c’era', en: 'Thank you for coming' }, lang)}</span>
+      <span className="hero__next-name display">{ev.name}</span>
+      <span className="hero__next-date">
+        {t({ it: 'Foto e prossimi incontri su Instagram →', en: 'Photos and next meetups on Instagram →' }, lang)}
+      </span>
+    </a>
+  )
+}
+
+// invito a seguirci: è su Instagram che annunciamo i prossimi eventi
+function FollowUs({ lang }) {
+  return (
+    <a className="follow reveal" href={CONTACTS.instagram.url} target="_blank" rel="noopener noreferrer">
+      <span className="follow__label">{t({ it: 'Non perderti il prossimo evento', en: 'Don’t miss the next event' }, lang)}</span>
+      <span className="follow__text">
+        {t({ it: 'Seguici su Instagram', en: 'Follow us on Instagram' }, lang)} <strong>{CONTACTS.instagram.handle}</strong> →
+      </span>
     </a>
   )
 }
@@ -242,6 +277,7 @@ function Events({ lang, theme, upcoming, recent }) {
           })}
         </p>
       )}
+      <FollowUs lang={lang} />
     </section>
   )
 }
@@ -307,8 +343,8 @@ export default function Home() {
       <Intro />
       <SiteHeader page="home" />
       <main id="main" tabIndex={-1} className="home">
-        <MenuReveal ev={EVENTS.find((e) => e.menu?.revealAt)} lang={lang} />
-        <Hero next={upcoming[0]} lang={lang} theme={theme} />
+        <MenuReveal ev={upcoming[0]} lang={lang} />
+        <Hero next={upcoming[0]} recent={recent[0]} lang={lang} theme={theme} />
         <WipSection id="chi-siamo" lang={lang} kind="about" />
         <Events lang={lang} theme={theme} upcoming={upcoming} recent={recent} />
         <Archive lang={lang} finished={finished} />

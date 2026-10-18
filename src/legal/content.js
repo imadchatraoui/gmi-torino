@@ -65,8 +65,8 @@ export const PRIVACY = {
         },
         {
           p: {
-            it: 'Non vendiamo né cediamo dati a nessuno, non facciamo profilazione e non usiamo strumenti di pubblicità o di statistica di terze parti.',
-            en: 'We do not sell or share data with anyone, we do no profiling and we use no third-party advertising or analytics tools.',
+            it: 'Statistiche: contiamo le visite in forma anonima con Vercel Web Analytics, che non usa cookie e non permette di riconoscerti. Non vendiamo né cediamo dati a nessuno, non facciamo profilazione e non usiamo pubblicità.',
+            en: 'Statistics: we count visits anonymously with Vercel Web Analytics, which uses no cookies and cannot identify you. We do not sell or share data with anyone, we do no profiling and we use no advertising.',
           },
         },
       ],

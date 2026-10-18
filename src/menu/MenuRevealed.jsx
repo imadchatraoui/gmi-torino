@@ -3,6 +3,7 @@ import BottomNav from '../shared/BottomNav'
 import LikeButton from '../poke/LikeButton'
 import PokeIllustration from '../poke/PokeIllustration'
 import PokeScroll from '../poke/PokeScroll'
+import { useLikes } from '../shared/likes'
 import { tornClip } from '../shared/Paper'
 import { t, usePrefs } from '../shared/prefs'
 
@@ -14,6 +15,11 @@ export default function MenuRevealed({ options }) {
   const { lang } = usePrefs()
   const tr = (v) => t(v, lang)
   const ids = options.map((p) => p.id)
+  const likes = useLikes(ids)
+  const total = ids.reduce((n, id) => n + likes.count(id), 0)
+  const top = [...options].sort((a, b) => likes.count(b.id) - likes.count(a.id))[0]
+  const tie = options.length > 1 && likes.count(options[0].id) === likes.count(options[1].id)
+  const staff = typeof location !== 'undefined' && new URLSearchParams(location.search).has('staff')
   const navItems = [
     ...options.map((p) => ({ id: p.id, label: p.label })),
     { id: 'menu-top', top: true, label: { it: 'Torna su', en: 'Top' } },
@@ -83,6 +89,30 @@ export default function MenuRevealed({ options }) {
           skipTo={i < options.length - 1 ? `#${options[i + 1].id}` : '#menu-end'}
         />
       ))}
+      {total > 0 && (
+        <p className="favorite" aria-live="polite">
+          <span className="favorite__label">{tr({ it: 'Il più amato finora', en: 'Most loved so far' })}</span>
+          <span className="favorite__text display">
+            {tie ? tr({ it: 'Pari!', en: 'It’s a tie!' }) : tr(top.title)}
+          </span>
+          <span className="favorite__count">
+            {options.map((p) => `${tr(p.label)}: ${likes.count(p.id)}`).join('  ·  ')}
+          </span>
+        </p>
+      )}
+
+      {staff && (
+        <aside className="staff" aria-label={tr({ it: 'Conteggio per lo staff', en: 'Staff count' })}>
+          <span className="staff__label">Staff · {tr({ it: 'mi piace in diretta', en: 'live likes' })}</span>
+          {options.map((p) => (
+            <span key={p.id} className="staff__row">
+              <span>{tr(p.label)}</span>
+              <strong>{likes.count(p.id)}</strong>
+            </span>
+          ))}
+        </aside>
+      )}
+
       <BottomNav items={navItems} heroId="menu-top" label={tr({ it: 'Opzioni del menu', en: 'Menu options' })} />
     </div>
   )

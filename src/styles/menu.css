@@ -763,3 +763,69 @@
     padding-bottom: calc(64px + env(safe-area-inset-bottom));
   }
 }
+
+/* il più amato finora, in fondo alle due opzioni */
+.favorite {
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  max-width: 34rem;
+  margin: 0 auto;
+  padding: 28px var(--gutter) 8px;
+  text-align: center;
+}
+
+.favorite__label {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--label);
+}
+
+.favorite__text {
+  font-size: 1.625rem;
+  color: var(--heading);
+}
+
+.favorite__count {
+  font-size: 0.875rem;
+  color: var(--text-2);
+  font-variant-numeric: tabular-nums;
+}
+
+/* pagina staff (?staff): i mi piace dei due poke sempre in vista */
+.staff {
+  position: fixed;
+  z-index: 45;
+  top: calc(var(--header-h) + env(safe-area-inset-top) + 8px);
+  right: var(--gutter);
+  display: grid;
+  gap: 4px;
+  min-width: 150px;
+  padding: 10px 12px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  box-shadow: 0 10px 24px -14px rgba(0, 0, 0, 0.5);
+  font-size: 0.875rem;
+}
+
+.staff__label {
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--label);
+}
+
+.staff__row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  color: var(--text);
+}
+
+.staff__row strong {
+  font-variant-numeric: tabular-nums;
+  color: var(--heading);
+}
