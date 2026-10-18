@@ -6,6 +6,7 @@
 // (i nomi che Vercel crea collegando Upstash dal Marketplace). Senza chiavi risponde 503
 // e il sito usa il ripiego locale (src/shared/likes.js).
 
+import { createHash } from 'node:crypto'
 import { POKES } from '../server/menu-data.js'
 
 const KEY = 'gmi:likes'
@@ -45,8 +46,15 @@ function clientIp(req) {
   return (Array.isArray(fwd) ? fwd[0] : fwd || '').split(',')[0].trim() || req.socket?.remoteAddress || 'unknown'
 }
 
+// l'IP non viene mai salvato: solo un'impronta non reversibile, valida per un minuto
+function ipFingerprint(req, minute) {
+  const salt = process.env.LIKES_SALT || 'gmi-torino'
+  return createHash('sha256').update(`${salt}:${minute}:${clientIp(req)}`).digest('base64url').slice(0, 22)
+}
+
 async function tooMany(cfg, req) {
-  const key = `gmi:rl:${clientIp(req)}:${Math.floor(Date.now() / 60000)}`
+  const minute = Math.floor(Date.now() / 60000)
+  const key = `gmi:rl:${ipFingerprint(req, minute)}:${minute}`
   const n = Number(await redis(cfg, ['INCR', key]))
   if (n === 1) await redis(cfg, ['EXPIRE', key, '70'])
   return n > LIMIT

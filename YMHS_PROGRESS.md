@@ -282,6 +282,18 @@ Verificato: contrasti AA, tocchi della barra in basso, scroll fluido.
   La sfocatura è fatta con ombre morbide e non con filter: blur (che costava fotogrammi lenti): scroll fluido.
 - Computer: Instagram ed Email affiancati e più grandi nei Contatti.
 
+**18/10 sera (5) — scroll morbido e note legali**
+- Scroll morbido (`src/shared/smoothScroll.js`): sul computer ogni scatto della rotella del mouse diventa una
+  scivolata breve (i trackpad restano nativi); su telefono e computer i salti nella pagina (barra in basso, Salta,
+  le due proposte, link #sezione, "Vai al contenuto") scivolano con accelerazione e frenata. Sul telefono lo
+  scorrimento col dito resta quello nativo con inerzia: imitarlo in JavaScript lo renderebbe meno fluido e romperebbe
+  la barra di Safari e le sezioni sticky. Con "riduci movimento" è tutto istantaneo. Misurato: 0–2 fotogrammi lenti.
+- Nuove pagine **/privacy/** (Privacy e cookie) e **/accessibilita/** (Dichiarazione di accessibilità), IT/EN,
+  linkate nel footer di tutte le pagine e nella sitemap (tolta /design/, che è noindex). Testi in `src/legal/content.js`.
+- Link "Vai al contenuto" per chi usa la tastiera, in tutte le pagine.
+- Like: l'indirizzo IP non viene più salvato nemmeno per un minuto, solo un'impronta non reversibile (SHA-256).
+- Niente banner dei cookie: il sito non usa cookie, solo memoria del browser tecnica o scelta da chi visita.
+
 ## Manca / idee per le prossime run
 - [ ] Provare su un iPhone vero (sul Mac non c'è Xcode, quindi niente simulatore: tutto verificato con Chrome in
   emulazione). Da guardare: intro in risparmio energetico, barra di Safari durante lo scroll del menu, tocchi sulla barra in basso.
@@ -292,6 +304,11 @@ Verificato: contrasti AA, tocchi della barra in basso, scroll fluido.
 - [x] Pulizia dipendenze, like, calendario, condivisione, sito senza rete, anteprime dei link, 404, dati per Google.
 
 ## Da decidere (utente)
+- **Note legali**: confermare il titolare del trattamento scritto in /privacy/ ("GMI Torino, sezione torinese di
+  Giovani Musulmani d'Italia APS"); se la sezione ha codice fiscale o sede legale propria, va aggiunta. Se la sezione
+  è registrata nel RUNTS come ETS/APS, verificare con chi gestisce l'associazione cosa va indicato sul sito.
+- **Statistiche**: se si vogliono numeri sulle visite, Vercel Web Analytics (senza cookie) va bene senza banner;
+  Google Analytics, Meta Pixel o video/post incorporati richiederebbero il banner dei cookie.
 - **Ora del menu**: l'ho messa alle 13:00 di domenica 25/10. Se il pranzo è a un'altra ora, va cambiata.
 - **Like**: il cuore va bene lì (in alto a destra nelle schede, accanto a "Salta" nelle sezioni) e con quel rosso?
   Mostrare il numero anche quando è 0, o solo il cuore finché nessuno ha messo like?

@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <script>
+      // tema e lingua prima del primo disegno (vedi src/shared/prefs.js)
+      try {
+        var d = document.documentElement, t = localStorage.getItem('gmi-theme'), l = localStorage.getItem('gmi-lang')
+        d.dataset.theme = t || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+        if (l) d.lang = l
+      } catch (e) {}
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#fffceb" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <title>Accessibilità · GMI Torino</title>
+    <meta name="description" content="Dichiarazione di accessibilità del sito di GMI Torino: stato, cosa abbiamo fatto, limiti noti e come segnalarci un problema." />
+  </head>
+  <body>
+    <div id="root" data-page="accessibilita"></div>
+    <script type="module" src="/src/legal/main.jsx"></script>
+  </body>
+</html>

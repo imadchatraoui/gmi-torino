@@ -1,0 +1,161 @@
+/* GMI Torino — pagine legali (/privacy/, /accessibilita/): testo lungo da leggere bene sul telefono */
+
+.legal {
+  max-width: 44rem;
+  margin: 0 auto;
+  padding: 32px var(--gutter) 24px;
+  outline: none;
+}
+
+.legal__kicker {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold-text);
+}
+
+.legal__title {
+  margin-top: 10px;
+  font-size: clamp(2.2rem, 10vw, 3.4rem);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  color: var(--heading);
+}
+
+.legal__intro {
+  margin-top: 14px;
+  font-size: 18px;
+  line-height: 1.55;
+  color: var(--text);
+}
+
+.legal__updated {
+  margin-top: 12px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid var(--line);
+  font-size: 13px;
+  color: var(--text-3);
+}
+
+.legal__sec {
+  padding: 26px 0 4px;
+}
+
+.legal__sec h2 {
+  font-size: 21px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--heading);
+}
+
+.legal__sec p,
+.legal__sec li {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text-2);
+}
+
+.legal__sec p {
+  margin-top: 10px;
+}
+
+.legal__sec ul {
+  margin-top: 10px;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--line);
+}
+
+.legal__sec li {
+  padding: 12px 0 12px 18px;
+  border-bottom: 1px solid var(--line);
+  position: relative;
+}
+
+.legal__sec li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 1.35em;
+  width: 8px;
+  height: 1px;
+  background: var(--gold);
+}
+
+.legal a {
+  color: var(--heading);
+  font-weight: 600;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--gold);
+  overflow-wrap: anywhere;
+}
+
+.legal__table {
+  margin-top: 12px;
+  overflow-x: auto;
+}
+
+.legal__table table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.legal__table th {
+  padding: 8px 10px 8px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-align: left;
+  color: var(--gold-text);
+}
+
+.legal__table td {
+  padding: 10px 10px 10px 0;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+  color: var(--text-2);
+}
+
+.legal__table code {
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+  font-size: 12.5px;
+  color: var(--heading);
+}
+
+/* telefono: ogni riga della tabella diventa un blocco (nome, a cosa serve, tipo), niente scorrimento di lato */
+@media (max-width: 599px) {
+  .legal__table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+  .legal__table tr {
+    display: grid;
+    gap: 3px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .legal__table td {
+    padding: 0;
+    border: 0;
+  }
+  .legal__table td:last-child {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold-text);
+  }
+  .legal__table tbody {
+    display: block;
+    border-top: 1px solid var(--line);
+  }
+}

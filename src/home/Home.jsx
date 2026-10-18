@@ -333,7 +333,7 @@ export default function Home() {
     <>
       <Intro />
       <SiteHeader page="home" />
-      <main className="home">
+      <main id="main" tabIndex={-1} className="home">
         <Hero next={upcoming[0]} lang={lang} theme={theme} />
         <WipSection id="chi-siamo" lang={lang} kind="about" />
         <Events lang={lang} theme={theme} upcoming={upcoming} recent={recent} />

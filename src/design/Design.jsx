@@ -87,7 +87,7 @@ export default function Design() {
   return (
     <>
       <SiteHeader page="design" />
-      <main className="id">
+      <main id="main" tabIndex={-1} className="id">
         <section className="id-hero">
           <p className="id-kicker">Design</p>
           <h1 className="id-hero__title">{tr({ it: 'L’identità di GMI Torino', en: 'The GMI Torino identity' })}</h1>

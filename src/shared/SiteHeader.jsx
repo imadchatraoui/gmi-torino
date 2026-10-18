@@ -36,6 +36,9 @@ export default function SiteHeader({ page = 'home' }) {
 
   return (
     <header className={`site-header${scrolled ? ' is-scrolled' : ''}`}>
+      <a className="skip-link" href="#main">
+        {t({ it: 'Vai al contenuto', en: 'Skip to content' })}
+      </a>
       <a className="site-header__brand" href="/" aria-label={t({ it: 'GMI Torino, pagina iniziale', en: 'GMI Torino, home page' })}>
         <span className="logo" />
         <span className="site-header__name">

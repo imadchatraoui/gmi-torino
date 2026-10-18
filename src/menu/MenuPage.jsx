@@ -86,7 +86,7 @@ export default function MenuPage() {
     <>
       <Intro />
       <SiteHeader page="menu" />
-      <main className="menu" style={{ '--accent': ev.accent }}>
+      <main id="main" tabIndex={-1} className="menu" style={{ '--accent': ev.accent }}>
         <section className="menu-hero" aria-labelledby="menu-title">
           {ev.logo ? (
             <img className="menu-hero__logo" src={ev.logo} alt={ev.name} width="682" height="267" />

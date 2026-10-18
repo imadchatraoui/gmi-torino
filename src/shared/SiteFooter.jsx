@@ -86,9 +86,13 @@ export default function SiteFooter() {
 
       <div className="site-footer__bottom">
         <p>© 2026 GMI Torino · Giovani Musulmani d’Italia APS</p>
-        <a href={CONTACTS.national.url} target="_blank" rel="noopener noreferrer">
-          {CONTACTS.national.label}
-        </a>
+        <nav className="site-footer__legal" aria-label={tr({ it: 'Note legali', en: 'Legal' })}>
+          <a href="/privacy/">{tr({ it: 'Privacy e cookie', en: 'Privacy and cookies' })}</a>
+          <a href="/accessibilita/">{tr({ it: 'Accessibilità', en: 'Accessibility' })}</a>
+          <a href={CONTACTS.national.url} target="_blank" rel="noopener noreferrer">
+            {CONTACTS.national.label}
+          </a>
+        </nav>
       </div>
     </footer>
   )

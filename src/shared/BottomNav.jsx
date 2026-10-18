@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { SECTIONS } from '../data/site'
 import { t, usePrefs } from './prefs'
+import { scrollToEl } from './smoothScroll'
 
 // Barra di navigazione flottante per il telefono: compare dopo l'hero,
 // l'indicatore scivola sotto la sezione in vista.
@@ -79,9 +80,8 @@ export default function BottomNav() {
             e.preventDefault()
             // il tocco vince subito: l'indicatore va sulla sezione scelta e resta lì durante lo scorrimento
             setActive(s.id)
-            lockUntil.current = performance.now() + 1200
-            const header = document.querySelector('.site-header')?.offsetHeight ?? 0
-            window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - header - 8, behavior: 'smooth' })
+            lockUntil.current = performance.now() + 1400
+            scrollToEl(el, { onDone: () => (lockUntil.current = performance.now() + 150) })
             history.replaceState(null, '', `#${s.id}`)
           }}
         >
