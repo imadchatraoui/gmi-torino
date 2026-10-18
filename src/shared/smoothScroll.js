@@ -32,6 +32,25 @@ export function scrollToY(y, { onDone } = {}) {
     onDone?.()
     return
   }
+  // salto lungo (es. da un'opzione all'altra del menu): niente corsa attraverso tutte le animazioni,
+  // la pagina sfuma, salta e riappare già al punto giusto
+  if (Math.abs(dist) > innerHeight * 1.5) {
+    const main = document.querySelector('main') || document.body
+    main.style.transition = 'opacity 0.18s ease'
+    main.style.opacity = '0'
+    setTimeout(() => {
+      scrollTo({ top: to, behavior: 'instant' })
+      requestAnimationFrame(() => {
+        main.style.transition = 'opacity 0.35s ease'
+        main.style.opacity = ''
+        setTimeout(() => {
+          main.style.transition = ''
+          onDone?.()
+        }, 360)
+      })
+    }, 190)
+    return
+  }
   // più lontano = un po' più lungo, ma mai lento
   const dur = Math.min(1100, 420 + Math.sqrt(Math.abs(dist)) * 9)
   const t0 = performance.now()
