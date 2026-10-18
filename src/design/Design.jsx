@@ -315,7 +315,7 @@ export default function Design() {
             </li>
             <li className="reveal">
               <strong>{tr({ it: 'Niente emoji né frasi fatte.', en: 'No emoji, no clichés.' })}</strong>
-              {tr({ it: 'Caldo ma sobrio. Inshallah si scrive così.', en: 'Warm but sober. Inshallah is written like this.' })}
+              {tr({ it: 'Caldo ma sobrio. Si scrive «in sha Allah», staccato.', en: 'Warm but sober. We write “in sha Allah”, as separate words.' })}
             </li>
           </ul>
         </section>

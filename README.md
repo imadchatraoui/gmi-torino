@@ -7,7 +7,7 @@ salvia, blu, Bodoni) vale solo per le cose dell'evento: la sua scheda e la pagin
 
 | URL | File | Cosa |
 | --- | --- | --- |
-| `gmitorino.org/` | `index.html` → `src/home/` | "Prossimamente, inshallah" + Chi siamo, Eventi, Archivio, Contatti |
+| `gmitorino.org/` | `index.html` → `src/home/` | "Prossimamente, in sha Allah" + Chi siamo, Eventi, Archivio, Contatti |
 | `gmitorino.org/menu/` | `menu/index.html` → `src/menu/` | menu del pranzo del prossimo evento: i poke si aprono con lo scroll |
 | `gmitorino.org/design/` | `design/index.html` → `src/design/` | guida all'identità: marchio, intro, colori, tipografia, stile evento, template, movimento, componenti, voce |
 

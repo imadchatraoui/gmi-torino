@@ -29,6 +29,11 @@ export const EVENTS = [
     accent: '#8f9c7d',
     banner: null,
     logo: '/eventi/ymhs/logo.png',
+    // insieme a GMI Torino (loghi vettoriali in public/eventi/ymhs/partner/, ricavati dalle locandine)
+    partners: [
+      { name: 'Umma Rise', logo: '/eventi/ymhs/partner/umma-rise.svg', ratio: 414 / 83, height: 15 },
+      { name: 'Bayna', logo: '/eventi/ymhs/partner/bayna.svg', ratio: 1017 / 778, height: 34 },
+    ],
     blocks: { info: true, signup: true, program: false, menu: true },
     menu: {
       meal: { it: 'Il pranzo', en: 'Lunch' },

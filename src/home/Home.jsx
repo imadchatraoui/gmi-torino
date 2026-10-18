@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { EVENTS } from '../data/events'
-import { CONTACTS, sectionLabel } from '../data/site'
+import { ABOUT, CONTACTS, sectionLabel } from '../data/site'
 import { daysUntil, eventStatus } from '../data/when'
 import BottomNav from '../shared/BottomNav'
 import Intro from '../shared/Intro'
@@ -11,7 +11,8 @@ import SiteFooter from '../shared/SiteFooter'
 import SiteHeader from '../shared/SiteHeader'
 import GradientText from '../components/react-bits/GradientText'
 import StarBorder from '../components/react-bits/StarBorder'
-import MorphWord from './MorphWord'
+import Partners from '../shared/Partners'
+import WordCycle from './WordCycle'
 
 // colori del titolo animato (React Bits GradientText): bordeaux e oro scuri su crema, crema e oro su scuro
 const TITLE_COLORS = {
@@ -19,10 +20,10 @@ const TITLE_COLORS = {
   dark: ['#F7ECD4', '#E6BE6A', '#F4D0C0', '#FFF1C8'],
 }
 
-// la stessa parola in tre modi: inshallah → in arabo → tradotta
+// la stessa espressione in tre modi: in sha Allah → in arabo → tradotta
 const ARABIC = { text: 'إن شاء الله', lang: 'ar', dir: 'rtl', ar: true }
-const MORPH_IT = [{ text: 'inshallah' }, ARABIC, { text: 'se Dio vuole' }]
-const MORPH_EN = [{ text: 'inshallah' }, ARABIC, { text: 'God willing' }]
+const CYCLE_IT = [{ text: 'in sha Allah' }, ARABIC, { text: 'se Dio vuole' }]
+const CYCLE_EN = [{ text: 'in sha Allah' }, ARABIC, { text: 'God willing' }]
 
 const NEXT_CLIP = tornClip(5, { depth: 5 })
 const CARD_CLIP = tornClip(9, { depth: 2.5, points: 40 })
@@ -38,7 +39,7 @@ function countdown(iso, lang) {
 function Hero({ next, lang, theme }) {
   const tr = (v) => t(v, lang)
   const ref = useRef(null)
-  // fuori schermo la parola che cambia si ferma (MorphWord guarda la classe is-off)
+  // fuori schermo la parola che cambia si ferma (WordCycle guarda la classe is-off)
   useEffect(() => {
     const el = ref.current
     if (!el || !('IntersectionObserver' in window)) return
@@ -50,13 +51,13 @@ function Hero({ next, lang, theme }) {
     <section id="top" ref={ref} className="hero" aria-labelledby="hero-title">
       <div className="hero__body">
         <p className="hero__kicker">GMI Torino</p>
-        <h1 id="hero-title" className="hero__title" aria-label={tr({ it: 'Prossimamente, inshallah', en: 'Coming soon, inshallah' })}>
+        <h1 id="hero-title" className="hero__title" aria-label={tr({ it: 'Prossimamente, in sha Allah', en: 'Coming soon, in sha Allah' })}>
           <span aria-hidden="true">
             <GradientText colors={TITLE_COLORS[theme]} variant="flow" animationSpeed={10} scale={3}>
               {tr({ it: 'Prossimamente,', en: 'Coming soon,' })}
             </GradientText>
           </span>
-          <MorphWord className="hero__morph" words={lang === 'en' ? MORPH_EN : MORPH_IT} />
+          <WordCycle className="hero__morph" words={lang === 'en' ? CYCLE_EN : CYCLE_IT} />
         </h1>
         <p className="hero__lede">
           {tr({
@@ -91,6 +92,31 @@ function SectionHead({ id, title, children }) {
         </p>
       )}
     </header>
+  )
+}
+
+function About({ lang }) {
+  const tr = (v) => t(v, lang)
+  return (
+    <section id="chi-siamo" className="sec" aria-labelledby="chi-siamo-title">
+      <SectionHead id="chi-siamo" title={tr(sectionLabel('chi-siamo'))}>
+        {tr(ABOUT.lede)}
+      </SectionHead>
+      <ul className="doing">
+        {ABOUT.doing.map((d, i) => (
+          <li key={d.title.it} className="reveal" style={{ '--d': i }}>
+            <h3 className="doing__title">{tr(d.title)}</h3>
+            <p className="doing__text">{tr(d.text)}</p>
+          </li>
+        ))}
+      </ul>
+      <p className="about__more reveal">
+        {tr({ it: 'Facciamo parte di Giovani Musulmani d’Italia:', en: 'We are part of Giovani Musulmani d’Italia:' })}{' '}
+        <a href={CONTACTS.national.url} target="_blank" rel="noopener noreferrer">
+          {CONTACTS.national.label}
+        </a>
+      </p>
+    </section>
   )
 }
 
@@ -169,6 +195,7 @@ function EventCard({ ev, lang, theme }) {
           </a>
         )}
       </div>
+      <Partners ev={ev} className="event__partners" />
     </article>
   )
 }
@@ -199,11 +226,17 @@ function Events({ lang, theme, upcoming, recent }) {
   )
 }
 
-function Archive({ lang, finished }) {
+function Archive({ lang, finished, upcoming }) {
   const tr = (v) => t(v, lang)
+  const first = upcoming[0]
   return (
     <section id="archivio" className="sec" aria-labelledby="archivio-title">
-      <SectionHead id="archivio" title={tr(sectionLabel('archivio'))} />
+      <SectionHead id="archivio" title={tr(sectionLabel('archivio'))}>
+        {tr({
+          it: 'Foto e racconti dei nostri eventi, uno dopo l’altro.',
+          en: 'Photos and stories from our events, one after another.',
+        })}
+      </SectionHead>
       {finished.map((ev) => (
         <article key={ev.id} id={`arch-${ev.id}`} className="past past--auto reveal" style={{ '--accent': ev.accent }}>
           <p className="past__date">{tr(ev.date)}</p>
@@ -219,6 +252,15 @@ function Archive({ lang, finished }) {
           )}
         </article>
       ))}
+      {!finished.length && first && (
+        <ol className="timeline reveal">
+          <li className="timeline__item">
+            <span className="timeline__date">{first.dayMonth}</span>
+            <span className="timeline__name">{first.name}</span>
+            <span className="timeline__note">{tr({ it: 'Il primo, dopo il 25 ottobre', en: 'The first one, after 25 October' })}</span>
+          </li>
+        </ol>
+      )}
     </section>
   )
 }
@@ -260,8 +302,9 @@ export default function Home() {
       <SiteHeader page="home" />
       <main className="home">
         <Hero next={upcoming[0]} lang={lang} theme={theme} />
+        <About lang={lang} />
         <Events lang={lang} theme={theme} upcoming={upcoming} recent={recent} />
-        {finished.length > 0 && <Archive lang={lang} finished={finished} />}
+        <Archive lang={lang} finished={finished} upcoming={upcoming} />
         <Contacts lang={lang} />
       </main>
       <SiteFooter />

@@ -4,6 +4,7 @@ import PokeIllustration from '../poke/PokeIllustration'
 import Intro from '../shared/Intro'
 import { useMenu } from '../shared/menuApi'
 import { t, usePrefs } from '../shared/prefs'
+import Partners from '../shared/Partners'
 import ShareButton from '../shared/ShareButton'
 import SiteFooter from '../shared/SiteFooter'
 import SiteHeader from '../shared/SiteHeader'
@@ -124,6 +125,7 @@ export default function MenuPage() {
 
         <section id="menu-end" className="menu-end" aria-label={tr(meal)}>
           <p className="menu-note">{tr(note)}</p>
+          <Partners ev={ev} className="menu-partners" />
           {open && (
           <ShareButton
             className="menu-share"

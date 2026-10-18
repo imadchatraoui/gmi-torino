@@ -934,3 +934,42 @@ blockquote {
     display: none;
   }
 }
+
+/* ---------- chi organizza l'evento (scheda evento e menu) ---------- */
+.partners {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  color: var(--heading);
+}
+
+.partners__gmi {
+  width: 34px;
+}
+
+.partners__item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.partners__sep {
+  width: 1px;
+  height: 30px;
+  background: var(--ornament);
+}
+
+.partners__mark {
+  display: block;
+  height: var(--h);
+  aspect-ratio: var(--r);
+  background: currentColor;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
