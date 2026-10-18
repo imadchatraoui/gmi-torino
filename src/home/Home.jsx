@@ -109,11 +109,12 @@ function WipSection({ id, lang, kind }) {
   )
 }
 
-// indicazioni stradali: Mappe di Apple su iPhone/iPad/Mac, Google Maps altrove
+// indicazioni: su Android il telefono chiede con quale app aprirle (Maps, Waze…); su iPhone e computer
+// Google Maps (si apre nell'app se c'è, altrimenti nel browser). iPhone non permette di far scegliere l'app.
 function directionsUrl(ev) {
   const q = encodeURIComponent(`${ev.venue}, ${ev.city}`)
-  const apple = typeof navigator !== 'undefined' && /iPhone|iPad|iPod|Macintosh/.test(navigator.userAgent)
-  return apple ? `https://maps.apple.com/?daddr=${q}` : `https://www.google.com/maps/dir/?api=1&destination=${q}`
+  const android = typeof navigator !== 'undefined' && /Android/i.test(navigator.userAgent)
+  return android ? `geo:0,0?q=${q}` : `https://www.google.com/maps/dir/?api=1&destination=${q}`
 }
 
 // alle 13:00 del giorno dell'evento compare un avviso che porta al menu (fino alla fine dell'evento)
