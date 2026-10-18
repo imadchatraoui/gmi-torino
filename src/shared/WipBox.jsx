@@ -21,7 +21,7 @@ export default function WipBox({ kind = 'about', className = '' }) {
       className={`wip-box ${className}`}
       data-reveal
       role="img"
-      aria-label={tr({ it: 'Lavori in corso: questa sezione arriva presto.', en: 'Work in progress: this section is coming soon.' })}
+      aria-label={tr({ it: 'Lavori in corso: sezione in costruzione.', en: 'Work in progress: section under construction.' })}
     >
       <div className={`wip-box__ghost wip-box__ghost--${kind}`} aria-hidden="true">
         {kind === 'archive' ? (
