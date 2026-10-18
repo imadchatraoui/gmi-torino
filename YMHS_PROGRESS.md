@@ -257,6 +257,12 @@ Verificato: contrasti AA, tocchi della barra in basso, scroll fluido.
   primo posto già segnato: 25.10 Youth Mental Health Summit). Nessuna nota ripetuta, niente sfocature.
 - Computer (≥960 px): titolo a sinistra e prossimo evento a destra, la prima schermata non è più vuota a metà.
 
+**18/10 sera (3) — rifinitura continua**
+- Coperchio della ciotola: il logo GMI Torino era dentro un adesivo tondo bianco (contro la regola "mai in cerchi").
+  Ora è stampato direttamente sul cartone (fusione "moltiplica"), più grande, con l'etichetta sotto in maiuscoletto.
+  Rifatta anche l'anteprima del link del menu.
+- Dati dell'organizzazione per Google (logo, email, Instagram, GMI nazionale) insieme a quelli dell'evento.
+
 ## Manca / idee per le prossime run
 - [ ] Provare su un iPhone vero (sul Mac non c'è Xcode, quindi niente simulatore: tutto verificato con Chrome in
   emulazione). Da guardare: intro in risparmio energetico, barra di Safari durante lo scroll del menu, tocchi sulla barra in basso.

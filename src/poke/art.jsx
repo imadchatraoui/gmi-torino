@@ -190,9 +190,6 @@ export function Lid({ uid, label }) {
           <stop offset="72%" stopColor="#2A0B0D" stopOpacity="0.3" />
           <stop offset="100%" stopColor="#2A0B0D" stopOpacity="0" />
         </radialGradient>
-        <clipPath id={`${uid}-sticker`}>
-          <circle cx={C} cy={C} r="64" />
-        </clipPath>
       </defs>
       <ellipse cx={C + 12} cy={C + 18} rx={BOWL_R + 14} ry={BOWL_R + 10} fill={`url(#${uid}-lid-shadow)`} />
       <circle cx={C} cy={C} r={BOWL_R + 2} fill={`url(#${uid}-lid)`} />
@@ -214,26 +211,29 @@ export function Lid({ uid, label }) {
       <circle cx={C} cy={C} r={BOWL_R - 6} fill="none" stroke="#9A6E40" strokeOpacity="0.55" strokeWidth="2.5" />
       <circle cx={C} cy={C} r={BOWL_R - 10} fill="none" stroke="#F1D9AE" strokeOpacity="0.6" strokeWidth="1.5" />
       <circle cx={C} cy={C} r={FOOD_R - 4} fill="none" stroke="#9A6E40" strokeOpacity="0.25" strokeWidth="1.5" />
-      {/* adesivo */}
-      <g transform={`rotate(-7 ${C} ${C})`}>
-        <circle cx={C + 2} cy={C + 3} r="76" fill="#2A0B0D" opacity="0.18" />
-        <circle cx={C} cy={C} r="76" fill="#F3EDE2" />
-        <circle cx={C} cy={C} r="70" fill="none" stroke="#27396A" strokeWidth="2" />
-        <circle cx={C} cy={C} r="66.5" fill="none" stroke="#7D8866" strokeWidth="1" />
-        <g clipPath={`url(#${uid}-sticker)`}>
-          <image href="/brand/gmi-torino-160.png" x={C - 33} y={C - 58} width="66" height="81" />
-        </g>
+      {/* logo stampato direttamente sul cartone (niente cerchio intorno al logo) */}
+      <g transform={`rotate(-6 ${C} ${C})`}>
+        <image
+          href="/brand/gmi-torino-320.png"
+          x={C - 62}
+          y={C - 98}
+          width="124"
+          height="152"
+          style={{ mixBlendMode: 'multiply' }}
+          opacity="0.92"
+        />
         <text
           x={C}
-          y={C + 44}
+          y={C + 78}
           textAnchor="middle"
           fontFamily="-apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, sans-serif"
-          fontSize="15"
+          fontSize="16"
           fontWeight="600"
-          letterSpacing="0.2"
-          fill="#1E2E36"
+          letterSpacing="4"
+          fill="#5A3B1E"
+          fillOpacity="0.85"
         >
-          {label}
+          {String(label).toUpperCase()}
         </text>
       </g>
     </g>
