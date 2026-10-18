@@ -126,8 +126,7 @@ aggiornata in background; `/api/` mai salvata. Per svuotare le copie dopo un cam
   Mai dentro cerchi o riquadri.
 - Intro: `public/brand/gmi-torino-intro-l.mp4` / `-d.mp4` (chiaro/scuro), a ogni apertura, si salta con un tocco o un tasto.
 - Favicon/icone in `public/` (rigenerate dal logo).
-- Il vecchio sito (componenti WebGL, gif animate da 2–3 MB, foto evento di settembre) è
-  in `_unused/old-site/`: non entra nel build.
+- Il vecchio sito (componenti WebGL, gif pesanti) è stato rimosso il 18/10: resta solo nella storia di git.
 
 ## Deploy
 

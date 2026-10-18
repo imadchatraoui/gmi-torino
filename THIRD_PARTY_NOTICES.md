@@ -8,7 +8,7 @@ The current site includes the official React Bits JS + CSS variants of **Gradien
 
 PulseHeart uses icons from **Hugeicons** (`@hugeicons/core-free-icons`, MIT licence, [hugeicons.com](https://hugeicons.com)).
 
-The old site (now in `_unused/old-site/`) included the React Bits JS/CSS variants of BlurText, Magnet, SpotlightCard and TiltedCard, adapted for GMI, retrieved on 13 October 2026 from revision `496968c4117e21278f13917201b7d615bc5e7450`.
+The old site (removed on 18 October 2026, still in the git history) included the React Bits JS/CSS variants of BlurText, Magnet, SpotlightCard and TiltedCard, adapted for GMI, retrieved on 13 October 2026 from revision `496968c4117e21278f13917201b7d615bc5e7450`.
 
 Official sources:
 
@@ -60,4 +60,4 @@ con licenza **SIL Open Font License 1.1** (https://openfontlicense.org):
 
 - **Poppins** — Copyright 2020 The Poppins Project Authors (https://github.com/itfoundry/Poppins)
 
-Nota: i componenti React Bits elencati sopra appartengono al vecchio sito, ora in `_unused/old-site/`.
+Nota: i componenti React Bits elencati sopra appartengono al vecchio sito.
