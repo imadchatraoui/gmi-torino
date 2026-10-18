@@ -101,6 +101,8 @@ function startPolling(ids) {
       ids.forEach((id) => {
         const n = data.counts?.[id] ?? 0
         if (state.counts[id] !== n) {
+          // qualcun altro ha messo "mi piace": il cuore fa un piccolo battito
+          if (n > (state.counts[id] ?? 0)) state.bumps = { ...state.bumps, [id]: Date.now() }
           state.counts = { ...state.counts, [id]: n }
           changed = true
         }
@@ -125,5 +127,6 @@ export function useLikes(ids) {
     mode: state.mode,
     count: (id) => state.counts[id] ?? 0,
     liked: (id) => !!state.liked[id],
+    bump: (id) => state.bumps?.[id] ?? 0,
   }
 }

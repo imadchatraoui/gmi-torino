@@ -722,3 +722,42 @@
     color: rgba(31, 42, 48, 0.7);
   }
 }
+
+/* qualcun altro ha appena messo "mi piace": un battito del cuore e un +1 che sale */
+.like--beat .pulse-heart__heart {
+  animation: like-beat 0.9s var(--ease-out);
+}
+
+.like--beat .pulse-heart__pill {
+  position: relative;
+}
+
+.like--beat .pulse-heart__pill::after {
+  content: '+1';
+  position: absolute;
+  left: 50%;
+  top: -2px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--like);
+  pointer-events: none;
+  animation: like-plus 0.9s var(--ease-out) forwards;
+}
+
+@keyframes like-beat {
+  0%, 100% { transform: scale(1); color: var(--like-idle); }
+  25% { transform: scale(1.3); color: var(--like); }
+  50% { transform: scale(0.95); }
+}
+
+@keyframes like-plus {
+  from { opacity: 1; transform: translate3d(-50%, 0, 0); }
+  to { opacity: 0; transform: translate3d(-50%, -16px, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .like--beat .pulse-heart__heart,
+  .like--beat .pulse-heart__pill::after {
+    animation: none;
+  }
+}
