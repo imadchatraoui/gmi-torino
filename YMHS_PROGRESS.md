@@ -265,6 +265,9 @@ Verificato: contrasti AA, tocchi della barra in basso, scroll fluido.
 - /design allineato: campioni di colore piatti (rettangolo pieno + nome, niente schede arrotondate), colori evento
   come pieni con il bordo strappato (YMHS = salvia #A7AF92, non più un alone sfocato); testi di "Template evento" e
   "Movimento" aggiornati (un colore solo per evento, loghi dei partner, in sha Allah che si alterna, coperchio).
+- Scheda evento senza l'alone sfocato residuo. Provato il sito "dopo il 25 ottobre" (data simulata): l'avviso
+  "appena passato", la voce in Archivio e il "prossimo evento in preparazione" ora sono tra righe sottili,
+  niente più riquadri arrotondati.
 
 ## Manca / idee per le prossime run
 - [ ] Provare su un iPhone vero (sul Mac non c'è Xcode, quindi niente simulatore: tutto verificato con Chrome in

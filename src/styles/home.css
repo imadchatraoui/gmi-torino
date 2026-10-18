@@ -185,9 +185,9 @@
 }
 
 .sec-empty {
-  padding: 18px;
-  border-radius: var(--radius-lg);
-  background: var(--surface);
+  padding: 16px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
   color: var(--text-2);
 }
 
@@ -299,23 +299,6 @@
 :root[data-theme='dark'] .event {
   --text-2: rgba(238, 230, 214, 0.82);
   --text-3: rgba(238, 230, 214, 0.78);
-}
-
-/* accento dell'evento: alone tenue, sfumato in dissolvenza */
-.event::before {
-  content: '';
-  position: absolute;
-  z-index: -1;
-  inset: -30% -30% auto auto;
-  width: 90%;
-  aspect-ratio: 1;
-  background: radial-gradient(closest-side, var(--accent), transparent);
-  opacity: 0.32;
-  pointer-events: none;
-}
-
-:root[data-theme='dark'] .event::before {
-  opacity: 0.18;
 }
 
 .event__banner {
@@ -433,11 +416,11 @@
 
 .event-recent {
   display: grid;
-  gap: 2px;
+  gap: 4px;
   margin-top: 12px;
-  padding: 16px 18px;
-  border-radius: var(--radius-lg);
-  background: var(--surface);
+  padding: 16px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
   text-decoration: none;
   color: var(--text-2);
 }
@@ -445,6 +428,9 @@
 .event-recent strong {
   font-weight: 600;
   color: var(--heading);
+  text-decoration: underline;
+  text-decoration-color: var(--gold);
+  text-underline-offset: 3px;
 }
 
 /* ---------- archivio ---------- */
@@ -460,9 +446,14 @@
 
 .past--auto {
   gap: 4px;
-  padding: 18px;
-  border-radius: var(--radius-lg);
-  background: var(--surface);
+  padding: 18px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.past--auto + .past--auto {
+  margin-top: 0;
+  border-top: 0;
 }
 
 .past__date {
@@ -497,6 +488,8 @@
   margin-top: 10px;
   font-weight: 600;
   color: var(--heading);
+  text-underline-offset: 3px;
+  text-decoration-color: var(--gold);
 }
 
 /* ---------- contatti ---------- */
