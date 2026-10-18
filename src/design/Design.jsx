@@ -204,7 +204,7 @@ export default function Design() {
             })}
           </p>
           <div className="paper-demo theme-ymhs reveal">
-            <img className="paper-demo__logo" src="/eventi/ymhs/logo-682.webp" srcSet="/eventi/ymhs/logo-340.webp 340w, /eventi/ymhs/logo-682.webp 682w" sizes="340px" alt="YMHS · Youth Mental Health Summit" width="682" height="267" loading="lazy" decoding="async" />
+            <img className="paper-demo__logo" src="/eventi/ymhs/logo-682.webp" srcSet="/eventi/ymhs/logo-340.webp 340w, /eventi/ymhs/logo-682.webp 682w" sizes="340px" alt="YMHS · Youth Mental Health Summit" width="682" height="343" loading="lazy" decoding="async" />
             <div className="paper-demo__card" style={{ clipPath: DEMO_CLIP }}>
               <span className="paper-demo__label">{tr({ it: 'Prossimo evento', en: 'Next event' })}</span>
               <span className="paper-demo__title display">Youth Mental Health Summit</span>

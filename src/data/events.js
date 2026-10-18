@@ -31,12 +31,12 @@ export const EVENTS = [
     accent: '#8f9c7d',
     banner: null,
     logo: '/eventi/ymhs/logo-682.webp',
-    logoSrcSet: '/eventi/ymhs/logo-340.webp 340w, /eventi/ymhs/logo-682.webp 682w',
+    logoSrcSet: '/eventi/ymhs/logo-340.webp 340w, /eventi/ymhs/logo-682.webp 682w, /eventi/ymhs/logo-1024.webp 1024w',
     // insieme a GMI Torino (loghi vettoriali in public/eventi/ymhs/partner/, ricavati dalle locandine)
     partners: [
-      { name: 'Umma Rise', logo: '/eventi/ymhs/partner/umma-rise.svg', ratio: 414 / 83, height: 15 },
+      { name: 'Umma Rise', url: 'https://www.instagram.com/ummarise.eu/', logo: '/eventi/ymhs/partner/umma-rise.svg', ratio: 414 / 83, height: 15 },
       // Bayna: la B con il pallino d'oro al centro (dal logo ufficiale, due livelli: segno + pallino)
-      { name: 'Bayna', logo: '/eventi/ymhs/partner/bayna.svg', dot: '/eventi/ymhs/partner/bayna-punto.svg', ratio: 411 / 595, height: 36 },
+      { name: 'Bayna', url: 'https://www.instagram.com/baynapsicologia/', logo: '/eventi/ymhs/partner/bayna.svg', dot: '/eventi/ymhs/partner/bayna-punto.svg', ratio: 411 / 595, height: 36 },
     ],
     blocks: { info: true, signup: true, program: false, menu: true },
     menu: {

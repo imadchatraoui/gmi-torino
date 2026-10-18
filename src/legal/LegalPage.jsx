@@ -2,9 +2,9 @@ import { CONTACTS } from '../data/site'
 import SiteFooter from '../shared/SiteFooter'
 import SiteHeader from '../shared/SiteHeader'
 import { t, usePrefs } from '../shared/prefs'
-import { ACCESSIBILITY, PRIVACY, STORAGE, UPDATED } from './content'
+import { PRIVACY, STORAGE, UPDATED } from './content'
 
-const PAGES = { privacy: PRIVACY, accessibilita: ACCESSIBILITY }
+const PAGES = { privacy: PRIVACY }
 
 // {email} nel testo diventa il link all'email
 function Text({ value }) {

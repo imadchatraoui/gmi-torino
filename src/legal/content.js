@@ -36,17 +36,6 @@ export const PRIVACY = {
   },
   sections: [
     {
-      h: { it: 'Chi tratta i dati', en: 'Who handles the data' },
-      blocks: [
-        {
-          p: {
-            it: 'Il titolare del trattamento è GMI Torino, sezione torinese di Giovani Musulmani d’Italia APS. Per qualsiasi domanda sui tuoi dati puoi scriverci a {email}.',
-            en: 'The data controller is GMI Torino, the Turin chapter of Giovani Musulmani d’Italia APS. For any question about your data you can write to {email}.',
-          },
-        },
-      ],
-    },
-    {
       h: { it: 'Quali dati e perché', en: 'Which data and why' },
       blocks: [
         {
@@ -95,96 +84,6 @@ export const PRIVACY = {
         },
       ],
     },
-    {
-      h: { it: 'Chi ci aiuta', en: 'Who helps us' },
-      blocks: [
-        {
-          list: [
-            {
-              it: 'Vercel Inc. (Stati Uniti): ospita il sito. I trasferimenti fuori dall’UE avvengono con le garanzie previste dal GDPR (EU-US Data Privacy Framework o clausole contrattuali standard).',
-              en: 'Vercel Inc. (United States): hosts the site. Transfers outside the EU rely on the safeguards provided by the GDPR (EU-US Data Privacy Framework or standard contractual clauses).',
-            },
-            {
-              it: 'Upstash: conserva solo i conteggi dei "mi piace", quando la funzione è attiva.',
-              en: 'Upstash: stores only the like counts, when that feature is active.',
-            },
-            {
-              it: 'Google: moduli d’iscrizione agli eventi.',
-              en: 'Google: event sign-up forms.',
-            },
-          ],
-        },
-      ],
-    },
-    {
-      h: { it: 'I tuoi diritti', en: 'Your rights' },
-      blocks: [
-        {
-          p: {
-            it: 'Puoi chiederci di vedere, correggere o cancellare i tuoi dati, di limitarne l’uso, di opporti o di riceverli in un formato leggibile, scrivendo a {email}. Se pensi che i tuoi dati non siano trattati bene puoi rivolgerti al Garante per la protezione dei dati personali (garanteprivacy.it).',
-            en: 'You can ask us to see, correct or delete your data, to restrict its use, to object or to receive it in a readable format, by writing to {email}. If you think your data is not handled properly you can contact the Italian Data Protection Authority (garanteprivacy.it).',
-          },
-        },
-      ],
-    },
-  ],
-}
 
-export const ACCESSIBILITY = {
-  kicker: { it: 'Note legali', en: 'Legal' },
-  title: { it: 'Accessibilità', en: 'Accessibility' },
-  intro: {
-    it: 'Vogliamo che il sito si possa usare da tutti: con il telefono o il computer, con la tastiera, con un lettore di schermo, con il testo ingrandito. Il nostro riferimento sono le linee guida WCAG 2.1 al livello AA.',
-    en: 'We want everyone to be able to use the site: on a phone or a computer, with a keyboard, with a screen reader, with enlarged text. Our reference is the WCAG 2.1 guidelines at level AA.',
-  },
-  sections: [
-    {
-      h: { it: 'Stato', en: 'Status' },
-      blocks: [
-        {
-          p: {
-            it: 'Il sito è parzialmente conforme alle WCAG 2.1 AA. La valutazione l’abbiamo fatta noi (autovalutazione), con controlli automatici e prove a mano, il 18 ottobre 2026.',
-            en: 'The site partially conforms to WCAG 2.1 AA. We assessed it ourselves (self-assessment), with automated checks and manual tests, on 18 October 2026.',
-          },
-        },
-      ],
-    },
-    {
-      h: { it: 'Cosa abbiamo fatto', en: 'What we have done' },
-      blocks: [
-        {
-          list: [
-            { it: 'Testi a contrasto sufficiente (almeno 4,5:1) sia nel tema chiaro sia in quello scuro.', en: 'Text with sufficient contrast (at least 4.5:1) in both the light and the dark theme.' },
-            { it: 'Tutto si usa con la tastiera, con un contorno ben visibile sull’elemento attivo e il link "Vai al contenuto" all’inizio di ogni pagina.', en: 'Everything works with a keyboard, with a clearly visible outline on the active element and a "Skip to content" link at the start of every page.' },
-            { it: 'Immagini e loghi hanno un testo alternativo; i bottoni hanno un nome leggibile dai lettori di schermo.', en: 'Images and logos have alternative text; buttons have a name screen readers can read.' },
-            { it: 'Con l’impostazione "riduci movimento" del telefono le animazioni si fermano e l’intro col logo non parte.', en: 'With the phone’s "reduce motion" setting, animations stop and the logo intro does not play.' },
-            { it: 'Il testo si può ingrandire senza perdere contenuti; lingua della pagina indicata (italiano o inglese).', en: 'Text can be enlarged without losing content; the page language is declared (Italian or English).' },
-          ],
-        },
-      ],
-    },
-    {
-      h: { it: 'Limiti che conosciamo', en: 'Known limitations' },
-      blocks: [
-        {
-          list: [
-            { it: 'Le illustrazioni della ciotola nel menu sono decorative: gli ingredienti sono comunque scritti per intero sotto ogni disegno.', en: 'The bowl illustrations on the menu are decorative: the ingredients are always written out in full under each drawing.' },
-            { it: 'Alcune sezioni sono ancora in costruzione e mostrano solo una bozza sfocata.', en: 'Some sections are still under construction and only show a blurred draft.' },
-            { it: 'Non abbiamo ancora provato il sito con lettori di schermo su tutti i dispositivi.', en: 'We have not yet tested the site with screen readers on every device.' },
-          ],
-        },
-      ],
-    },
-    {
-      h: { it: 'Segnalaci un problema', en: 'Report a problem' },
-      blocks: [
-        {
-          p: {
-            it: 'Se qualcosa non riesci a leggere o a usare, scrivici a {email}: ti rispondiamo entro 30 giorni e, se possiamo, ti mandiamo il contenuto in un altro formato.',
-            en: 'If there is something you cannot read or use, write to {email}: we reply within 30 days and, if we can, send you the content in another format.',
-          },
-        },
-      ],
-    },
   ],
 }

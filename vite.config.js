@@ -98,7 +98,7 @@ function searchData() {
     },
     generateBundle() {
       this.emitFile({ type: 'asset', fileName: 'robots.txt', source: robotsTxt() })
-      this.emitFile({ type: 'asset', fileName: 'sitemap.xml', source: sitemapXml(['/', '/menu/', '/privacy/', '/accessibilita/']) })
+      this.emitFile({ type: 'asset', fileName: 'sitemap.xml', source: sitemapXml(['/', '/menu/', '/privacy/']) })
     },
   }
 }
@@ -121,7 +121,6 @@ export default defineConfig({
         menu: resolve(import.meta.dirname, 'menu/index.html'),
         design: resolve(import.meta.dirname, 'design/index.html'),
         privacy: resolve(import.meta.dirname, 'privacy/index.html'),
-        accessibilita: resolve(import.meta.dirname, 'accessibilita/index.html'),
         notFound: resolve(import.meta.dirname, '404.html'),
       },
     },

@@ -1178,3 +1178,14 @@ main:focus {
     transform: rotate(6deg);
   }
 }
+
+.partners__link {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  color: inherit;
+}
+
+.partners__link:active {
+  opacity: 0.6;
+}
