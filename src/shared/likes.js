@@ -87,12 +87,37 @@ export async function toggleLike(id, liked) {
   writeJSON(LOCAL_COUNTS_KEY, local)
 }
 
+// numeri quasi in tempo reale: ogni 10 secondi, solo con la pagina in vista e l'API attiva
+let polling = 0
+function startPolling(ids) {
+  if (polling) return
+  polling = setInterval(async () => {
+    if (document.hidden || state.mode !== 'online') return
+    try {
+      const r = await fetch(`/api/likes?ids=${ids.join(',')}`, { cache: 'no-store' })
+      if (!r.ok) return
+      const data = await r.json()
+      let changed = false
+      ids.forEach((id) => {
+        const n = data.counts?.[id] ?? 0
+        if (state.counts[id] !== n) {
+          state.counts = { ...state.counts, [id]: n }
+          changed = true
+        }
+      })
+      if (changed) emit()
+    } catch {
+      /* rete assente: si riprova al giro dopo */
+    }
+  }, 10000)
+}
+
 export function useLikes(ids) {
   const [, force] = useState(0)
   useEffect(() => {
     const fn = () => force((n) => n + 1)
     listeners.add(fn)
-    loadLikes(ids)
+    loadLikes(ids).then(() => startPolling(ids))
     return () => listeners.delete(fn)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
