@@ -962,9 +962,16 @@ blockquote {
 }
 
 .partners__mark {
+  position: relative;
   display: block;
   height: var(--h);
   aspect-ratio: var(--r);
+}
+
+/* ogni logo è una maschera tinta col colore del testo; il pallino di Bayna è un secondo livello in oro */
+.partners__layer {
+  position: absolute;
+  inset: 0;
   background: currentColor;
   -webkit-mask-position: center;
   mask-position: center;
@@ -972,4 +979,12 @@ blockquote {
   mask-size: contain;
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
+}
+
+.partners__layer--dot {
+  background: var(--gold-deep);
+}
+
+:root[data-theme='dark'] .partners__layer--dot {
+  background: var(--gold-light);
 }

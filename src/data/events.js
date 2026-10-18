@@ -34,7 +34,8 @@ export const EVENTS = [
     // insieme a GMI Torino (loghi vettoriali in public/eventi/ymhs/partner/, ricavati dalle locandine)
     partners: [
       { name: 'Umma Rise', logo: '/eventi/ymhs/partner/umma-rise.svg', ratio: 414 / 83, height: 15 },
-      { name: 'Bayna', logo: '/eventi/ymhs/partner/bayna.svg', ratio: 1017 / 778, height: 34 },
+      // Bayna: la B con il pallino d'oro al centro (dal logo ufficiale, due livelli: segno + pallino)
+      { name: 'Bayna', logo: '/eventi/ymhs/partner/bayna.svg', dot: '/eventi/ymhs/partner/bayna-punto.svg', ratio: 411 / 595, height: 36 },
     ],
     blocks: { info: true, signup: true, program: false, menu: true },
     menu: {

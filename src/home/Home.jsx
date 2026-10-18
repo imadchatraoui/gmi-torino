@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { EVENTS } from '../data/events'
-import { ABOUT, CONTACTS, sectionLabel } from '../data/site'
+import { CONTACTS, sectionLabel } from '../data/site'
 import { daysUntil, eventStatus, isLive, signupOpen } from '../data/when'
 import BottomNav from '../shared/BottomNav'
 import Intro from '../shared/Intro'
@@ -97,27 +97,68 @@ function SectionHead({ id, title, children }) {
   )
 }
 
-function About({ lang }) {
+// Sezioni ancora in costruzione: il titolo resta nitido, sotto una bozza sfocata attraversata dal nastro
+// giallo e nero dei lavori in corso. Niente testi inventati: la bozza è fatta solo di forme.
+const TAPE = { it: 'Lavori in corso', en: 'Work in progress' }
+
+function Tape({ lang, className }) {
+  const word = t(TAPE, lang)
+  return (
+    <div className={`tape ${className}`} aria-hidden="true">
+      <span>{Array.from({ length: 8 }, () => word).join('   ·   ')}</span>
+    </div>
+  )
+}
+
+function WipSection({ id, lang, kind }) {
   const tr = (v) => t(v, lang)
   return (
-    <section id="chi-siamo" className="sec" aria-labelledby="chi-siamo-title">
-      <SectionHead id="chi-siamo" title={tr(sectionLabel('chi-siamo'))}>
-        {tr(ABOUT.lede)}
-      </SectionHead>
-      <ul className="doing">
-        {ABOUT.doing.map((d, i) => (
-          <li key={d.title.it} className="reveal" style={{ '--d': i }}>
-            <h3 className="doing__title">{tr(d.title)}</h3>
-            <p className="doing__text">{tr(d.text)}</p>
-          </li>
-        ))}
-      </ul>
-      <p className="about__more reveal">
-        {tr({ it: 'Facciamo parte di Giovani Musulmani d’Italia:', en: 'We are part of Giovani Musulmani d’Italia:' })}{' '}
-        <a href={CONTACTS.national.url} target="_blank" rel="noopener noreferrer">
-          {CONTACTS.national.label}
-        </a>
-      </p>
+    <section id={id} className="sec" aria-labelledby={`${id}-title`}>
+      <SectionHead id={id} title={tr(sectionLabel(id))} />
+      <div
+        className="wip-box"
+        data-reveal
+        role="img"
+        aria-label={tr({ it: 'Lavori in corso: questa sezione arriva presto.', en: 'Work in progress: this section is coming soon.' })}
+      >
+        <div className={`wip-box__ghost wip-box__ghost--${kind}`} aria-hidden="true">
+          {kind === 'archive' ? (
+            <>
+              <div className="ghost-photos">
+                <span />
+                <span />
+              </div>
+              {[0, 1, 2].map((i) => (
+                <div key={i} className="ghost-row">
+                  <span className="ghost-date" />
+                  <span className="ghost-lines">
+                    <i />
+                    <i />
+                  </span>
+                </div>
+              ))}
+            </>
+          ) : (
+            <>
+              <div className="ghost-lines ghost-lines--lede">
+                <i />
+                <i />
+                <i />
+              </div>
+              {[0, 1, 2].map((i) => (
+                <div key={i} className="ghost-row">
+                  <span className="ghost-lines">
+                    <i />
+                    <i />
+                  </span>
+                </div>
+              ))}
+            </>
+          )}
+        </div>
+        <Tape lang={lang} className="tape--a" />
+        <Tape lang={lang} className="tape--b" />
+      </div>
     </section>
   )
 }
@@ -232,17 +273,12 @@ function Events({ lang, theme, upcoming, recent }) {
   )
 }
 
-function Archive({ lang, finished, upcoming }) {
+function Archive({ lang, finished }) {
   const tr = (v) => t(v, lang)
-  const first = upcoming[0]
+  if (!finished.length) return <WipSection id="archivio" lang={lang} kind="archive" />
   return (
     <section id="archivio" className="sec" aria-labelledby="archivio-title">
-      <SectionHead id="archivio" title={tr(sectionLabel('archivio'))}>
-        {tr({
-          it: 'Foto e racconti dei nostri eventi, uno dopo l’altro.',
-          en: 'Photos and stories from our events, one after another.',
-        })}
-      </SectionHead>
+      <SectionHead id="archivio" title={tr(sectionLabel('archivio'))} />
       {finished.map((ev) => (
         <article key={ev.id} id={`arch-${ev.id}`} className="past past--auto reveal" style={{ '--accent': ev.accent }}>
           <p className="past__date">{tr(ev.date)}</p>
@@ -258,15 +294,6 @@ function Archive({ lang, finished, upcoming }) {
           )}
         </article>
       ))}
-      {!finished.length && first && (
-        <ol className="timeline reveal">
-          <li className="timeline__item">
-            <span className="timeline__date">{first.dayMonth}</span>
-            <span className="timeline__name">{first.name}</span>
-            <span className="timeline__note">{tr({ it: 'Foto e racconti qui dopo l’evento', en: 'Photos and stories here after the event' })}</span>
-          </li>
-        </ol>
-      )}
     </section>
   )
 }
@@ -308,9 +335,9 @@ export default function Home() {
       <SiteHeader page="home" />
       <main className="home">
         <Hero next={upcoming[0]} lang={lang} theme={theme} />
-        <About lang={lang} />
+        <WipSection id="chi-siamo" lang={lang} kind="about" />
         <Events lang={lang} theme={theme} upcoming={upcoming} recent={recent} />
-        <Archive lang={lang} finished={finished} upcoming={upcoming} />
+        <Archive lang={lang} finished={finished} />
         <Contacts lang={lang} />
       </main>
       <SiteFooter />

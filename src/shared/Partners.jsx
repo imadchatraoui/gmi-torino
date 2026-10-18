@@ -12,15 +12,15 @@ export default function Partners({ ev, className = '' }) {
       {ev.partners.map((p) => (
         <span key={p.name} className="partners__item">
           <span className="partners__sep" />
-          <span
-            className="partners__mark"
-            style={{
-              '--r': p.ratio,
-              '--h': `${p.height}px`,
-              WebkitMaskImage: `url(${p.logo})`,
-              maskImage: `url(${p.logo})`,
-            }}
-          />
+          <span className="partners__mark" style={{ '--r': p.ratio, '--h': `${p.height}px` }}>
+            <span className="partners__layer" style={{ WebkitMaskImage: `url(${p.logo})`, maskImage: `url(${p.logo})` }} />
+            {p.dot && (
+              <span
+                className="partners__layer partners__layer--dot"
+                style={{ WebkitMaskImage: `url(${p.dot})`, maskImage: `url(${p.dot})` }}
+              />
+            )}
+          </span>
         </span>
       ))}
     </div>

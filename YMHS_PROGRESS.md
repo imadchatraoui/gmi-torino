@@ -272,11 +272,21 @@ Verificato: contrasti AA, tocchi della barra in basso, scroll fluido.
   sparisce e la quota dice "Iscrizioni chiuse" (`signup.closes` in `src/data/events.js`); domenica 25 dalle 10:00
   alle 19:30 "Prossimo evento" diventa "In corso, oggi", senza conto alla rovescia.
 
+**18/10 sera (4) — correzioni di Imad**
+- Logo Bayna: il mio era sbagliato (ricavato dalla striscia sgranata, senza il pallino). Ora è la B del logo ufficiale
+  con il pallino d'oro al centro, in vettoriale e su due livelli: la B nel colore del testo, il pallino in oro.
+- "In corso" è la caratteristica del sito: Chi siamo e Archivio tornano sfocati, attraversati da due strisce di
+  nastro da cantiere giallo e nero con scritto LAVORI IN CORSO (WORK IN PROGRESS in inglese), che entrano scorrendo
+  una volta sola. Sotto c'è solo una bozza di forme sfocate (righe, foto): tolti i testi di Chi siamo che avevo
+  scritto io senza chiedere. L'Archivio diventa vero da solo quando c'è un evento passato.
+  La sfocatura è fatta con ombre morbide e non con filter: blur (che costava fotogrammi lenti): scroll fluido.
+- Computer: Instagram ed Email affiancati e più grandi nei Contatti.
+
 ## Manca / idee per le prossime run
 - [ ] Provare su un iPhone vero (sul Mac non c'è Xcode, quindi niente simulatore: tutto verificato con Chrome in
   emulazione). Da guardare: intro in risparmio energetico, barra di Safari durante lo scroll del menu, tocchi sulla barra in basso.
 - [ ] Deploy (Vercel) e collegamento di Upstash Redis per i like condivisi: poi controllare che `/api/likes` risponda 200.
-- [ ] Chi siamo: rileggere il mio testo (`ABOUT` in `src/data/site.js`) e aggiungere le persone del direttivo.
+- [ ] Chi siamo: testo e persone del direttivo da Imad (ora la sezione è "lavori in corso").
 - [ ] Programma e ospiti del YMHS (blocco `program` già previsto nel template, spento).
 - [ ] Come aggiungere eventi in futuro (file dati, pannello, o tramite Claude).
 - [x] Pulizia dipendenze, like, calendario, condivisione, sito senza rete, anteprime dei link, 404, dati per Google.
