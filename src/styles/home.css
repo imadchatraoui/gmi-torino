@@ -603,8 +603,7 @@
 }
 
 /* il testo a gradiente non taglia le lettere che scendono (g, p) né la virgola finale */
-.hero__title .gradient-text,
-.hero__title .gradient-text__inner {
+.hero__title .gradient-text__content {
   padding: 0 0.08em 0.14em 0;
   margin: 0 -0.08em -0.14em 0;
   overflow: visible;
