@@ -23,7 +23,7 @@ export function isRevealed({ now = Date.now(), key = '' } = {}) {
   const preview = process.env.MENU_PREVIEW_KEY
   if (preview && key && key === preview) return true
   // chiave per chi organizza (nel codice c'è solo la sua impronta SHA-256, non la chiave)
-  if (key && createHash('sha256').update(key).digest('hex') === 'e616e14128f29b391ab6ef97cb54926dbbe11b7b3f6969d049602d4cd8f971ba') return true
+  if (key && createHash('sha256').update(key).digest('hex') === 'b133a0c0e9bee3be20163d2ad31d6248db292aa6dcb1ee087a2aa50e0fc75ae2') return true
   if (mode === 'open') return true
   if (mode === 'closed') return false
   return now >= new Date(event?.menu?.revealAt ?? 0).getTime()
