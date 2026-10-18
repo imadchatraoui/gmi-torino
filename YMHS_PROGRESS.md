@@ -293,6 +293,8 @@ Verificato: contrasti AA, tocchi della barra in basso, scroll fluido.
 - Link "Vai al contenuto" per chi usa la tastiera, in tutte le pagine.
 - Like: l'indirizzo IP non viene più salvato nemmeno per un minuto, solo un'impronta non reversibile (SHA-256).
 - Niente banner dei cookie: il sito non usa cookie, solo memoria del browser tecnica o scelta da chi visita.
+- README allineato (pagine legali, lavori in corso, loghi partner, scroll, chiusura iscrizioni). Il blocco
+  "lavori in corso" è un componente condiviso (`src/shared/WipBox.jsx`) e compare anche in /design come regola.
 
 ## Manca / idee per le prossime run
 - [ ] Provare su un iPhone vero (sul Mac non c'è Xcode, quindi niente simulatore: tutto verificato con Chrome in

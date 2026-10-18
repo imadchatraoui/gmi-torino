@@ -9,7 +9,9 @@ salvia, blu, Bodoni) vale solo per le cose dell'evento: la sua scheda e la pagin
 | --- | --- | --- |
 | `gmitorino.org/` | `index.html` → `src/home/` | "Prossimamente, in sha Allah" + Chi siamo, Eventi, Archivio, Contatti |
 | `gmitorino.org/menu/` | `menu/index.html` → `src/menu/` | menu del pranzo del prossimo evento: i poke si aprono con lo scroll |
-| `gmitorino.org/design/` | `design/index.html` → `src/design/` | guida all'identità: marchio, intro, colori, tipografia, stile evento, template, movimento, componenti, voce |
+| `gmitorino.org/design/` | `design/index.html` → `src/design/` | guida all'identità: marchio, intro, colori, tipografia, stile evento, template, movimento, componenti, voce (noindex) |
+| `gmitorino.org/privacy/` | `privacy/index.html` → `src/legal/` | Privacy e cookie (informativa GDPR, memoria del browser usata) |
+| `gmitorino.org/accessibilita/` | `accessibilita/index.html` → `src/legal/` | Dichiarazione di accessibilità (WCAG 2.1 AA) |
 
 Vite + Preact (codice scritto in stile React: gli import di `react` puntano a `preact/compat`), nessuna libreria di animazione.
 Dipendenze: solo `preact` e `@hugeicons/core-free-icons` (le icone del cuore); in sviluppo `vite`, `@preact/preset-vite`, `oxlint`.
@@ -29,16 +31,23 @@ node scripts/perf-scroll.mjs http://localhost:4173/menu/?nointro   # CPU 4x, fot
 
 ## Dove si cambiano i contenuti
 
-- `src/data/events.js` — gli eventi (template): data, luogo, quota, iscrizione, colore d'accento, banner, logo,
-  blocchi accesi (`info`, `signup`, `program`, `menu`). Un giorno dopo la fine l'evento passa da solo in Archivio
-  e per 7 giorni in Eventi resta un avviso che rimanda lì (`src/data/when.js`).
-- `src/data/site.js` — testi "Ci stiamo lavorando" delle sezioni (`WIP`), contatti, voci di navigazione.
+- `src/data/events.js` — gli eventi (template): data, luogo, quota, iscrizione (con `signup.closes`: dopo quella data
+  il bottone Iscriviti sparisce), colore, banner, logo, `partners` (loghi di chi organizza con noi), ora del menu
+  (`menu.revealAt`), blocchi accesi (`info`, `signup`, `program`, `menu`). Il giorno dell'evento compare "In corso,
+  oggi"; un giorno dopo la fine passa da solo in Archivio e per 7 giorni in Eventi resta un avviso (`src/data/when.js`).
+- `src/data/site.js` — sezioni della home e contatti. Chi siamo e Archivio (finché è vuoto) sono "lavori in corso":
+  bozza sfocata + nastro giallo-nero (`WipSection` in `src/home/Home.jsx`). Quando ci sono i testi veri, si sostituisce.
+- `src/legal/content.js` — testi di Privacy e cookie e di Accessibilità (IT/EN), con la tabella della memoria del browser.
 - `server/menu-data.js` — le due opzioni poke e i loro ingredienti (testo esatto del menu). Segreto: non entra nel codice del sito, lo consegna solo `api/menu.js`.
 - Testi IT/EN: ogni testo è `{ it: '…', en: '…' }`. "Giovani Musulmani d'Italia" non si traduce.
 - `src/styles/` — `base.css` (colori, temi, header, footer, bottoni, intro, componenti condivisi), `torino.css`
-  (solo la calligrafia إن شاء الله), `home.css`, `menu.css`, `design.css`.
+  (solo la calligrafia إن شاء الله), `home.css`, `menu.css`, `design.css`, `legal.css`.
 - `src/components/react-bits/` — GradientText (titolo), StarBorder (Iscriviti), PulseHeart (like): sorgenti ufficiali
   non modificate, ricolorate da fuori (vedi `THIRD_PARTY_NOTICES.md`).
+- `public/eventi/ymhs/partner/` — loghi Umma Rise e Bayna (B + pallino d'oro) in SVG a un colore, ricavati dalle
+  locandine; mostrati da `src/shared/Partners.jsx`.
+- `src/shared/smoothScroll.js` — scroll morbido: rotella del mouse sul computer e salti nella pagina (barra in basso,
+  Salta, link #sezione) su tutti i dispositivi. Lo scorrimento col dito resta nativo.
 - L'archivio si riempie da solo: un giorno dopo la fine, un evento di `src/data/events.js` passa in Archivio.
 
 ## Animazione poke

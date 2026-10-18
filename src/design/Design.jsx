@@ -2,6 +2,7 @@ import { useState } from 'react'
 import PokeIllustration from '../poke/PokeIllustration'
 import { eventById } from '../data/events'
 import Partners from '../shared/Partners'
+import WipBox from '../shared/WipBox'
 import { t, usePrefs } from '../shared/prefs'
 import { useReveal } from '../shared/reveal'
 import SiteFooter from '../shared/SiteFooter'
@@ -302,6 +303,17 @@ export default function Design() {
             />
             <span className="comp__note">{tr({ it: 'Toccalo: qui è solo una prova, non conta.', en: 'Tap it: this one is just a demo, it does not count.' })}</span>
           </div>
+        </section>
+
+        <section className="id-sec" aria-labelledby="w-t">
+          <h2 id="w-t" className="id-sec__title reveal">{tr({ it: 'Lavori in corso', en: 'Work in progress' })}</h2>
+          <p className="id-sec__lede reveal">
+            {tr({
+              it: 'Il sito è in costruzione e lo dice. Le sezioni senza contenuti veri mostrano il titolo nitido e sotto una bozza sfocata (solo forme, mai testi inventati), attraversata da due strisce di nastro da cantiere giallo e nero. Quando arrivano i testi, la bozza si sostituisce.',
+              en: 'The site is under construction and says so. Sections without real content show the title in focus and, below, a blurred draft (shapes only, never made-up text), crossed by two strips of yellow-and-black site tape. When the real text arrives, the draft is replaced.',
+            })}
+          </p>
+          <WipBox kind="archive" className="id-wip" />
         </section>
 
         <section className="id-sec" aria-labelledby="v-t">
