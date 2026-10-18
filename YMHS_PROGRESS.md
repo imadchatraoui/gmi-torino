@@ -296,6 +296,13 @@ Verificato: contrasti AA, tocchi della barra in basso, scroll fluido.
 - README allineato (pagine legali, lavori in corso, loghi partner, scroll, chiusura iscrizioni). Il blocco
   "lavori in corso" è un componente condiviso (`src/shared/WipBox.jsx`) e compare anche in /design come regola.
 
+**18/10 sera (6) — ultimo giro della sessione**
+- Controllo Lighthouse del sito online (telefono): prestazioni 100, buone pratiche 100, SEO 100, accessibilità 96.
+  Sistemati i punti segnalati: lingua non attiva (IT/EN) a contrasto AA nel tema scuro; nomi accessibili del logo
+  in alto e del bottone lingua che ora contengono il testo visibile; logo YMHS in WebP con due misure (11 KB su
+  telefono invece di 29 KB).
+- Tutte le pagine online provate senza errori in console; la 404 personalizzata funziona.
+
 ## Manca / idee per le prossime run
 - [ ] Provare su un iPhone vero (sul Mac non c'è Xcode, quindi niente simulatore: tutto verificato con Chrome in
   emulazione). Da guardare: intro in risparmio energetico, barra di Safari durante lo scroll del menu, tocchi sulla barra in basso.

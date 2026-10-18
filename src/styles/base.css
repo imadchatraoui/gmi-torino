@@ -492,12 +492,13 @@ main:focus {
 
 /* lingua: IT / EN, quella attiva piena, l'altra appena accennata */
 .tool--lang span {
-  opacity: 0.38;
-  transition: opacity 0.3s;
+  color: var(--text-2);
+  transition: color 0.3s;
 }
 
 .tool--lang .is-on {
-  opacity: 1;
+  color: var(--heading);
+  font-weight: 700;
 }
 
 .tool__sep {

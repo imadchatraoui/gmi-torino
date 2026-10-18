@@ -39,11 +39,12 @@ export default function SiteHeader({ page = 'home' }) {
       <a className="skip-link" href="#main">
         {t({ it: 'Vai al contenuto', en: 'Skip to content' })}
       </a>
-      <a className="site-header__brand" href="/" aria-label={t({ it: 'GMI Torino, pagina iniziale', en: 'GMI Torino, home page' })}>
+      <a className="site-header__brand" href="/">
         <span className="logo" />
         <span className="site-header__name">
           GMI Torino
           <small>Giovani Musulmani d’Italia</small>
+          <span className="sr-only">{t({ it: ', pagina iniziale', en: ', home page' })}</span>
         </span>
       </a>
       {page === 'home' && (
@@ -60,11 +61,13 @@ export default function SiteHeader({ page = 'home' }) {
           type="button"
           className="tool tool--lang"
           onClick={toggleLang}
-          aria-label={lang === 'it' ? 'Switch to English' : 'Passa all’italiano'}
         >
           <span className={lang === 'it' ? 'is-on' : undefined}>IT</span>
           <span className="tool__sep" aria-hidden="true">/</span>
           <span className={lang === 'en' ? 'is-on' : undefined}>EN</span>
+          <span className="sr-only" lang={lang === 'it' ? 'en' : 'it'}>
+            {lang === 'it' ? ' · Switch to English' : ' · Passa all’italiano'}
+          </span>
         </button>
         <span className="tool__rule" aria-hidden="true" />
         <button

@@ -30,7 +30,8 @@ export const EVENTS = [
     theme: 'ymhs',
     accent: '#8f9c7d',
     banner: null,
-    logo: '/eventi/ymhs/logo.png',
+    logo: '/eventi/ymhs/logo-682.webp',
+    logoSrcSet: '/eventi/ymhs/logo-340.webp 340w, /eventi/ymhs/logo-682.webp 682w',
     // insieme a GMI Torino (loghi vettoriali in public/eventi/ymhs/partner/, ricavati dalle locandine)
     partners: [
       { name: 'Umma Rise', logo: '/eventi/ymhs/partner/umma-rise.svg', ratio: 414 / 83, height: 15 },
