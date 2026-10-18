@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { EVENTS } from '../data/events'
-import { CONTACTS, SECTIONS, WIP } from '../data/site'
+import { CONTACTS, WIP, sectionLabel } from '../data/site'
 import { daysUntil, eventStatus } from '../data/when'
 import BottomNav from '../shared/BottomNav'
 import Intro from '../shared/Intro'
@@ -74,7 +74,6 @@ function Hero({ next, lang, theme }) {
 }
 
 function SectionHead({ id, title, children }) {
-  const { lang } = usePrefs()
   return (
     <header className="sec-head">
       <h2 id={`${id}-title`} className="sec-head__title reveal">
@@ -85,22 +84,40 @@ function SectionHead({ id, title, children }) {
           {children}
         </p>
       )}
-      {WIP[id] && (
-        <p className="wip reveal" style={{ '--d': 2 }}>
-          <span className="wip__dot" aria-hidden="true" />
-          <span>
-            <strong>{t({ it: 'Ci stiamo lavorando', en: 'Work in progress' }, lang)}</strong> {t(WIP[id], lang)}
-          </span>
-        </p>
-      )}
     </header>
   )
 }
 
-function About({ lang }) {
+// Quello che arriva (Chi siamo, Archivio): una sola nota e sotto le sezioni che si dissolvono,
+// sempre più sfocate verso il basso, fino a sparire nel footer. Niente frasi ripetute.
+function Soon({ lang, withArchive }) {
+  const tr = (v) => t(v, lang)
+  const ids = withArchive ? ['chi-siamo', 'archivio'] : ['chi-siamo']
   return (
-    <section id="chi-siamo" className="sec" aria-labelledby="chi-siamo-title">
-      <SectionHead id="chi-siamo" title={t(SECTIONS[0].label, lang)} />
+    <section className="soon" aria-labelledby="soon-title">
+      <div id="chi-siamo" className="soon__note sec reveal">
+        <p className="soon__label">{tr({ it: 'Ci stiamo lavorando', en: 'Work in progress' })}</p>
+        <h2 id="soon-title" className="soon__title">
+          {tr(
+            withArchive
+              ? { it: 'Chi siamo e l’archivio arrivano presto, inshallah.', en: 'About us and the archive are coming soon, inshallah.' }
+              : { it: 'Chi siamo arriva presto, inshallah.', en: 'About us is coming soon, inshallah.' },
+          )}
+        </h2>
+      </div>
+      <div className="soon__ghost" aria-hidden="true" data-reveal>
+        {ids.map((id, i) => (
+          <div key={id} id={i ? id : undefined} className={`soon__block soon__block--${i + 1}`}>
+            <p className="soon__heading">{tr(sectionLabel(id))}</p>
+            <p className="soon__text">{tr(WIP[id])}</p>
+            <div className="soon__lines">
+              <span />
+              <span />
+              <span />
+            </div>
+          </div>
+        ))}
+      </div>
     </section>
   )
 }
@@ -188,7 +205,7 @@ function Events({ lang, theme, upcoming, recent }) {
   const tr = (v) => t(v, lang)
   return (
     <section id="eventi" className="sec" aria-labelledby="eventi-title">
-      <SectionHead id="eventi" title={tr(SECTIONS[1].label)} />
+      <SectionHead id="eventi" title={tr(sectionLabel('eventi'))} />
       {upcoming.map((ev) => (
         <EventCard key={ev.id} ev={ev} lang={lang} theme={theme} />
       ))}
@@ -214,7 +231,7 @@ function Archive({ lang, finished }) {
   const tr = (v) => t(v, lang)
   return (
     <section id="archivio" className="sec" aria-labelledby="archivio-title">
-      <SectionHead id="archivio" title={tr(SECTIONS[2].label)} />
+      <SectionHead id="archivio" title={tr(sectionLabel('archivio'))} />
       {finished.map((ev) => (
         <article key={ev.id} id={`arch-${ev.id}`} className="past past--auto reveal" style={{ '--accent': ev.accent }}>
           <p className="past__date">{tr(ev.date)}</p>
@@ -242,7 +259,7 @@ function Contacts({ lang }) {
   ]
   return (
     <section id="contatti" className="sec" aria-labelledby="contatti-title">
-      <SectionHead id="contatti" title={tr(SECTIONS[3].label)} />
+      <SectionHead id="contatti" title={tr(sectionLabel('contatti'))} />
       <ul className="contacts">
         {rows.map((r, i) => (
           <li key={r.label} className="reveal" style={{ '--d': i }}>
@@ -271,10 +288,10 @@ export default function Home() {
       <SiteHeader page="home" />
       <main className="home">
         <Hero next={upcoming[0]} lang={lang} theme={theme} />
-        <About lang={lang} />
         <Events lang={lang} theme={theme} upcoming={upcoming} recent={recent} />
-        <Archive lang={lang} finished={finished} />
+        {finished.length > 0 && <Archive lang={lang} finished={finished} />}
         <Contacts lang={lang} />
+        <Soon lang={lang} withArchive={!finished.length} />
       </main>
       <SiteFooter />
       <BottomNav />

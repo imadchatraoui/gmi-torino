@@ -33,7 +33,7 @@ node scripts/perf-scroll.mjs http://localhost:4173/menu/?nointro   # CPU 4x, fot
   blocchi accesi (`info`, `signup`, `program`, `menu`). Un giorno dopo la fine l'evento passa da solo in Archivio
   e per 7 giorni in Eventi resta un avviso che rimanda lì (`src/data/when.js`).
 - `src/data/site.js` — testi "Ci stiamo lavorando" delle sezioni (`WIP`), contatti, voci di navigazione.
-- `src/data/menu.js` — le due opzioni poke e i loro ingredienti (testo esatto del menu).
+- `server/menu-data.js` — le due opzioni poke e i loro ingredienti (testo esatto del menu). Segreto: non entra nel codice del sito, lo consegna solo `api/menu.js`.
 - Testi IT/EN: ogni testo è `{ it: '…', en: '…' }`. "Giovani Musulmani d'Italia" non si traduce.
 - `src/styles/` — `base.css` (colori, temi, header, footer, bottoni, intro, componenti condivisi), `torino.css`
   (solo la calligrafia إن شاء الله), `home.css`, `menu.css`, `design.css`.
@@ -60,7 +60,7 @@ I disegni sono in `src/poke/art.jsx`.
 
 ### Sostituire il disegno con frame o video (es. Higgsfield)
 
-Ogni poke in `src/data/menu.js` ha un campo `media`. Se è `null` si usa il disegno in
+Ogni poke in `server/menu-data.js` ha un campo `media`. Se è `null` si usa il disegno in
 codice; altrimenti:
 
 **Sequenza di frame** (consigliata: scrub perfetto anche su iPhone)
@@ -98,6 +98,21 @@ ffmpeg -i input.mp4 -an -vf "scale=720:-1" -c:v libx264 -g 1 -crf 26 -movflags +
 ```js
 media: { type: 'frames', frames: framesFor('option-1', 96), cues: [0.2, 0.34, 0.48, 0.62, 0.76] },
 ```
+
+## Menu segreto
+
+Il menu è una sorpresa: fino all'ora di pranzo `/menu` mostra la ciotola chiusa e un conto alla rovescia.
+I piatti stanno in `server/menu-data.js`, fuori dal codice del sito: li consegna solo la funzione `api/menu.js`,
+e solo dall'ora `menu.revealAt` di `src/data/events.js` (ora: domenica 25/10 alle 13:00). Chi ha la pagina aperta
+vede il menu comparire da solo; una volta svelato resta salvato sul telefono (si apre anche senza rete).
+
+Controllo manuale, su Vercel → Settings → Environment Variables (poi Deployments → Redeploy):
+- `MENU_REVEAL=open` mostra subito il menu a tutti; `MENU_REVEAL=closed` lo tiene nascosto anche dopo l'ora;
+  senza la variabile vale l'ora automatica.
+- `MENU_PREVIEW_KEY=una-parola` permette a chi organizza di vederlo prima con `gmitorino.org/menu/?chiave=una-parola`.
+- In locale (`npm run dev` / `preview`) la chiave è `prova`: `/menu/?chiave=prova`.
+
+I disegni degli ingredienti (`src/poke/art.jsx`) hanno chiavi neutre (a1…a8) per non far capire niente leggendo il codice.
 
 ## Like condivisi sui poke
 

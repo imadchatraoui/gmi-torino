@@ -191,6 +191,113 @@
   color: var(--text-2);
 }
 
+/* ---------- quello che arriva: una nota, poi le sezioni che si dissolvono ---------- */
+.soon {
+  position: relative;
+}
+
+.soon__label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold-text);
+}
+
+.soon__label::before {
+  content: '';
+  width: 18px;
+  height: 1px;
+  background: currentColor;
+}
+
+.soon__title {
+  max-width: 16em;
+  margin-top: 12px;
+  font-size: clamp(1.5rem, 6.6vw, 2.1rem);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+  color: var(--heading);
+}
+
+/* le sezioni future: nitide in alto, sempre più sfocate e trasparenti scendendo */
+.soon__ghost {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 28px var(--gutter) 40px;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 30%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 30%, transparent 100%);
+}
+
+.soon__block {
+  display: grid;
+  gap: 12px;
+  padding-top: 40px;
+}
+
+.soon__heading {
+  font-size: clamp(2.2rem, 10vw, 3.4rem);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  color: var(--heading);
+}
+
+.soon__text {
+  max-width: 30em;
+  font-size: 17px;
+  color: var(--text-2);
+}
+
+.soon__lines {
+  display: grid;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.soon__lines span {
+  height: 11px;
+  border-radius: 6px;
+  background: var(--text-3);
+  opacity: 0.5;
+}
+
+.soon__lines span:nth-child(1) { width: 94%; }
+.soon__lines span:nth-child(2) { width: 82%; }
+.soon__lines span:nth-child(3) { width: 58%; }
+
+/* la dissolvenza: sfocatura fissa, sempre più forte scendendo (disegnata una volta sola, scroll leggero);
+   entrando nello schermo il blocco compare piano, solo con opacità */
+.soon__block--1 .soon__heading { filter: blur(3px); }
+.soon__block--1 .soon__text { filter: blur(6px); }
+.soon__block--1 .soon__lines { filter: blur(9px); }
+.soon__block--2 .soon__heading { filter: blur(12px); }
+.soon__block--2 .soon__text { filter: blur(16px); }
+.soon__block--2 .soon__lines { filter: blur(20px); }
+
+.soon__ghost {
+  opacity: 0;
+  transition: opacity 1.4s var(--ease-out) 0.15s;
+}
+
+.soon__ghost.is-in {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .soon__ghost {
+    opacity: 1;
+  }
+}
+
 /* ---------- eventi: template ---------- */
 .event {
   position: relative;

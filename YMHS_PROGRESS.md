@@ -26,7 +26,7 @@ e cosa devi decidere tu.
 - **/menu/**: intro + link alle due opzioni, poi per ogni poke una sezione sticky guidata dallo scroll:
   coperchio kraft che si alza e vola via → ogni ingrediente (ordine esatto del menu) si stacca dalla bowl con numero,
   e nella lista sotto si accende il nome. Riepilogo testuale, nota allergie, versetto 2:172 (dal vecchio sito), footer.
-- Animazione predisposta per frame/video (`media` in `src/data/menu.js`, componenti `FrameSequence`/`VideoScrub`), documentata nel README.
+- Animazione predisposta per frame/video (`media` in `server/menu-data.js`, componenti `FrameSequence`/`VideoScrub`), documentata nel README.
 - `prefers-reduced-motion`: niente sticky, bowl già aperta.
 - Asset: logo → `public/brand/gmi-logo.webp` (20 KB); apple-touch-icon, favicon 16, icone Android, manifest sistemati.
   Vecchio sito (componenti WebGL, gif da 2–3 MB, foto settembre) spostato in `_unused/old-site/` (non cancellato).
@@ -220,6 +220,21 @@ Al loro posto uno stile da rivista: righe sottili, etichette in maiuscoletto spa
 - /design: marchio su due campi di colore (niente riquadri arrotondati), "Voce" come elenco con righe, "Riproduci" in testo.
 Verificato: contrasti AA, tocchi della barra in basso, scroll fluido.
 
+**18/10 — richieste di Imad**
+- Numeri degli ingredienti invisibili su iPhone: erano testo dentro piccoli SVG, che Safari non disegnava. Ora sono
+  cerchi e cifre in HTML.
+- **Menu segreto fino all'ora di pranzo** (scelta mia: domenica 25/10 alle 13:00, in `src/data/events.js`):
+  piatti solo dal server (`api/menu.js` + `server/menu-data.js`), mai nel codice pubblico; prima dell'ora `/menu`
+  mostra la ciotola chiusa (il coperchio ogni tanto si muove) e il conto alla rovescia (giorni, poi ore:minuti:secondi
+  presi dall'orologio del server). All'ora la pagina aperta si svela da sola. Controllo manuale con `MENU_REVEAL` e
+  anteprima con `MENU_PREVIEW_KEY` (README, "Menu segreto"). Anteprima dei link del menu rifatta con la ciotola chiusa.
+  Verificato: nessun nome di ingrediente nel sito compilato.
+- **Home: niente più "Ci stiamo lavorando" ripetuto.** Ordine nuovo: Eventi e Contatti (veri, nitidi), poi una sola
+  nota ("Chi siamo e l'archivio arrivano presto, inshallah.") e sotto le due sezioni future che si dissolvono:
+  sfocatura sempre più forte scendendo, fino a sparire nel footer. La barra in basso segue il nuovo ordine.
+  Quando ci saranno eventi passati, l'Archivio torna una sezione vera, nitida. Sfocatura fissa (non animata):
+  animarla rallentava lo scroll; il blocco entra con una dissolvenza d'opacità.
+
 ## Manca / idee per le prossime run
 - [ ] Provare su un iPhone vero (sul Mac non c'è Xcode, quindi niente simulatore: tutto verificato con Chrome in
   emulazione). Da guardare: intro in risparmio energetico, barra di Safari durante lo scroll del menu, tocchi sulla barra in basso.
@@ -229,6 +244,7 @@ Verificato: contrasti AA, tocchi della barra in basso, scroll fluido.
 - [x] Pulizia dipendenze, like, calendario, condivisione, sito senza rete, anteprime dei link, 404, dati per Google.
 
 ## Da decidere (utente)
+- **Ora del menu**: l'ho messa alle 13:00 di domenica 25/10. Se il pranzo è a un'altra ora, va cambiata.
 - **Like**: il cuore va bene lì (in alto a destra nelle schede, accanto a "Salta" nelle sezioni) e con quel rosso?
   Mostrare il numero anche quando è 0, o solo il cuore finché nessuno ha messo like?
 - **Upstash**: per i like condivisi tra tutti i telefoni serve un database Upstash Redis gratuito collegato al progetto
@@ -236,7 +252,7 @@ Verificato: contrasti AA, tocchi della barra in basso, scroll fluido.
 - **Deploy** su `gmitorino.org`: quando vuoi, su Vercel (preset Vite, output `dist/`); il dominio lo punti tu.
 - **Pagina /design nella sitemap**: è pubblica e indicizzabile; se preferisci tenerla nascosta la tolgo dalla sitemap
   e aggiungo `noindex`.
-- **Video/frame Higgsfield** per il poke: se arrivano, impostare `media` in `src/data/menu.js` (istruzioni nel README).
+- **Video/frame Higgsfield** per il poke: se arrivano, impostare `media` in `server/menu-data.js` (istruzioni nel README).
 - Titoli delle due opzioni ("Tonno & avocado al miele", "Hummus, pollo & barbabietola") e nota allergie: scritti da me.
 
 ## Come provare
@@ -259,7 +275,7 @@ Su telefono: `npm run dev -- --host` e aprire l'IP del Mac dalla stessa rete Wi-
 - Stile carta crema + rosso GMI `#8B181A` + inchiostro `#2A1314`, ispirato al "Save the date" GMI e alla grafica YMHS
   (carta, salvia, blu). Bodoni Moda + IBM Plex Mono. Niente gradienti viola, niente glow, niente emoji.
 - Titoli delle opzioni ("Tonno & avocado al miele", "Hummus, pollo & barbabietola") scritti da me sugli ingredienti:
-  cambiarli in `src/data/menu.js` se non piacciono. La lista ingredienti è il testo esatto.
+  cambiarli in `server/menu-data.js` se non piacciono. La lista ingredienti è il testo esatto.
 - Il numero del referente presente sul poster non è stato messo sul sito (dato personale).
 - Nota "Allergie o intolleranze? Chiedi allo staff al banco del pranzo." — da confermare.
 - Verifica visiva fatta con Chrome headless su copie statiche (375x812) perché l'avvio del dev server di anteprima è stato rifiutato (anche in run 2).
