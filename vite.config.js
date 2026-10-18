@@ -5,7 +5,7 @@ import likesHandler from './api/likes.js'
 import menuHandler from './api/menu.js'
 import { EVENTS } from './src/data/events.js'
 import { eventIcs } from './src/data/ics.js'
-import { eventJsonLd, robotsTxt, sitemapXml } from './src/data/seo.js'
+import { eventJsonLd, organizationJsonLd, robotsTxt, sitemapXml } from './src/data/seo.js'
 
 // In locale (npm run dev / preview) /api/menu e /api/likes girano come su Vercel; /api/likes usa la stessa funzione di Vercel con un finto Redis
 // in memoria: i like si condividono tra i dispositivi collegati al Mac finché il server resta acceso.
@@ -92,8 +92,7 @@ function searchData() {
       handler(html, ctx) {
         if (ctx.path !== '/index.html') return html
         const upcoming = EVENTS.filter((e) => e.end && new Date(e.end) > new Date())
-        if (!upcoming.length) return html
-        const json = JSON.stringify(upcoming.map(eventJsonLd)).replace(/</g, '\\u003c')
+        const json = JSON.stringify([organizationJsonLd(), ...upcoming.map(eventJsonLd)]).replace(/</g, '\\u003c')
         return html.replace('</head>', `    <script type="application/ld+json">${json}</script>\n  </head>`)
       },
     },

@@ -2,6 +2,20 @@
 // schede evento schema.org nella home, robots.txt e sitemap.xml.
 export const SITE = 'https://gmitorino.org'
 
+// la sezione stessa: nome, logo e profili, così i motori di ricerca la riconoscono
+export const organizationJsonLd = () => ({
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'GMI Torino',
+  alternateName: 'Giovani Musulmani d’Italia · Torino',
+  url: SITE,
+  logo: `${SITE}/brand/gmi-torino-640.png`,
+  email: 'gmitorino@gmail.com',
+  sameAs: ['https://www.instagram.com/gmi.torino/'],
+  parentOrganization: { '@type': 'Organization', name: 'Giovani Musulmani d’Italia', url: 'https://gmitalia.org' },
+  address: { '@type': 'PostalAddress', addressLocality: 'Torino', addressCountry: 'IT' },
+})
+
 export function eventJsonLd(ev) {
   const price = parseFloat(String(ev.price ?? '').replace(',', '.'))
   return {
