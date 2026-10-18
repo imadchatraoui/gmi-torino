@@ -63,6 +63,43 @@ export async function saveSettings(patch) {
   return next
 }
 
+// il menu modificato da /admin (stessa forma di server/menu-data.js); senza modifiche vale il file
+const MENU_KEY = 'gmi:menu'
+const ARTS = new Set(['rice', 'a1', 'a2', 'a3', 'a4', 'a5', 'a6', 'a7', 'a8'])
+const pair = (v) => ({ it: text(v?.it), en: text(v?.en) || text(v?.it) })
+
+export async function getMenu(fallback) {
+  const cfg = redisConfig()
+  if (!cfg) return fallback
+  try {
+    const raw = await redis(cfg, ['GET', MENU_KEY])
+    return raw ? JSON.parse(raw) : fallback
+  } catch {
+    return fallback
+  }
+}
+
+// tiene id ed etichette del file (servono ai mi piace), cambia titoli e ingredienti
+export async function saveMenu(options, fallback) {
+  const cfg = redisConfig()
+  if (!cfg) throw new Error('storage not configured')
+  const clean = fallback.map((base, i) => {
+    const o = options?.[i] || {}
+    const items = (Array.isArray(o.items) ? o.items : base.items)
+      .slice(0, 5)
+      .map((it) => ({ name: pair(it.name), art: ARTS.has(it.art) ? it.art : 'rice' }))
+      .filter((it) => it.name.it)
+    return { ...base, title: o.title ? pair(o.title) : base.title, items: items.length ? items : base.items }
+  })
+  await redis(cfg, ['SET', MENU_KEY, JSON.stringify(clean)])
+  return clean
+}
+
+export async function resetMenu() {
+  const cfg = redisConfig()
+  if (cfg) await redis(cfg, ['DEL', MENU_KEY])
+}
+
 export function menuRevealed(settings, now = Date.now()) {
   if (settings.menuMode === 'open') return true
   if (settings.menuMode === 'closed') return false

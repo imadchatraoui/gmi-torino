@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
 // Impostazioni dal vivo (/api/settings, cambiate da /admin): avviso in home, iscrizioni, ora del pranzo.
-// Si rileggono ogni minuto finché la pagina è aperta. Senza rete: valori di src/data/events.js.
+// Si rileggono ogni 20 secondi finché la pagina è aperta. Senza rete: valori di src/data/events.js.
 let cache = null
 const listeners = new Set()
 
@@ -24,7 +24,7 @@ export function useLiveSettings() {
     listeners.add(setS)
     if (!timer) {
       load()
-      timer = setInterval(() => !document.hidden && load(), 60000)
+      timer = setInterval(() => !document.hidden && load(), 20000)
     }
     return () => listeners.delete(setS)
   }, [])

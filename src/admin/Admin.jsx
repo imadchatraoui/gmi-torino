@@ -1,10 +1,23 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { toggleTheme, usePrefs } from '../shared/prefs'
 
 // Pannello di gestione di GMI Torino (gmitorino.org/admin).
 // Le modifiche vanno su /api/admin e valgono subito su tutto il sito, senza deploy.
 const PASS_KEY = 'gmi-admin'
 const pad = (n) => String(n).padStart(2, '0')
+
+// disegni disponibili per gli ingredienti (src/poke/art.jsx)
+const ARTS = [
+  ['rice', 'Riso (base)'],
+  ['a3', 'Cubetti rossi (tonno)'],
+  ['a4', 'Cubetti viola (barbabietola)'],
+  ['a1', 'Avocado con miele'],
+  ['a2', 'Avocado con limone'],
+  ['a5', 'Fiocchi bianchi (ricotta)'],
+  ['a6', 'Striscioline viola (cavolo)'],
+  ['a7', 'Crema (hummus)'],
+  ['a8', 'Straccetti (pollo)'],
+]
 
 // ISO → valore per <input type="datetime-local"> nell'ora del telefono
 function toLocalInput(iso) {
@@ -90,11 +103,16 @@ export default function Admin() {
   const [when, setWhen] = useState('')
   const [notice, setNotice] = useState({ on: false, it: '', en: '' })
   const [confirmReset, setConfirmReset] = useState(false)
+  const [menu, setMenu] = useState(null)
+  const [menuDirty, setMenuDirty] = useState(false)
+  const menuDirtyRef = useRef(false)
+  menuDirtyRef.current = menuDirty
 
   const apply = (d) => {
     setData(d)
     setWhen(toLocalInput(d.settings.revealAt))
     setNotice(d.settings.notice)
+    setMenu((m) => (m && menuDirtyRef.current ? m : d.menu))
   }
 
   const run = async (body, msg) => {
@@ -149,6 +167,12 @@ export default function Admin() {
     return () => clearInterval(id)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [!!data])
+
+  const editMenu = (pi, fn) => {
+    setMenuDirty(true)
+    setMenu((m) => m.map((q, k) => (k === pi ? fn(q) : q)))
+  }
+  const editItem = (pi, ii, patch) => editMenu(pi, (q) => ({ ...q, items: q.items.map((x, k) => (k === ii ? { ...x, ...patch } : x)) }))
 
   if (!data) return <Login onEnter={enter} error={error} busy={busy} />
 
@@ -284,10 +308,7 @@ export default function Admin() {
 
         <section className="adm-card">
           <p className="adm-label">Avviso in cima alla home</p>
-          <label className="adm-switch">
-            <input type="checkbox" checked={notice.on} onChange={(e) => setNotice({ ...notice, on: e.target.checked })} />
-            <span>{notice.on ? 'Visibile' : 'Spento'}</span>
-          </label>
+          <p className={`adm-pill-state ${s.notice?.on ? 'is-on' : ''}`}>{s.notice?.on ? 'Visibile ora sul sito' : 'Non visibile'}</p>
           <label className="adm-field" htmlFor="adm-it">
             <span>Testo (italiano)</span>
             <input id="adm-it" type="text" maxLength={220} placeholder="Es. Si inizia alle 10:30, ingresso dal cortile" value={notice.it} onChange={(e) => setNotice({ ...notice, it: e.target.value })} />
@@ -296,9 +317,81 @@ export default function Admin() {
             <span>Testo (inglese, facoltativo)</span>
             <input id="adm-en" type="text" maxLength={220} value={notice.en} onChange={(e) => setNotice({ ...notice, en: e.target.value })} />
           </label>
-          <button type="button" className="adm-btn adm-btn--primary" disabled={busy} onClick={() => run({ settings: { notice } }, notice.on ? 'Avviso pubblicato' : 'Avviso salvato (spento)')}>
-            Salva avviso
-          </button>
+          <div className="adm-row">
+            <button type="button" className="adm-btn adm-btn--primary" disabled={busy || !notice.it.trim()} onClick={() => run({ settings: { notice: { ...notice, on: true } } }, 'Avviso pubblicato')}>
+              Pubblica avviso
+            </button>
+            {s.notice?.on && (
+              <button type="button" className="adm-btn adm-btn--ghost" disabled={busy} onClick={() => run({ settings: { notice: { ...notice, on: false } } }, 'Avviso tolto')}>
+                Togli avviso
+              </button>
+            )}
+          </div>
+        </section>
+
+        <section className="adm-card adm-card--wide">
+          <p className="adm-label">Il menu · piatti e ingredienti</p>
+          {menu?.map((p, pi) => (
+            <fieldset key={p.id} className="adm-poke">
+              <legend>{p.label.it}</legend>
+              <label className="adm-field">
+                <span>Nome del piatto</span>
+                <input type="text" value={p.title.it} onChange={(e) => editMenu(pi, (q) => ({ ...q, title: { ...q.title, it: e.target.value } }))} />
+              </label>
+              <label className="adm-field">
+                <span>In inglese</span>
+                <input type="text" value={p.title.en} onChange={(e) => editMenu(pi, (q) => ({ ...q, title: { ...q.title, en: e.target.value } }))} />
+              </label>
+              <ol className="adm-items">
+                {p.items.map((it, ii) => (
+                  <li key={ii}>
+                    <span className="adm-items__n">{ii + 1}</span>
+                    <input type="text" aria-label={`Ingrediente ${ii + 1}`} value={it.name.it} onChange={(e) => editItem(pi, ii, { name: { ...it.name, it: e.target.value } })} />
+                    <input type="text" aria-label={`Ingrediente ${ii + 1} in inglese`} placeholder="in inglese" value={it.name.en} onChange={(e) => editItem(pi, ii, { name: { ...it.name, en: e.target.value } })} />
+                    <select aria-label="Disegno" value={it.art} onChange={(e) => editItem(pi, ii, { art: e.target.value })}>
+                      {ARTS.map(([v, l]) => (
+                        <option key={v} value={v}>
+                          {l}
+                        </option>
+                      ))}
+                    </select>
+                    <button type="button" className="adm-btn adm-btn--ghost adm-x" aria-label="Togli ingrediente" onClick={() => editMenu(pi, (q) => ({ ...q, items: q.items.filter((_, k) => k !== ii) }))}>
+                      ×
+                    </button>
+                  </li>
+                ))}
+              </ol>
+              {p.items.length < 5 && (
+                <button type="button" className="adm-btn adm-btn--ghost" onClick={() => editMenu(pi, (q) => ({ ...q, items: [...q.items, { name: { it: '', en: '' }, art: 'a3' }] }))}>
+                  + Aggiungi ingrediente
+                </button>
+              )}
+            </fieldset>
+          ))}
+          <div className="adm-row">
+            <button
+              type="button"
+              className="adm-btn adm-btn--primary"
+              disabled={busy || !menuDirty}
+              onClick={async () => {
+                if (await run({ menu }, 'Menu aggiornato')) setMenuDirty(false)
+              }}
+            >
+              Salva il menu
+            </button>
+            <button
+              type="button"
+              className="adm-btn adm-btn--ghost"
+              disabled={busy}
+              onClick={async () => {
+                setMenuDirty(false)
+                await run({ action: 'resetMenu' }, 'Menu originale ripristinato')
+              }}
+            >
+              Ripristina l’originale
+            </button>
+          </div>
+          <p className="adm-muted">Al massimo 5 ingredienti per piatto, un solo riso. Chi ha già il menu aperto vede le modifiche entro mezzo minuto.</p>
         </section>
 
         <section className="adm-card">

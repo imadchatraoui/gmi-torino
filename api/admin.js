@@ -5,7 +5,7 @@
 //   POST { settings }            -> salva le impostazioni
 //   POST { action: 'resetLikes' } -> azzera i mi piace
 import { POKES } from '../server/menu-data.js'
-import { clientIp, getSettings, readBody, redis, redisConfig, saveSettings, send, sha256 } from '../server/store.js'
+import { clientIp, getMenu, getSettings, readBody, redis, redisConfig, resetMenu, saveMenu, saveSettings, send, sha256 } from '../server/store.js'
 
 const PASSWORD_HASH = 'a1dd395c19f3a1f7ff0e6bfe3ee6028e4373b41085a6da776ab02a8baf129abb'
 
@@ -35,13 +35,15 @@ export default async function handler(req, res) {
     if (req.method === 'POST') {
       const body = await readBody(req)
       if (body.action === 'resetLikes') await redis(cfg, ['DEL', 'gmi:likes'])
+      else if (body.action === 'resetMenu') await resetMenu()
+      else if (body.menu) await saveMenu(body.menu, POKES)
       else if (body.settings) await saveSettings(body.settings)
       else return send(res, 400, { error: 'Richiesta non valida.' })
     } else if (req.method !== 'GET') {
       res.setHeader('Allow', 'GET, POST')
       return send(res, 405, { error: 'method not allowed' })
     }
-    return send(res, 200, { settings: await getSettings(), likes: await counts(cfg), now: Date.now() })
+    return send(res, 200, { settings: await getSettings(), likes: await counts(cfg), menu: await getMenu(POKES), now: Date.now() })
   } catch {
     return send(res, 502, { error: 'Database non raggiungibile, riprova.' })
   }

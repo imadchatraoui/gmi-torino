@@ -6,7 +6,7 @@
 // L'ora e lo stato (automatico / sempre visibile / nascosto) si cambiano da gmitorino.org/admin
 // (server/store.js); MENU_REVEAL su Vercel ("open"/"closed") resta come interruttore d'emergenza.
 import { POKES } from '../server/menu-data.js'
-import { getSettings, menuRevealed, send, sha256 } from '../server/store.js'
+import { getMenu, getSettings, menuRevealed, send, sha256 } from '../server/store.js'
 
 const PREVIEW_HASH = 'b133a0c0e9bee3be20163d2ad31d6248db292aa6dcb1ee087a2aa50e0fc75ae2'
 
@@ -23,5 +23,5 @@ export default async function handler(req, res) {
   const byKey = (key && sha256(key) === PREVIEW_HASH) || (process.env.MENU_PREVIEW_KEY && key === process.env.MENU_PREVIEW_KEY)
   const revealed = byKey || env === 'open' || (env !== 'closed' && menuRevealed(settings, now))
   const revealAt = settings.menuMode === 'closed' ? null : settings.revealAt
-  return send(res, 200, revealed ? { revealed, revealAt, now, options: POKES } : { revealed, revealAt, now })
+  return send(res, 200, revealed ? { revealed, revealAt, now, options: await getMenu(POKES) } : { revealed, revealAt, now })
 }
