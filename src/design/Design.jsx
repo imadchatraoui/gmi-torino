@@ -293,13 +293,6 @@ export default function Design() {
             />
             <span className="comp__note">{tr({ it: 'Toccalo: qui è solo una prova, non conta.', en: 'Tap it: this one is just a demo, it does not count.' })}</span>
           </div>
-          <p className="wip reveal">
-            <span className="wip__dot" aria-hidden="true" />
-            <span>
-              <strong>{tr({ it: 'Ci stiamo lavorando', en: 'Work in progress' })}</strong>{' '}
-              {tr({ it: 'La nota che chiude le sezioni ancora in costruzione.', en: 'The note at the end of sections still under construction.' })}
-            </span>
-          </p>
         </section>
 
         <section className="id-sec" aria-labelledby="v-t">

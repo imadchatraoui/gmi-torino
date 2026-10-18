@@ -235,10 +235,20 @@ Verificato: contrasti AA, tocchi della barra in basso, scroll fluido.
   Quando ci saranno eventi passati, l'Archivio torna una sezione vera, nitida. Sfocatura fissa (non animata):
   animarla rallentava lo scroll; il blocco entra con una dissolvenza d'opacità.
 
+**18/10 sera — titolo che si trasforma, home più semplice**
+- Titolo: "Prossimamente," e sotto una sola parola che si trasforma di continuo: inshallah → إن شاء الله → se Dio vuole
+  (in inglese "God willing"). Morph liquido: le due parole si sfocano l'una nell'altra e un filtro soglia le fonde,
+  poi il testo torna nitido. 2,6 s di pausa, 1,1 s di passaggio; si ferma fuori schermo; con "riduci movimento" resta
+  "inshallah". Tolta la riga in arabo separata (stesso significato due volte). Misurato a CPU 4x: fluido.
+- Home: tolte la dissolvenza e la frase "Chi siamo e l'archivio arrivano presto". Restano Eventi (solo l'evento) e
+  Contatti; che il sito sia in costruzione lo dicono già "Prossimamente" e la frase sotto il titolo. Barra in basso con
+  Eventi e Contatti. L'Archivio ricompare da solo quando c'è un evento passato. Chi siamo tornerà con un testo vero.
+
 ## Manca / idee per le prossime run
 - [ ] Provare su un iPhone vero (sul Mac non c'è Xcode, quindi niente simulatore: tutto verificato con Chrome in
   emulazione). Da guardare: intro in risparmio energetico, barra di Safari durante lo scroll del menu, tocchi sulla barra in basso.
 - [ ] Deploy (Vercel) e collegamento di Upstash Redis per i like condivisi: poi controllare che `/api/likes` risponda 200.
+- [ ] Testo vero per Chi siamo (poi si rimette la sezione in `src/data/site.js`).
 - [ ] Programma e ospiti del YMHS (blocco `program` già previsto nel template, spento).
 - [ ] Come aggiungere eventi in futuro (file dati, pannello, o tramite Claude).
 - [x] Pulizia dipendenze, like, calendario, condivisione, sito senza rete, anteprime dei link, 404, dati per Google.

@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { EVENTS } from '../data/events'
-import { CONTACTS, WIP, sectionLabel } from '../data/site'
+import { CONTACTS, sectionLabel } from '../data/site'
 import { daysUntil, eventStatus } from '../data/when'
 import BottomNav from '../shared/BottomNav'
 import Intro from '../shared/Intro'
@@ -11,12 +11,18 @@ import SiteFooter from '../shared/SiteFooter'
 import SiteHeader from '../shared/SiteHeader'
 import GradientText from '../components/react-bits/GradientText'
 import StarBorder from '../components/react-bits/StarBorder'
+import MorphWord from './MorphWord'
 
 // colori del titolo animato (React Bits GradientText): bordeaux e oro scuri su crema, crema e oro su scuro
 const TITLE_COLORS = {
   light: ['#6E0B0E', '#A87A20', '#A8262B', '#A87A20'],
   dark: ['#F7ECD4', '#E6BE6A', '#F4D0C0', '#FFF1C8'],
 }
+
+// la stessa parola in tre modi: inshallah → in arabo → tradotta
+const ARABIC = { text: 'إن شاء الله', lang: 'ar', dir: 'rtl', ar: true }
+const MORPH_IT = [{ text: 'inshallah' }, ARABIC, { text: 'se Dio vuole' }]
+const MORPH_EN = [{ text: 'inshallah' }, ARABIC, { text: 'God willing' }]
 
 const NEXT_CLIP = tornClip(5, { depth: 5 })
 const CARD_CLIP = tornClip(9, { depth: 2.5, points: 40 })
@@ -32,7 +38,7 @@ function countdown(iso, lang) {
 function Hero({ next, lang, theme }) {
   const tr = (v) => t(v, lang)
   const ref = useRef(null)
-  // fuori schermo il riflesso sulla calligrafia si ferma: niente ridisegni inutili durante lo scroll
+  // fuori schermo la parola che cambia si ferma (MorphWord guarda la classe is-off)
   useEffect(() => {
     const el = ref.current
     if (!el || !('IntersectionObserver' in window)) return
@@ -44,14 +50,14 @@ function Hero({ next, lang, theme }) {
     <section id="top" ref={ref} className="hero" aria-labelledby="hero-title">
       <div className="hero__body">
         <p className="hero__kicker">GMI Torino</p>
-        <h1 id="hero-title" className="hero__title">
-          <GradientText colors={TITLE_COLORS[theme]} variant="flow" animationSpeed={10} scale={3}>
-            {tr({ it: 'Prossimamente, inshallah', en: 'Coming soon, inshallah' })}
-          </GradientText>
+        <h1 id="hero-title" className="hero__title" aria-label={tr({ it: 'Prossimamente, inshallah', en: 'Coming soon, inshallah' })}>
+          <span aria-hidden="true">
+            <GradientText colors={TITLE_COLORS[theme]} variant="flow" animationSpeed={10} scale={3}>
+              {tr({ it: 'Prossimamente,', en: 'Coming soon,' })}
+            </GradientText>
+          </span>
+          <MorphWord className="hero__morph" words={lang === 'en' ? MORPH_EN : MORPH_IT} />
         </h1>
-        <p className="hero__ar" lang="ar" dir="rtl">
-          إن شاء الله
-        </p>
         <p className="hero__lede">
           {tr({
             it: 'Stiamo costruendo il nuovo sito della sezione torinese di Giovani Musulmani d’Italia.',
@@ -85,40 +91,6 @@ function SectionHead({ id, title, children }) {
         </p>
       )}
     </header>
-  )
-}
-
-// Quello che arriva (Chi siamo, Archivio): una sola nota e sotto le sezioni che si dissolvono,
-// sempre più sfocate verso il basso, fino a sparire nel footer. Niente frasi ripetute.
-function Soon({ lang, withArchive }) {
-  const tr = (v) => t(v, lang)
-  const ids = withArchive ? ['chi-siamo', 'archivio'] : ['chi-siamo']
-  return (
-    <section className="soon" aria-labelledby="soon-title">
-      <div id="chi-siamo" className="soon__note sec reveal">
-        <p className="soon__label">{tr({ it: 'Ci stiamo lavorando', en: 'Work in progress' })}</p>
-        <h2 id="soon-title" className="soon__title">
-          {tr(
-            withArchive
-              ? { it: 'Chi siamo e l’archivio arrivano presto, inshallah.', en: 'About us and the archive are coming soon, inshallah.' }
-              : { it: 'Chi siamo arriva presto, inshallah.', en: 'About us is coming soon, inshallah.' },
-          )}
-        </h2>
-      </div>
-      <div className="soon__ghost" aria-hidden="true" data-reveal>
-        {ids.map((id, i) => (
-          <div key={id} id={i ? id : undefined} className={`soon__block soon__block--${i + 1}`}>
-            <p className="soon__heading">{tr(sectionLabel(id))}</p>
-            <p className="soon__text">{tr(WIP[id])}</p>
-            <div className="soon__lines">
-              <span />
-              <span />
-              <span />
-            </div>
-          </div>
-        ))}
-      </div>
-    </section>
   )
 }
 
@@ -291,7 +263,6 @@ export default function Home() {
         <Events lang={lang} theme={theme} upcoming={upcoming} recent={recent} />
         {finished.length > 0 && <Archive lang={lang} finished={finished} />}
         <Contacts lang={lang} />
-        <Soon lang={lang} withArchive={!finished.length} />
       </main>
       <SiteFooter />
       <BottomNav />
