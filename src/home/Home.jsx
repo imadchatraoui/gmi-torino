@@ -257,7 +257,7 @@ function Archive({ lang, finished, upcoming }) {
           <li className="timeline__item">
             <span className="timeline__date">{first.dayMonth}</span>
             <span className="timeline__name">{first.name}</span>
-            <span className="timeline__note">{tr({ it: 'Il primo, dopo il 25 ottobre', en: 'The first one, after 25 October' })}</span>
+            <span className="timeline__note">{tr({ it: 'Foto e racconti qui dopo l’evento', en: 'Photos and stories here after the event' })}</span>
           </li>
         </ol>
       )}
