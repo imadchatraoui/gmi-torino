@@ -39,7 +39,7 @@ function Countdown({ revealAt, offset, lang }) {
 
 function MenuWait({ menu, lang }) {
   const tr = (v) => t(v, lang)
-  const when = new Date(menu.revealAt)
+  const when = new Date(menu.revealAt || 0)
   const day = when.toLocaleDateString(lang === 'en' ? 'en-GB' : 'it-IT', { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'Europe/Rome' })
   const hour = when.toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Rome' })
   if (menu.status === 'error') {
@@ -61,14 +61,21 @@ function MenuWait({ menu, lang }) {
         <PokeIllustration items={[]} label="YMHS" markers={false} />
       </div>
       <p className="menu-wait__label">{tr({ it: 'Il menu è una sorpresa', en: 'The menu is a surprise' })}</p>
-      <p className="menu-wait__count display">
-        <Countdown revealAt={menu.revealAt} offset={menu.offset} lang={lang} />
-      </p>
+      {menu.revealAt && (
+        <p className="menu-wait__count display">
+          <Countdown revealAt={menu.revealAt} offset={menu.offset} lang={lang} />
+        </p>
+      )}
       <p className="menu-wait__text">
-        {tr({
-          it: `Si scopre qui ${day} alle ${hour}, all'ora di pranzo. Puoi lasciare la pagina aperta: si svela da sola.`,
-          en: `It is revealed here on ${day} at ${hour}, at lunchtime. You can leave this page open: it will reveal itself.`,
-        })}
+        {menu.revealAt
+          ? tr({
+              it: `Si scopre qui ${day} alle ${hour}, all'ora di pranzo. Puoi lasciare la pagina aperta: si svela da sola.`,
+              en: `It is revealed here on ${day} at ${hour}, at lunchtime. You can leave this page open: it will reveal itself.`,
+            })
+          : tr({
+              it: 'Si scopre qui all’ora di pranzo. Puoi lasciare la pagina aperta: si svela da sola.',
+              en: 'It is revealed here at lunchtime. You can leave this page open: it will reveal itself.',
+            })}
       </p>
     </section>
   )

@@ -1,0 +1,382 @@
+/* GMI Torino — pannello /admin: pensato per il telefono, colori del sito */
+
+.adm-login {
+  display: grid;
+  gap: 10px;
+  max-width: 22rem;
+  min-height: 100svh;
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+  align-content: center;
+}
+
+.adm-login__logo {
+  width: 64px;
+  margin-bottom: 6px;
+}
+
+.adm-login h1 {
+  font-size: 2.4rem;
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  color: var(--heading);
+}
+
+.adm-login > p {
+  margin-bottom: 18px;
+  color: var(--text-2);
+}
+
+.adm-login label,
+.adm-field > span:first-child,
+.adm-label {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold-text);
+}
+
+.adm input[type='text'],
+.adm input[type='datetime-local'],
+.adm-login input {
+  width: 100%;
+  min-height: 48px;
+  padding: 0 14px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 1rem;
+}
+
+.adm input:focus-visible,
+.adm-login input:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 1px;
+}
+
+.adm {
+  max-width: 64rem;
+  margin: 0 auto;
+  padding: 0 var(--gutter) 80px;
+}
+
+.adm-top {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: calc(env(safe-area-inset-top) + 12px) 0 12px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+}
+
+.adm-top > div {
+  flex: 1;
+  min-width: 0;
+}
+
+.adm-top__logo {
+  width: 34px;
+}
+
+.adm-top__title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--heading);
+}
+
+.adm-top__sub {
+  font-size: 0.8125rem;
+  color: var(--text-2);
+}
+
+.adm-grid {
+  display: grid;
+  gap: 14px;
+  padding-top: 18px;
+}
+
+@media (min-width: 760px) {
+  .adm-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .adm-card--lunch {
+    grid-row: span 2;
+  }
+}
+
+.adm-card {
+  display: grid;
+  gap: 14px;
+  align-content: start;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface);
+}
+
+.adm-card--lunch {
+  background: var(--brand);
+  color: var(--on-brand);
+  border-color: transparent;
+  --line: rgba(255, 252, 235, 0.25);
+}
+
+.adm-card--lunch .adm-label {
+  color: var(--gold-light);
+}
+
+.adm-card--lunch .adm-muted {
+  color: rgba(255, 252, 235, 0.8);
+}
+
+.adm-card--lunch input[type='datetime-local'] {
+  background: rgba(255, 252, 235, 0.1);
+  color: var(--on-brand);
+  color-scheme: dark;
+}
+
+.adm-state {
+  font-size: clamp(1.8rem, 8vw, 2.4rem);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+
+.adm-state.is-open::before {
+  content: '';
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin: 0 10px 4px 0;
+  border-radius: 50%;
+  background: #7fcf8a;
+  vertical-align: middle;
+}
+
+.adm-muted {
+  font-size: 0.875rem;
+  color: var(--text-2);
+}
+
+.adm-row,
+.adm-inline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.adm-inline input {
+  flex: 1 1 12rem;
+}
+
+.adm-field {
+  display: grid;
+  gap: 6px;
+}
+
+.adm-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 16px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.adm-btn:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.adm-btn:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.adm-btn--primary {
+  border-color: transparent;
+  background: var(--heading);
+  color: var(--bg);
+}
+
+.adm-card--lunch .adm-btn--primary {
+  background: var(--gold-light);
+  color: #2b0a0c;
+}
+
+.adm-btn--ghost {
+  border-color: var(--line);
+}
+
+.adm-btn--danger {
+  border-color: transparent;
+  background: #a8262b;
+  color: #fff;
+}
+
+.adm-icon {
+  width: 44px;
+  height: 44px;
+  border: 0;
+  background: none;
+  color: var(--heading);
+  font-size: 1.25rem;
+  cursor: pointer;
+}
+
+.adm-seg {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  padding: 4px;
+  gap: 4px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+
+.adm-seg button {
+  min-height: 42px;
+  padding: 0 6px;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.adm-seg button.is-on {
+  background: var(--heading);
+  color: var(--bg);
+}
+
+.adm-card--lunch .adm-seg button.is-on {
+  background: var(--on-brand);
+  color: var(--brand);
+}
+
+.adm-likes {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--line);
+}
+
+.adm-likes li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.adm-likes strong {
+  display: block;
+  color: var(--heading);
+}
+
+.adm-likes small {
+  font-size: 0.8125rem;
+  color: var(--text-2);
+}
+
+.adm-num {
+  font-size: 2rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--heading);
+}
+
+.adm-bar {
+  display: flex;
+  gap: 3px;
+  height: 8px;
+}
+
+.adm-bar span {
+  flex-basis: 0;
+  border-radius: 4px;
+  background: var(--sage);
+  transition: flex-grow 0.6s var(--ease-out);
+}
+
+.adm-bar span:first-child {
+  background: var(--gold);
+}
+
+.adm-switch {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  color: var(--heading);
+}
+
+.adm-switch input {
+  width: 22px;
+  height: 22px;
+  accent-color: var(--brand);
+}
+
+.adm-links {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.adm-links a {
+  display: flex;
+  min-height: 40px;
+  align-items: center;
+  font-weight: 600;
+  color: var(--heading);
+  text-underline-offset: 3px;
+  text-decoration-color: var(--gold);
+}
+
+.adm-error {
+  color: #c4383d;
+  font-weight: 600;
+}
+
+.adm-error--bar {
+  margin-top: 12px;
+}
+
+.adm-toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(env(safe-area-inset-bottom) + 20px);
+  padding: 12px 18px;
+  border-radius: 12px;
+  background: var(--heading);
+  color: var(--bg);
+  font-weight: 600;
+  transform: translate3d(-50%, 150%, 0);
+  opacity: 0;
+  transition: transform 0.35s var(--ease-out), opacity 0.35s;
+}
+
+.adm-toast.is-on {
+  transform: translate3d(-50%, 0, 0);
+  opacity: 1;
+}

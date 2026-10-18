@@ -13,6 +13,7 @@ import GradientText from '../components/react-bits/GradientText'
 import StarBorder from '../components/react-bits/StarBorder'
 import Partners from '../shared/Partners'
 import WipBox from '../shared/WipBox'
+import { useLiveSettings } from '../shared/liveSettings'
 import WordCycle from './WordCycle'
 
 // colori del titolo animato (React Bits GradientText): bordeaux e oro scuri su crema, crema e oro su scuro
@@ -122,6 +123,7 @@ function directionsUrl(ev) {
 // striscia sotto l'header nel giorno dell'evento: dall'inizio "è iniziato" (con indicazioni),
 // dalle 13:00 "il menu è svelato", fino alla fine dell'evento
 function MenuReveal({ ev, lang }) {
+  const live = useLiveSettings()
   const [now, setNow] = useState(() => Date.now())
   useEffect(() => {
     const id = setInterval(() => setNow(Date.now()), 30000)
@@ -131,7 +133,9 @@ function MenuReveal({ ev, lang }) {
   const start = new Date(ev.start).getTime()
   const end = new Date(ev.end ?? ev.start).getTime()
   if (now < start || now > end) return null
-  const menuOpen = ev.menu?.revealAt && now >= new Date(ev.menu.revealAt).getTime()
+  const menuOpen = live
+    ? live.menuOpen || (live.revealAt && now + (live.offset || 0) >= new Date(live.revealAt).getTime())
+    : ev.menu?.revealAt && now >= new Date(ev.menu.revealAt).getTime()
   return menuOpen ? (
     <a className="menu-reveal theme-ymhs" href="/menu/">
       <span className="menu-reveal__label">{t({ it: 'È ora di pranzo', en: 'It’s lunchtime' }, lang)}</span>
@@ -142,6 +146,19 @@ function MenuReveal({ ev, lang }) {
       <span className="menu-reveal__label">{t({ it: `${ev.short ?? ev.name} è iniziato`, en: `${ev.short ?? ev.name} has started` }, lang)}</span>
       <span className="menu-reveal__text">{t({ it: 'Indicazioni →', en: 'Directions →' }, lang)}</span>
     </a>
+  )
+}
+
+// avviso scritto da /admin, in cima alla home (es. "Si inizia alle 10:30")
+function Notice({ lang }) {
+  const live = useLiveSettings()
+  const text = live?.notice && t({ it: live.notice.it || live.notice.en, en: live.notice.en || live.notice.it }, lang)
+  if (!text) return null
+  return (
+    <p className="notice" role="status">
+      <span className="notice__label">{t({ it: 'Avviso', en: 'Notice' }, lang)}</span>
+      <span className="notice__text">{text}</span>
+    </p>
   )
 }
 
@@ -176,7 +193,8 @@ function EventCard({ ev, lang, theme }) {
   const tr = (v) => t(v, lang)
   const live = isLive(ev)
   const when = live ? null : countdown(ev.start, lang)
-  const open = signupOpen(ev)
+  const settings = useLiveSettings()
+  const open = settings?.signup === 'open' ? true : settings?.signup === 'closed' ? false : signupOpen(ev)
   return (
     <article className={`event reveal${ev.theme ? ` theme-${ev.theme}` : ''}`} style={{ '--accent': ev.accent, clipPath: CARD_CLIP }}>
       {ev.banner && <img className="event__banner" src={ev.banner} alt="" loading="lazy" decoding="async" />}
@@ -343,6 +361,7 @@ export default function Home() {
       <Intro />
       <SiteHeader page="home" />
       <main id="main" tabIndex={-1} className="home">
+        <Notice lang={lang} />
         <MenuReveal ev={upcoming[0]} lang={lang} />
         <Hero next={upcoming[0]} recent={recent[0]} lang={lang} theme={theme} />
         <WipSection id="chi-siamo" lang={lang} kind="about" />

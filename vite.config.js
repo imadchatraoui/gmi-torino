@@ -3,6 +3,8 @@ import preact from '@preact/preset-vite'
 import { defineConfig } from 'vite'
 import likesHandler from './api/likes.js'
 import menuHandler from './api/menu.js'
+import settingsHandler from './api/settings.js'
+import adminHandler from './api/admin.js'
 import { EVENTS } from './src/data/events.js'
 import { eventIcs } from './src/data/ics.js'
 import { eventJsonLd, organizationJsonLd, robotsTxt, sitemapXml } from './src/data/seo.js'
@@ -24,19 +26,29 @@ function devLikes() {
       return store.get(key)
     }
     if (op === 'EXPIRE') return 1
+    if (op === 'GET') return store.has(command[1]) ? String(store.get(command[1])) : null
+    if (op === 'SET') {
+      store.set(command[1], command[2])
+      return 'OK'
+    }
+    if (op === 'DEL') {
+      // gmi:likes è un hash: in memoria i campi stanno al primo livello
+      if (command[1] === 'gmi:likes') for (const k of [...store.keys()]) if (k.startsWith('poke-')) store.delete(k)
+      store.delete(command[1])
+      return 1
+    }
     if (op === 'HSET') {
       store.set(args[0], Number(args[1]))
       return 1
     }
     return null
   }
+  const handlers = { '/api/likes': likesHandler, '/api/menu': menuHandler, '/api/settings': settingsHandler, '/api/admin': adminHandler }
   const middleware = (req, res, next) => {
-    // menu segreto: stessa funzione di Vercel; in locale la chiave d'anteprima è "prova" (/menu/?chiave=prova)
-    if (req.url.startsWith('/api/menu')) {
-      process.env.MENU_PREVIEW_KEY ||= 'prova'
-      return menuHandler(req, res)
-    }
-    if (!req.url.startsWith('/api/likes')) return next()
+    const route = Object.keys(handlers).find((r) => req.url === r || req.url.startsWith(`${r}?`))
+    if (!route) return next()
+    // in locale la chiave d'anteprima è "prova" (/menu/?chiave=prova)
+    process.env.MENU_PREVIEW_KEY ||= 'prova'
     const realFetch = globalThis.fetch
     process.env.UPSTASH_REDIS_REST_URL ||= 'http://dev.local/redis'
     process.env.UPSTASH_REDIS_REST_TOKEN ||= 'dev'
@@ -44,7 +56,7 @@ function devLikes() {
       String(url).startsWith('http://dev.local/')
         ? new Response(JSON.stringify({ result: await fakeRedis(JSON.parse(init.body)) }))
         : realFetch(url, init)
-    Promise.resolve(likesHandler(req, res)).finally(() => {
+    Promise.resolve(handlers[route](req, res)).finally(() => {
       globalThis.fetch = realFetch
     })
   }
@@ -121,6 +133,7 @@ export default defineConfig({
         menu: resolve(import.meta.dirname, 'menu/index.html'),
         design: resolve(import.meta.dirname, 'design/index.html'),
         privacy: resolve(import.meta.dirname, 'privacy/index.html'),
+        admin: resolve(import.meta.dirname, 'admin/index.html'),
         notFound: resolve(import.meta.dirname, '404.html'),
       },
     },

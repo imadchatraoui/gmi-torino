@@ -108,6 +108,16 @@ ffmpeg -i input.mp4 -an -vf "scale=720:-1" -c:v libx264 -g 1 -crf 26 -movflags +
 media: { type: 'frames', frames: framesFor('option-1', 96), cues: [0.2, 0.34, 0.48, 0.62, 0.76] },
 ```
 
+## Pannello /admin
+
+`gmitorino.org/admin` (password scelta da Imad; per cambiarla: variabile `ADMIN_PASSWORD` su Vercel + Redeploy).
+Le modifiche valgono subito, senza deploy: sono salvate su Upstash (`gmi:settings`, `server/store.js`).
+- Il pranzo: sposta l'ora (+15, +30, −15 min o ora esatta), "Svela adesso", "Tieni nascosto".
+- Mi piace in diretta e azzeramento.
+- Avviso in cima alla home (IT/EN), acceso o spento.
+- Iscrizioni: automatiche (chiudono alla data di `events.js`), aperte o chiuse.
+Dopo 10 password sbagliate lo stesso indirizzo aspetta 15 minuti.
+
 ## Menu segreto
 
 Il menu è una sorpresa: fino all'ora di pranzo `/menu` mostra la ciotola chiusa e un conto alla rovescia.

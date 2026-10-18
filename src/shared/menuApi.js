@@ -43,7 +43,7 @@ export function useMenu(fallbackRevealAt) {
         const data = await r.json()
         if (!alive) return
         const offset = (data.now ?? Date.now()) - Date.now()
-        const revealAt = data.revealAt ?? fallbackRevealAt
+        const revealAt = 'revealAt' in data ? data.revealAt : fallbackRevealAt
         if (data.revealed && data.options) {
           writeCache(data.options)
           setState({ status: 'open', options: data.options, revealAt, offset })
@@ -51,8 +51,9 @@ export function useMenu(fallbackRevealAt) {
         }
         setState({ status: 'locked', revealAt, offset })
         // si ricontrolla un attimo dopo l'ora (e comunque ogni 10 minuti, se l'ora cambia sul server)
-        const wait = new Date(revealAt).getTime() - (Date.now() + offset)
-        timer = setTimeout(check, Math.min(Math.max(wait + 1500, 5000), 10 * 60 * 1000))
+        // si ricontrolla all'ora prevista, e comunque ogni minuto: l'ora può cambiare da /admin
+        const wait = revealAt ? new Date(revealAt).getTime() - (Date.now() + offset) : Infinity
+        timer = setTimeout(check, Math.min(Math.max(wait + 1500, 5000), 60 * 1000))
       } catch {
         if (!alive) return
         const cached = readCache()

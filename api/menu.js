@@ -1,42 +1,27 @@
 // Menu segreto (Vercel Function).
 //   GET /api/menu            -> { revealed: false, revealAt, now }          prima dell'ora
 //                            -> { revealed: true, revealAt, now, options }  dall'ora in poi
-//   GET /api/menu?chiave=... -> menu subito, se la chiave è MENU_PREVIEW_KEY (per chi organizza)
-// I piatti stanno in server/menu-data.js, fuori dal codice del sito: prima dell'ora non escono da qui.
-// MENU_REVEAL (variabile d'ambiente su Vercel): "open" = sempre visibile, "closed" = sempre nascosto,
-// non impostata = automatico, dall'ora `menu.revealAt` di src/data/events.js.
-import { createHash } from 'node:crypto'
-import { EVENTS } from '../src/data/events.js'
+//   GET /api/menu?chiave=... -> menu subito, per chi organizza
+// I piatti stanno in server/menu-data.js, fuori dal codice del sito.
+// L'ora e lo stato (automatico / sempre visibile / nascosto) si cambiano da gmitorino.org/admin
+// (server/store.js); MENU_REVEAL su Vercel ("open"/"closed") resta come interruttore d'emergenza.
 import { POKES } from '../server/menu-data.js'
+import { getSettings, menuRevealed, send, sha256 } from '../server/store.js'
 
-const event = EVENTS.find((e) => e.menu?.revealAt)
+const PREVIEW_HASH = 'b133a0c0e9bee3be20163d2ad31d6248db292aa6dcb1ee087a2aa50e0fc75ae2'
 
-function send(res, status, body) {
-  res.statusCode = status
-  res.setHeader('Content-Type', 'application/json')
-  res.setHeader('Cache-Control', 'no-store')
-  res.end(JSON.stringify(body))
-}
-
-export function isRevealed({ now = Date.now(), key = '' } = {}) {
-  const mode = (process.env.MENU_REVEAL || 'auto').toLowerCase()
-  const preview = process.env.MENU_PREVIEW_KEY
-  if (preview && key && key === preview) return true
-  // chiave per chi organizza (nel codice c'è solo la sua impronta SHA-256, non la chiave)
-  if (key && createHash('sha256').update(key).digest('hex') === 'b133a0c0e9bee3be20163d2ad31d6248db292aa6dcb1ee087a2aa50e0fc75ae2') return true
-  if (mode === 'open') return true
-  if (mode === 'closed') return false
-  return now >= new Date(event?.menu?.revealAt ?? 0).getTime()
-}
-
-export default function handler(req, res) {
+export default async function handler(req, res) {
   if (req.method !== 'GET') {
     res.setHeader('Allow', 'GET')
     return send(res, 405, { error: 'method not allowed' })
   }
   const url = new URL(req.url, 'http://x')
+  const key = url.searchParams.get('chiave') || ''
   const now = Date.now()
-  const revealAt = event?.menu?.revealAt ?? null
-  const revealed = isRevealed({ now, key: url.searchParams.get('chiave') || '' })
+  const settings = await getSettings()
+  const env = (process.env.MENU_REVEAL || '').toLowerCase()
+  const byKey = (key && sha256(key) === PREVIEW_HASH) || (process.env.MENU_PREVIEW_KEY && key === process.env.MENU_PREVIEW_KEY)
+  const revealed = byKey || env === 'open' || (env !== 'closed' && menuRevealed(settings, now))
+  const revealAt = settings.menuMode === 'closed' ? null : settings.revealAt
   return send(res, 200, revealed ? { revealed, revealAt, now, options: POKES } : { revealed, revealAt, now })
 }
