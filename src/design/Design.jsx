@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import PokeIllustration from '../poke/PokeIllustration'
-import { POKES } from '../data/menu'
 import { t, usePrefs } from '../shared/prefs'
 import { useReveal } from '../shared/reveal'
 import SiteFooter from '../shared/SiteFooter'
@@ -238,7 +237,7 @@ export default function Design() {
             })}
           </p>
           <div className="bowl-demo reveal">
-            <PokeIllustration items={POKES[0].items} label={tr(POKES[0].label)} open />
+            <PokeIllustration items={[]} label="YMHS" markers={false} />
           </div>
           <dl className="motion">
             <div className="reveal">

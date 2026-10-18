@@ -119,6 +119,93 @@
   min-height: 36px;
 }
 
+/* ---------- attesa: il menu è una sorpresa fino all'ora di pranzo ---------- */
+.menu-loading {
+  min-height: 40svh;
+}
+
+.menu-wait {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  max-width: 34rem;
+  margin: 0 auto;
+  padding: 8px var(--gutter) 64px;
+  text-align: center;
+}
+
+.menu-wait__bowl {
+  width: min(62vw, 260px);
+  margin-bottom: 6px;
+}
+
+/* il coperchio chiuso ogni tanto si muove appena: dentro c'è qualcosa */
+.menu-wait__bowl .poke-art__lid {
+  animation: lid-peek 5s var(--ease-in-out) 1.2s infinite;
+}
+
+@keyframes lid-peek {
+  0%,
+  78%,
+  100% {
+    transform: none;
+  }
+  84% {
+    transform: translate3d(0, -3%, 0) rotate(-2.5deg);
+  }
+  90% {
+    transform: translate3d(0, -1%, 0) rotate(1.5deg);
+  }
+}
+
+.menu-wait__label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--label);
+}
+
+.menu-wait__label::before,
+.menu-wait__label::after {
+  content: '';
+  width: 22px;
+  height: 1px;
+  background: var(--ornament);
+}
+
+.menu-wait__count {
+  font-size: clamp(2.8rem, 15vw, 4.6rem);
+  line-height: 1;
+  color: var(--heading);
+  font-variant-numeric: tabular-nums;
+}
+
+.menu-wait__clock {
+  letter-spacing: 0.02em;
+}
+
+.menu-wait__text {
+  max-width: 26em;
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--text-2);
+}
+
+/* quando arriva l'ora, il menu entra con una dissolvenza */
+.menu-revealed {
+  animation: menu-in 0.9s var(--ease-out) both;
+}
+
+@keyframes menu-in {
+  from {
+    opacity: 0;
+  }
+}
+
 /* ---------- le due proposte ---------- */
 .choices {
   /* fuori schermo il browser salta disegno e composizione delle due bowl piccole */

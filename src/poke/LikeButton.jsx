@@ -1,15 +1,12 @@
 import PulseHeart from '../components/react-bits/PulseHeart'
 import { toggleLike, useLikes } from '../shared/likes'
 import { t, usePrefs } from '../shared/prefs'
-import { POKES } from '../data/menu'
-
-const IDS = POKES.map((p) => p.id)
 
 // Cuore "mi piace" condiviso accanto a ogni poke (PulseHeart di React Bits + src/shared/likes.js).
 // Colori dai token CSS della pagina: --like, --like-pill, --like-text (menu.css).
-export default function LikeButton({ poke, size = 22, className = '' }) {
+export default function LikeButton({ poke, ids, size = 22, className = '' }) {
   const { lang } = usePrefs()
-  const likes = useLikes(IDS)
+  const likes = useLikes(ids ?? [poke.id])
   return (
     <PulseHeart
       className={`like ${className}`}

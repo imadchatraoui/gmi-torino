@@ -16,37 +16,18 @@ const Svg = ({ children }) => (
   </svg>
 )
 
-function Marker({ x, y, n }) {
-  return (
-    <g transform={`translate(${x.toFixed(1)} ${y.toFixed(1)})`}>
-      <circle r="15" fill="#27396A" />
-      <circle r="15" fill="none" stroke="#F3EDE2" strokeWidth="2" />
-      <text
-        y="5"
-        textAnchor="middle"
-        fontFamily="-apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, sans-serif"
-        fontSize="14"
-        fontWeight="600"
-        fill="#F3EDE2"
-      >
-        {n}
-      </text>
-    </g>
-  )
-}
-
 // Numero su un suo piccolo livello HTML: la sua opacità cambia senza ridisegnare l'SVG dell'ingrediente.
+// Cerchio e cifra in HTML (non <text> SVG, che Safari su iPhone a volte non disegna in livelli così piccoli).
 const PIN = 17
 const Pin = forwardRef(function Pin({ x, y, n }, ref) {
   return (
     <div
       ref={ref}
       className="poke-art__pin"
+      aria-hidden="true"
       style={{ left: `${pct(x - PIN)}%`, top: `${pct(y - PIN)}%`, width: `${pct(PIN * 2)}%`, opacity: 0 }}
     >
-      <svg viewBox={`${-PIN} ${-PIN} ${PIN * 2} ${PIN * 2}`} aria-hidden="true" focusable="false">
-        <Marker x={0} y={0} n={n} />
-      </svg>
+      <span>{n}</span>
     </div>
   )
 })

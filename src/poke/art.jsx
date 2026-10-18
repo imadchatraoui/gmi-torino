@@ -247,7 +247,7 @@ function AvocadoSlice({ uid }) {
   return (
     <g>
       <path d="M -34 2 C -24 -20 24 -20 34 2 C 18 -6 -18 -6 -34 2 Z" fill="#2E4A1A" />
-      <path d="M -31.5 1 C -22 -16.5 22 -16.5 31.5 1 C 16 -4.5 -16 -4.5 -31.5 1 Z" fill={`url(#${uid}-flesh)`} />
+      <path d="M -31.5 1 C -22 -16.5 22 -16.5 31.5 1 C 16 -4.5 -16 -4.5 -31.5 1 Z" fill={`url(#${uid}-gf)`} />
       <path d="M -22 -9 C -10 -15 10 -15 20 -10" fill="none" stroke="#FFFFFF" strokeOpacity="0.35" strokeWidth="1.4" strokeLinecap="round" />
     </g>
   )
@@ -257,13 +257,13 @@ function AvocadoFan({ uid }) {
   return (
     <g>
       <defs>
-        <linearGradient id={`${uid}-flesh`} x1="0" y1="0" x2="0" y2="1">
+        <linearGradient id={`${uid}-gf`} x1="0" y1="0" x2="0" y2="1">
           <stop offset="0%" stopColor="#7FA43A" />
           <stop offset="35%" stopColor="#B7CC5C" />
           <stop offset="100%" stopColor="#E8E59E" />
         </linearGradient>
       </defs>
-      <SoftShadow id={`${uid}-avo-sh`} rx={46} ry={40} dx={4} dy={7} />
+      <SoftShadow id={`${uid}-g1s`} rx={46} ry={40} dx={4} dy={7} />
       {[0, 1, 2, 3, 4, 5].map((i) => (
         <g key={i} transform={`translate(${-10 + i * 4} ${-26 + i * 9.5}) rotate(${-26 + i * 10})`}>
           <AvocadoSlice uid={uid} />
@@ -381,19 +381,19 @@ function Tuna({ uid }) {
   return (
     <g>
       <defs>
-        <radialGradient id={`${uid}-tuna`} cx="34%" cy="30%" r="80%">
+        <radialGradient id={`${uid}-g3`} cx="34%" cy="30%" r="80%">
           <stop offset="0%" stopColor="#D2485A" />
           <stop offset="55%" stopColor="#B02B3E" />
           <stop offset="100%" stopColor="#8C1A2C" />
         </radialGradient>
       </defs>
-      <SoftShadow id={`${uid}-tuna-sh`} rx={50} ry={46} dx={4} dy={6} opacity={0.24} />
+      <SoftShadow id={`${uid}-g3s`} rx={50} ry={46} dx={4} dy={6} opacity={0.24} />
       {TUNA.map((c, i) => (
         <g key={i} transform={`translate(${f1(c.x)} ${f1(c.y)}) rotate(${c.rot.toFixed(0)})`}>
           <path d={quadPath(c.top)} fill="#2A0B0D" opacity="0.25" transform={`translate(${f1(c.sz * 0.22)} ${f1(c.sz * 0.34)})`} />
           <path d={quadPath(c.front)} fill="#741527" />
           <path d={quadPath(c.side)} fill="#5E0F1F" />
-          <path d={quadPath(c.top)} fill={`url(#${uid}-tuna)`} />
+          <path d={quadPath(c.top)} fill={`url(#${uid}-g3)`} />
           {/* venature del tonno crudo */}
           <path
             d={`M ${f1(-c.sz * 0.42)} ${f1(-c.sz * 0.1)} Q ${f1(c.bend)} ${f1(-c.sz * 0.36)} ${f1(c.sz * 0.42)} ${f1(-c.sz * 0.05)}`}
@@ -423,19 +423,19 @@ function Beet({ uid }) {
   return (
     <g>
       <defs>
-        <radialGradient id={`${uid}-beet`} cx="36%" cy="30%" r="80%">
+        <radialGradient id={`${uid}-g4`} cx="36%" cy="30%" r="80%">
           <stop offset="0%" stopColor="#B4316E" />
           <stop offset="60%" stopColor="#861A4D" />
           <stop offset="100%" stopColor="#5F0F36" />
         </radialGradient>
       </defs>
-      <SoftShadow id={`${uid}-beet-sh`} rx={50} ry={46} dx={4} dy={6} opacity={0.24} />
+      <SoftShadow id={`${uid}-g4s`} rx={50} ry={46} dx={4} dy={6} opacity={0.24} />
       {BEET.map((c, i) => (
         <g key={i} transform={`translate(${f1(c.x)} ${f1(c.y)}) rotate(${c.rot.toFixed(0)})`}>
           <path d={quadPath(c.top)} fill="#2A0B0D" opacity="0.25" transform={`translate(${f1(c.sz * 0.22)} ${f1(c.sz * 0.34)})`} />
           <path d={quadPath(c.front)} fill="#4E0C2C" />
           <path d={quadPath(c.side)} fill="#3F0823" />
-          <path d={quadPath(c.top)} fill={`url(#${uid}-beet)`} />
+          <path d={quadPath(c.top)} fill={`url(#${uid}-g4)`} />
           {/* anelli della barbabietola */}
           <path
             d={`M ${f1(-c.sz * 0.38)} ${f1(c.sz * 0.36)} Q ${f1(c.sz * 0.05)} ${f1(c.sz * 0.02)} ${f1(c.sz * 0.36)} ${f1(-c.sz * 0.36)} M ${f1(-c.sz * 0.1)} ${f1(c.sz * 0.38)} Q ${f1(c.sz * 0.18)} ${f1(c.sz * 0.18)} ${f1(c.sz * 0.38)} ${f1(-c.sz * 0.05)}`}
@@ -485,14 +485,14 @@ function Ricotta({ uid }) {
   return (
     <g>
       <defs>
-        <radialGradient id={`${uid}-ric`} cx="40%" cy="34%" r="70%">
+        <radialGradient id={`${uid}-g5`} cx="40%" cy="34%" r="70%">
           <stop offset="0%" stopColor="#FFFFFF" />
           <stop offset="70%" stopColor="#F3ECDD" />
           <stop offset="100%" stopColor="#DCCFB5" />
         </radialGradient>
       </defs>
-      <SoftShadow id={`${uid}-ric-sh`} rx={52} ry={48} dx={4} dy={6} opacity={0.26} />
-      <path d={RICOTTA.base} fill={`url(#${uid}-ric)`} />
+      <SoftShadow id={`${uid}-g5s`} rx={52} ry={48} dx={4} dy={6} opacity={0.26} />
+      <path d={RICOTTA.base} fill={`url(#${uid}-g5)`} />
       {RICOTTA.curds.map((c, i) => (
         <g key={i}>
           <circle cx={f1(c.x + 0.8)} cy={f1(c.y + 1.1)} r={f1(c.r)} fill="#CDBFA2" opacity={f1(0.35 + 0.25 * (1 - c.lift))} />
@@ -523,7 +523,7 @@ const CABBAGE = (() => {
 function RedCabbage({ uid }) {
   return (
     <g>
-      <SoftShadow id={`${uid}-cab-sh`} rx={50} ry={46} dx={3} dy={5} opacity={0.2} />
+      <SoftShadow id={`${uid}-g6s`} rx={50} ry={46} dx={3} dy={5} opacity={0.2} />
       <g strokeLinecap="round" fill="none">
         {CABBAGE.map((s, i) => {
           const d = `M ${f1(-s.len / 2)} 0 Q 0 ${f1(s.bend)} ${f1(s.len / 2)} 0`
@@ -559,21 +559,21 @@ function Hummus({ uid }) {
   return (
     <g>
       <defs>
-        <radialGradient id={`${uid}-hum`} cx="40%" cy="36%" r="64%">
+        <radialGradient id={`${uid}-g7`} cx="40%" cy="36%" r="64%">
           <stop offset="0%" stopColor="#F1DCAE" />
           <stop offset="75%" stopColor="#E3C58D" />
           <stop offset="100%" stopColor="#CDA867" />
         </radialGradient>
-        <radialGradient id={`${uid}-oil`} cx="50%" cy="50%" r="50%">
+        <radialGradient id={`${uid}-go`} cx="50%" cy="50%" r="50%">
           <stop offset="0%" stopColor="#D8B93A" stopOpacity="0.75" />
           <stop offset="100%" stopColor="#C9A42A" stopOpacity="0.25" />
         </radialGradient>
       </defs>
-      <SoftShadow id={`${uid}-hum-sh`} rx={52} ry={50} dx={3} dy={5} opacity={0.24} />
-      <circle cx="0" cy="0" r="45" fill={`url(#${uid}-hum)`} />
+      <SoftShadow id={`${uid}-g7s`} rx={52} ry={50} dx={3} dy={5} opacity={0.24} />
+      <circle cx="0" cy="0" r="45" fill={`url(#${uid}-g7)`} />
       <path d={HUMMUS_SPIRAL} fill="none" stroke="#C49A55" strokeWidth="3.4" strokeLinecap="round" opacity="0.75" />
       <path d={HUMMUS_SPIRAL} fill="none" stroke="#FFF3D6" strokeWidth="1.1" strokeLinecap="round" opacity="0.6" transform="translate(-1.2 -1.4)" />
-      <ellipse cx="2" cy="1" rx="11" ry="8.5" fill={`url(#${uid}-oil)`} />
+      <ellipse cx="2" cy="1" rx="11" ry="8.5" fill={`url(#${uid}-go)`} />
       <ellipse cx="-1.5" cy="-2" rx="3.4" ry="1.6" fill="#FFF7D2" opacity="0.8" />
       {PAPRIKA.map((p, i) => (
         <circle key={i} cx={f1(p.x)} cy={f1(p.y)} r={f1(0.9 + p.k * 1.3)} fill={p.k > 0.5 ? '#B5361C' : '#C9502A'} opacity="0.85" />
@@ -616,17 +616,17 @@ function Chicken({ uid }) {
   return (
     <g>
       <defs>
-        <linearGradient id={`${uid}-chk`} x1="0" y1="0" x2="0" y2="1">
+        <linearGradient id={`${uid}-g8`} x1="0" y1="0" x2="0" y2="1">
           <stop offset="0%" stopColor="#EDC07C" />
           <stop offset="55%" stopColor="#D49A55" />
           <stop offset="100%" stopColor="#B07033" />
         </linearGradient>
       </defs>
-      <SoftShadow id={`${uid}-chk-sh`} rx={52} ry={50} dx={4} dy={6} opacity={0.26} />
+      <SoftShadow id={`${uid}-g8s`} rx={52} ry={50} dx={4} dy={6} opacity={0.26} />
       {STRIPS.map((st, i) => (
         <g key={i} transform={`translate(${st.x} ${st.y}) rotate(${st.r.toFixed(0)})`}>
           <path d={st.d} fill="#5E3413" opacity="0.4" transform="translate(1.4 2.4)" />
-          <path d={st.d} fill={`url(#${uid}-chk)`} stroke="#9A5A22" strokeOpacity="0.7" strokeWidth="1.3" strokeLinejoin="round" />
+          <path d={st.d} fill={`url(#${uid}-g8)`} stroke="#9A5A22" strokeOpacity="0.7" strokeWidth="1.3" strokeLinejoin="round" />
           <path
             d={`M ${f1(-st.w / 2 + 7)} ${f1(-st.h / 2 + 1)} l -3 ${f1(st.h - 2)} M ${f1(-st.w / 2 + 16)} ${f1(-st.h / 2 + 1)} l -3 ${f1(st.h - 2)} M ${f1(-st.w / 2 + 25)} ${f1(-st.h / 2 + 1)} l -3 ${f1(st.h - 2)}`}
             stroke="#6E3812"
@@ -644,13 +644,14 @@ function Chicken({ uid }) {
   )
 }
 
+// chiavi neutre (a1…a8): il codice pubblico del sito non deve far capire gli ingredienti prima dell'ora
 export const TOPPING_ART = {
-  avocadoHoney: AvocadoHoney,
-  avocadoLemon: AvocadoLemon,
-  tuna: Tuna,
-  beet: Beet,
-  ricotta: Ricotta,
-  redCabbage: RedCabbage,
-  hummus: Hummus,
-  chicken: Chicken,
+  a1: AvocadoHoney,
+  a2: AvocadoLemon,
+  a3: Tuna,
+  a4: Beet,
+  a5: Ricotta,
+  a6: RedCabbage,
+  a7: Hummus,
+  a8: Chicken,
 }

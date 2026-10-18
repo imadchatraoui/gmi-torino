@@ -6,7 +6,7 @@
 // (i nomi che Vercel crea collegando Upstash dal Marketplace). Senza chiavi risponde 503
 // e il sito usa il ripiego locale (src/shared/likes.js).
 
-import { POKES } from '../src/data/menu.js'
+import { POKES } from '../server/menu-data.js'
 
 const KEY = 'gmi:likes'
 const ID = /^[a-z0-9-]{1,40}$/

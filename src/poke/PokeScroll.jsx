@@ -16,7 +16,7 @@ const reducedMotion = () =>
  * e la lista degli ingredienti. Niente re-render React durante lo scroll:
  * solo transform/opacity scritti direttamente sugli elementi.
  */
-export default function PokeScroll({ poke, skipTo }) {
+export default function PokeScroll({ poke, skipTo, likeIds }) {
   const { lang } = usePrefs()
   const { id, label, title, items, media } = poke
   const sectionRef = useRef(null)
@@ -131,7 +131,7 @@ export default function PokeScroll({ poke, skipTo }) {
           <div className="poke__label">
             <span>{t(label, lang)}</span>
             <span className="poke__actions">
-              <LikeButton poke={poke} size={20} />
+              <LikeButton poke={poke} ids={likeIds} size={20} />
               {skipTo && (
                 <a className="poke__skip" href={skipTo}>
                   {t({ it: 'Salta', en: 'Skip' }, lang)}

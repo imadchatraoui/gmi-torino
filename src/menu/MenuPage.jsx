@@ -1,22 +1,84 @@
+import { lazy, Suspense, useEffect, useState } from 'react'
 import { eventById } from '../data/events'
 import PokeIllustration from '../poke/PokeIllustration'
-import LikeButton from '../poke/LikeButton'
-import PokeScroll from '../poke/PokeScroll'
 import Intro from '../shared/Intro'
+import { useMenu } from '../shared/menuApi'
 import { t, usePrefs } from '../shared/prefs'
 import ShareButton from '../shared/ShareButton'
 import SiteFooter from '../shared/SiteFooter'
 import SiteHeader from '../shared/SiteHeader'
-import { tornClip } from '../shared/Paper'
 
 // Il menu del prossimo evento con menu. gmitorino.org/menu resta sempre questo indirizzo.
+// I piatti sono segreti fino all'ora di pranzo: arrivano da /api/menu (vedi src/shared/menuApi.js).
 const EVENT = eventById('ymhs')
-const CHOICE_CLIPS = [tornClip(21, { depth: 3, points: 30 }), tornClip(33, { depth: 3, points: 30 })]
+const MenuRevealed = lazy(() => import('./MenuRevealed'))
+
+const pad = (n) => String(n).padStart(2, '0')
+
+// conto alla rovescia: giorni finché manca più di un giorno, poi ore:minuti:secondi
+function Countdown({ revealAt, offset, lang }) {
+  const target = new Date(revealAt).getTime()
+  const [now, setNow] = useState(() => Date.now() + offset)
+  useEffect(() => {
+    const id = setInterval(() => setNow(Date.now() + offset), 1000)
+    return () => clearInterval(id)
+  }, [offset])
+  const left = Math.max(0, target - now)
+  const days = Math.floor(left / 86400000)
+  if (days >= 1) {
+    return <>{t({ it: days === 1 ? 'tra 1 giorno' : `tra ${days} giorni`, en: days === 1 ? 'in 1 day' : `in ${days} days` }, lang)}</>
+  }
+  const s = Math.floor(left / 1000)
+  return (
+    <span className="menu-wait__clock" aria-label={t({ it: 'Tempo che manca', en: 'Time left' }, lang)}>
+      {pad(Math.floor(s / 3600))}:{pad(Math.floor((s % 3600) / 60))}:{pad(s % 60)}
+    </span>
+  )
+}
+
+function MenuWait({ menu, lang }) {
+  const tr = (v) => t(v, lang)
+  const when = new Date(menu.revealAt)
+  const day = when.toLocaleDateString(lang === 'en' ? 'en-GB' : 'it-IT', { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'Europe/Rome' })
+  const hour = when.toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Rome' })
+  if (menu.status === 'error') {
+    return (
+      <section className="menu-wait" aria-live="polite">
+        <p className="menu-wait__label">{tr({ it: 'Il menu', en: 'The menu' })}</p>
+        <p className="menu-wait__text">
+          {tr({ it: 'Non riusciamo a caricare il menu. Controlla la connessione e riprova.', en: 'We could not load the menu. Check your connection and try again.' })}
+        </p>
+        <button type="button" className="menu-share" onClick={() => location.reload()}>
+          <span>{tr({ it: 'Riprova', en: 'Try again' })}</span>
+        </button>
+      </section>
+    )
+  }
+  return (
+    <section className="menu-wait" aria-live="polite">
+      <div className="menu-wait__bowl" aria-hidden="true">
+        <PokeIllustration items={[]} label="YMHS" markers={false} />
+      </div>
+      <p className="menu-wait__label">{tr({ it: 'Il menu è una sorpresa', en: 'The menu is a surprise' })}</p>
+      <p className="menu-wait__count display">
+        <Countdown revealAt={menu.revealAt} offset={menu.offset} lang={lang} />
+      </p>
+      <p className="menu-wait__text">
+        {tr({
+          it: `Si scopre qui ${day} alle ${hour}, all'ora di pranzo. Puoi lasciare la pagina aperta: si svela da sola.`,
+          en: `It is revealed here on ${day} at ${hour}, at lunchtime. You can leave this page open: it will reveal itself.`,
+        })}
+      </p>
+    </section>
+  )
+}
 
 export default function MenuPage() {
   const { lang } = usePrefs()
   const ev = EVENT
-  const { options, note, meal } = ev.menu
+  const { note, meal, revealAt } = ev.menu
+  const menu = useMenu(revealAt)
+  const open = menu.status === 'open'
   const tr = (v) => t(v, lang)
 
   return (
@@ -40,43 +102,35 @@ export default function MenuPage() {
             <br />
             {ev.time}
           </p>
+          {open && (
           <p className="menu-hero__lede">
             {tr({
               it: 'Due poke, ne scegli uno. Scorri: il coperchio si apre e ti presentiamo gli ingredienti uno alla volta.',
               en: 'Two poke bowls, you pick one. Scroll down: the lid comes off and we introduce the ingredients one at a time.',
             })}
           </p>
+          )}
         </section>
 
-        <section className="choices" aria-label={tr({ it: 'Le due proposte', en: 'The two options' })}>
-          {options.map((p, i) => (
-            <div key={p.id} className="choice-wrap">
-            <a className="choice" href={`#${p.id}`} style={{ clipPath: CHOICE_CLIPS[i % 2] }}>
-              <span className="choice__bowl" aria-hidden="true">
-                <PokeIllustration items={p.items} label={tr(p.label)} open markers={false} />
-              </span>
-              <span className="choice__text">
-                <span className="choice__label">{tr(p.label)}</span>
-                <span className="choice__title display">{tr(p.title)}</span>
-                <span className="choice__items">{p.items.map((it) => tr(it.name)).join(', ')}</span>
-              </span>
-            </a>
-            <LikeButton poke={p} className="choice__like" />
-            </div>
-          ))}
-        </section>
-
-        {options.map((p, i) => (
-          <PokeScroll key={p.id} poke={p} skipTo={i < options.length - 1 ? `#${options[i + 1].id}` : '#menu-end'} />
-        ))}
+        {open ? (
+          <Suspense fallback={<div className="menu-loading" />}>
+            <MenuRevealed options={menu.options} />
+          </Suspense>
+        ) : menu.status === 'loading' ? (
+          <div className="menu-loading" />
+        ) : (
+          <MenuWait menu={menu} lang={lang} />
+        )}
 
         <section id="menu-end" className="menu-end" aria-label={tr(meal)}>
           <p className="menu-note">{tr(note)}</p>
+          {open && (
           <ShareButton
             className="menu-share"
             title={tr({ it: 'Il menu del pranzo · YMHS', en: 'The lunch menu · YMHS' })}
             label={tr({ it: 'Condividi il menu', en: 'Share the menu' })}
           />
+          )}
           <figure className="verse">
             <blockquote>
               <p className="verse__ar" lang="ar" dir="rtl">

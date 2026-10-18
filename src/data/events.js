@@ -4,8 +4,6 @@
 //   banner  — immagine in alto (opzionale), logo — logo dell'evento (opzionale)
 //   blocks  — quali blocchi mostrare: info, signup, program, menu
 // Il giorno dopo la data di fine l'evento passa da solo in Archivio (src/data/when.js).
-import { POKES } from './menu.js'
-
 export const EVENTS = [
   {
     id: 'ymhs',
@@ -34,7 +32,8 @@ export const EVENTS = [
     blocks: { info: true, signup: true, program: false, menu: true },
     menu: {
       meal: { it: 'Il pranzo', en: 'Lunch' },
-      options: POKES,
+      // il menu è una sorpresa: i piatti (server/menu-data.js) arrivano al telefono solo da quest'ora
+      revealAt: '2026-10-25T13:00:00+01:00',
       note: {
         it: 'Allergie o intolleranze? Chiedi allo staff al banco del pranzo.',
         en: 'Allergies or intolerances? Ask the staff at the lunch counter.',

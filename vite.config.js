@@ -2,11 +2,12 @@ import { resolve } from 'node:path'
 import preact from '@preact/preset-vite'
 import { defineConfig } from 'vite'
 import likesHandler from './api/likes.js'
+import menuHandler from './api/menu.js'
 import { EVENTS } from './src/data/events.js'
 import { eventIcs } from './src/data/ics.js'
 import { eventJsonLd, robotsTxt, sitemapXml } from './src/data/seo.js'
 
-// In locale (npm run dev / preview) /api/likes usa la stessa funzione di Vercel con un finto Redis
+// In locale (npm run dev / preview) /api/menu e /api/likes girano come su Vercel; /api/likes usa la stessa funzione di Vercel con un finto Redis
 // in memoria: i like si condividono tra i dispositivi collegati al Mac finché il server resta acceso.
 function devLikes() {
   const store = new Map()
@@ -30,6 +31,11 @@ function devLikes() {
     return null
   }
   const middleware = (req, res, next) => {
+    // menu segreto: stessa funzione di Vercel; in locale la chiave d'anteprima è "prova" (/menu/?chiave=prova)
+    if (req.url.startsWith('/api/menu')) {
+      process.env.MENU_PREVIEW_KEY ||= 'prova'
+      return menuHandler(req, res)
+    }
     if (!req.url.startsWith('/api/likes')) return next()
     const realFetch = globalThis.fetch
     process.env.UPSTASH_REDIS_REST_URL ||= 'http://dev.local/redis'
