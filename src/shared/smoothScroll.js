@@ -15,6 +15,10 @@ let jumpFrame = 0
 let wheelFrame = 0
 
 function stopJump() {
+  if (jumpFrame) {
+    document.documentElement.classList.remove('is-jumping')
+    dispatchEvent(new Event('scroll'))
+  }
   cancelAnimationFrame(jumpFrame)
   jumpFrame = 0
 }
@@ -32,27 +36,12 @@ export function scrollToY(y, { onDone } = {}) {
     onDone?.()
     return
   }
-  // salto lungo (es. da un'opzione all'altra del menu): niente corsa attraverso tutte le animazioni,
-  // la pagina sfuma, salta e riappare già al punto giusto
-  if (Math.abs(dist) > innerHeight * 1.5) {
-    const main = document.querySelector('main') || document.body
-    main.style.transition = 'opacity 0.18s ease'
-    main.style.opacity = '0'
-    setTimeout(() => {
-      scrollTo({ top: to, behavior: 'instant' })
-      requestAnimationFrame(() => {
-        main.style.transition = 'opacity 0.35s ease'
-        main.style.opacity = ''
-        setTimeout(() => {
-          main.style.transition = ''
-          onDone?.()
-        }, 360)
-      })
-    }, 190)
-    return
-  }
+  // salto lungo (es. da un'opzione all'altra del menu): la pagina scorre davvero, ma le animazioni legate
+  // allo scroll (la ciotola) restano ferme durante il viaggio, così non si vedono andare a velocità folle
+  const long = Math.abs(dist) > innerHeight * 1.5
+  if (long) document.documentElement.classList.add('is-jumping')
   // più lontano = un po' più lungo, ma mai lento
-  const dur = Math.min(1100, 420 + Math.sqrt(Math.abs(dist)) * 9)
+  const dur = long ? Math.min(1500, 700 + Math.sqrt(Math.abs(dist)) * 8) : Math.min(1100, 420 + Math.sqrt(Math.abs(dist)) * 9)
   const t0 = performance.now()
   const tick = (now) => {
     const k = Math.min(1, (now - t0) / dur)
@@ -60,6 +49,8 @@ export function scrollToY(y, { onDone } = {}) {
     if (k < 1) jumpFrame = requestAnimationFrame(tick)
     else {
       jumpFrame = 0
+      document.documentElement.classList.remove('is-jumping')
+      dispatchEvent(new Event('scroll'))
       onDone?.()
     }
   }

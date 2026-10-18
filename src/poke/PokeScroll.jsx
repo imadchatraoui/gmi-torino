@@ -69,6 +69,8 @@ export default function PokeScroll({ poke, skipTo, likeIds }) {
     // Gli eventi scroll arrivano già una volta per frame (sono allineati al rendering),
     // quindi si aggiorna direttamente: una lettura di layout, poi solo scritture.
     const update = () => {
+      // durante un salto lungo (smoothScroll.js) la ciotola resta ferma: si aggiorna all'arrivo
+      if (document.documentElement.classList.contains('is-jumping')) return
       const rect = section.getBoundingClientRect()
       const range = rect.height - sticky.offsetHeight
       const p = range > 0 ? clamp01((stickTop - rect.top) / range) : 0
