@@ -57,6 +57,7 @@ export default function Intro() {
     return () => {
       clearTimeout(safety)
       window.removeEventListener('keydown', finish)
+      cleanupLock.current()
     }
   }, [show])
 

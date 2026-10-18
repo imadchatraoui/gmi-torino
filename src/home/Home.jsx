@@ -174,13 +174,10 @@ function EventCard({ ev, lang, theme }) {
           <div>
             <dt>{tr({ it: 'Dove', en: 'Where' })}</dt>
             <dd>
-              <a href={ev.mapsUrl} target="_blank" rel="noopener noreferrer">
+              <a href={directionsUrl(ev)} target="_blank" rel="noopener noreferrer">
                 {ev.venue}
               </a>
               <span>{ev.city}</span>
-              <a className="event__cal" href={directionsUrl(ev)} target="_blank" rel="noopener noreferrer">
-                {tr({ it: 'Indicazioni', en: 'Directions' })}
-              </a>
             </dd>
           </div>
           {ev.price && (

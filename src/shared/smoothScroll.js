@@ -1,7 +1,5 @@
 // Scroll morbido per tutto il sito.
-// - Computer con rotella del mouse: ogni scatto della rotella diventa una scivolata breve (la pagina scorre
-//   davvero, quindi le sezioni sticky e l'animazione del poke funzionano come sempre). Trackpad e telefono
-//   restano nativi: il loro scorrimento con inerzia è già il più fluido possibile e imitarlo lo peggiorerebbe.
+// - Lo scorrimento col dito, il trackpad e la rotella restano quelli nativi (i più fluidi e affidabili).
 // - Telefono e computer: i salti dentro la pagina (barra in basso, "Salta", le due proposte, i link #sezione)
 //   diventano una scivolata con accelerazione e frenata, uguale su iPhone, Android e computer.
 // Con "riduci movimento" tutto è istantaneo.
@@ -12,7 +10,6 @@ const clamp = (v) => Math.max(0, Math.min(maxY(), v))
 const easeInOut = (t) => (t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2)
 
 let jumpFrame = 0
-let wheelFrame = 0
 
 function stopJump() {
   if (jumpFrame) {
@@ -26,8 +23,6 @@ function stopJump() {
 // scivolata verso una posizione; si interrompe se chi legge tocca o usa la rotella
 export function scrollToY(y, { onDone } = {}) {
   stopJump()
-  cancelAnimationFrame(wheelFrame)
-  wheelFrame = 0
   const to = clamp(y)
   const from = scrollY
   const dist = to - from
@@ -85,50 +80,12 @@ function onClick(e) {
   })
 }
 
-// rotella del mouse (scatti da 120) o rotella "a righe" di Firefox; i trackpad danno valori piccoli e irregolari
-const isMouseWheel = (e) => e.deltaMode === 1 || (e.wheelDeltaY !== undefined && e.wheelDeltaY !== 0 && e.wheelDeltaY % 120 === 0)
-
-function scrollableParent(el) {
-  for (let n = el; n && n !== document.body && n !== document.documentElement; n = n.parentElement) {
-    const s = getComputedStyle(n)
-    if (/(auto|scroll)/.test(s.overflowY) && n.scrollHeight > n.clientHeight) return n
-  }
-  return null
-}
-
-let target = 0
-function onWheel(e) {
-  if (e.defaultPrevented || e.ctrlKey || reduced() || !isMouseWheel(e)) return
-  if (document.documentElement.classList.contains('scroll-lock') || scrollableParent(e.target)) return
-  e.preventDefault()
-  stopJump()
-  const lines = e.deltaMode === 1 ? 40 : e.deltaMode === 2 ? innerHeight : 1
-  if (!wheelFrame) target = scrollY
-  target = clamp(target + e.deltaY * lines)
-  if (wheelFrame) return
-  const tick = () => {
-    const y = scrollY
-    const step = (target - y) * 0.16
-    if (Math.abs(target - y) < 0.6) {
-      scrollTo({ top: target, behavior: 'instant' })
-      wheelFrame = 0
-      return
-    }
-    scrollTo({ top: y + step, behavior: 'instant' })
-    wheelFrame = requestAnimationFrame(tick)
-  }
-  wheelFrame = requestAnimationFrame(tick)
-}
-
 export function initSmoothScroll() {
   if (typeof window === 'undefined' || window.__gmiSmooth) return
   window.__gmiSmooth = true
   // lo scorrimento lo guidiamo noi: il CSS "smooth" resta solo come ripiego senza JavaScript
   document.documentElement.classList.add('js-scroll')
   document.addEventListener('click', onClick)
-  if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
-    addEventListener('wheel', onWheel, { passive: false })
-  }
   // un dito sullo schermo ferma subito una scivolata in corso
   addEventListener('touchstart', stopJump, { passive: true })
   addEventListener('keydown', (e) => {
