@@ -11,8 +11,14 @@ export const DEFAULTS = {
   menuMode: 'auto', // auto = svela all'ora revealAt; open = sempre visibile; closed = sempre nascosto
   revealAt: event?.menu?.revealAt ?? null,
   signup: 'auto', // auto = chiude alla data di events.js; open; closed
-  notice: { on: false, it: '', en: '' }, // avviso in cima alla home
+  notice: { on: false, it: '', en: '', tone: 'brand' }, // striscia in alto su tutte le pagine
+  likesOn: true, // cuori dei mi piace nel menu
+  party: { at: 0, emoji: '🎉' }, // pioggia di emoji su tutti i telefoni aperti
+  event: {}, // testi dell'evento cambiati da /admin (data, orari, luogo, quota, iscrizioni)
 }
+
+const TONES = new Set(['brand', 'gold', 'sage', 'tape'])
+const PARTY = new Set(['🎉', '❤️', '🥗', '🌙', '✨', '🤲'])
 
 export function redisConfig() {
   const url = process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL
@@ -32,13 +38,23 @@ export async function redis(cfg, command) {
   return data.result
 }
 
-export async function getSettings() {
+// piccola cache in memoria: con molti telefoni insieme il database riceve al massimo una lettura ogni 3 s
+let memo = { at: 0, value: null }
+
+export async function getSettings({ fresh = false } = {}) {
+  if (!fresh && memo.value && Date.now() - memo.at < 3000) return memo.value
+  const v = await readSettings()
+  memo = { at: Date.now(), value: v }
+  return v
+}
+
+async function readSettings() {
   const cfg = redisConfig()
   if (!cfg) return { ...DEFAULTS }
   try {
     const raw = await redis(cfg, ['GET', SETTINGS_KEY])
     const saved = raw ? JSON.parse(raw) : {}
-    return { ...DEFAULTS, ...saved, notice: { ...DEFAULTS.notice, ...(saved.notice || {}) } }
+    return { ...DEFAULTS, ...saved, notice: { ...DEFAULTS.notice, ...(saved.notice || {}) }, party: { ...DEFAULTS.party, ...(saved.party || {}) } }
   } catch {
     return { ...DEFAULTS }
   }
@@ -50,16 +66,32 @@ const text = (v) => String(v ?? '').slice(0, 220)
 export async function saveSettings(patch) {
   const cfg = redisConfig()
   if (!cfg) throw new Error('storage not configured')
-  const cur = await getSettings()
+  const cur = await getSettings({ fresh: true })
   const next = { ...cur }
   if (['auto', 'open', 'closed'].includes(patch.menuMode)) next.menuMode = patch.menuMode
   if (patch.revealAt && !Number.isNaN(new Date(patch.revealAt).getTime())) next.revealAt = new Date(patch.revealAt).toISOString()
   if (['auto', 'open', 'closed'].includes(patch.signup)) next.signup = patch.signup
   if (patch.notice && typeof patch.notice === 'object') {
-    next.notice = { on: !!patch.notice.on, it: text(patch.notice.it), en: text(patch.notice.en) }
+    next.notice = {
+      on: !!patch.notice.on,
+      it: text(patch.notice.it),
+      en: text(patch.notice.en),
+      tone: TONES.has(patch.notice.tone) ? patch.notice.tone : 'brand',
+    }
+  }
+  if (typeof patch.likesOn === 'boolean') next.likesOn = patch.likesOn
+  if (patch.party && PARTY.has(patch.party.emoji)) next.party = { at: Date.now(), emoji: patch.party.emoji }
+  if (patch.event && typeof patch.event === 'object') {
+    const e = patch.event
+    const ev = {}
+    for (const k of ['time', 'venue', 'city', 'price', 'dayMonth']) if (e[k]) ev[k] = text(e[k])
+    if (e.signupUrl && /^https:\/\//.test(e.signupUrl)) ev.signupUrl = text(e.signupUrl)
+    for (const k of ['date', 'signupNote']) if (e[k]?.it) ev[k] = { it: text(e[k].it), en: text(e[k].en) || text(e[k].it) }
+    next.event = ev
   }
   next.updatedAt = new Date().toISOString()
   await redis(cfg, ['SET', SETTINGS_KEY, JSON.stringify(next)])
+  memo = { at: Date.now(), value: next }
   return next
 }
 

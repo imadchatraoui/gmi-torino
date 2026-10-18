@@ -13,7 +13,7 @@ import GradientText from '../components/react-bits/GradientText'
 import StarBorder from '../components/react-bits/StarBorder'
 import Partners from '../shared/Partners'
 import WipBox from '../shared/WipBox'
-import { useLiveSettings } from '../shared/liveSettings'
+import { useLiveEvent, useLiveSettings } from '../shared/liveSettings'
 import WordCycle from './WordCycle'
 
 // colori del titolo animato (React Bits GradientText): bordeaux e oro scuri su crema, crema e oro su scuro
@@ -38,7 +38,8 @@ function countdown(iso, lang) {
   return null
 }
 
-function Hero({ next, recent, lang, theme }) {
+function Hero({ next: base, recent, lang, theme }) {
+  const next = useLiveEvent(base)
   const tr = (v) => t(v, lang)
   const ref = useRef(null)
   // fuori schermo la parola che cambia si ferma (WordCycle guarda la classe is-off)
@@ -149,19 +150,6 @@ function MenuReveal({ ev, lang }) {
   )
 }
 
-// avviso scritto da /admin, in cima alla home (es. "Si inizia alle 10:30")
-function Notice({ lang }) {
-  const live = useLiveSettings()
-  const text = live?.notice && t({ it: live.notice.it || live.notice.en, en: live.notice.en || live.notice.it }, lang)
-  if (!text) return null
-  return (
-    <p className="notice" role="status">
-      <span className="notice__label">{t({ it: 'Avviso', en: 'Notice' }, lang)}</span>
-      <span className="notice__text">{text}</span>
-    </p>
-  )
-}
-
 // nei 7 giorni dopo un evento, in cima alla home: grazie e invito a seguirci
 function ThankYou({ ev, lang }) {
   if (!ev) return null
@@ -189,7 +177,8 @@ function FollowUs({ lang }) {
 }
 
 // Template evento: stessa struttura per ogni evento; cambiano accento, banner, logo e blocchi accesi.
-function EventCard({ ev, lang, theme }) {
+function EventCard({ ev: base, lang, theme }) {
+  const ev = useLiveEvent(base)
   const tr = (v) => t(v, lang)
   const live = isLive(ev)
   const when = live ? null : countdown(ev.start, lang)
@@ -361,7 +350,6 @@ export default function Home() {
       <Intro />
       <SiteHeader page="home" />
       <main id="main" tabIndex={-1} className="home">
-        <Notice lang={lang} />
         <MenuReveal ev={upcoming[0]} lang={lang} />
         <Hero next={upcoming[0]} recent={recent[0]} lang={lang} theme={theme} />
         <WipSection id="chi-siamo" lang={lang} kind="about" />

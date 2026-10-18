@@ -480,3 +480,31 @@
     padding-top: 0;
   }
 }
+
+.adm-preview {
+  position: static;
+  border-radius: 8px;
+  animation: none;
+}
+
+.adm-party {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 6px;
+}
+
+.adm-party .adm-btn {
+  font-size: 1.4rem;
+  padding: 0;
+}
+
+.adm-evt {
+  display: grid;
+  gap: 10px;
+}
+
+@media (min-width: 760px) {
+  .adm-evt {
+    grid-template-columns: 1fr 1fr;
+  }
+}

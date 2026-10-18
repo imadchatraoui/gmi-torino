@@ -2,6 +2,7 @@ import { lazy, Suspense, useEffect, useState } from 'react'
 import { eventById } from '../data/events'
 import PokeIllustration from '../poke/PokeIllustration'
 import Intro from '../shared/Intro'
+import { useLiveEvent } from '../shared/liveSettings'
 import { useMenu } from '../shared/menuApi'
 import { t, usePrefs } from '../shared/prefs'
 import Partners from '../shared/Partners'
@@ -83,7 +84,7 @@ function MenuWait({ menu, lang }) {
 
 export default function MenuPage() {
   const { lang } = usePrefs()
-  const ev = EVENT
+  const ev = useLiveEvent(EVENT)
   const { note, meal, revealAt } = ev.menu
   const menu = useMenu(revealAt)
   const open = menu.status === 'open'

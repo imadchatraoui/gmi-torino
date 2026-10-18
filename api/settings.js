@@ -10,5 +10,8 @@ export default async function handler(req, res) {
     revealAt: s.menuMode === 'closed' ? null : s.revealAt,
     signup: s.signup,
     notice: s.notice?.on ? s.notice : null,
+    likesOn: s.likesOn !== false,
+    party: s.party,
+    event: s.event || {},
   })
 }

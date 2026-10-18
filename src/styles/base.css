@@ -68,7 +68,9 @@
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
 
   /* layout */
-  --header-h: 60px;
+  --bar-h: 60px;
+  --notice-h: 0px;
+  --header-h: calc(var(--bar-h) + var(--notice-h));
   --gutter: 20px;
   --max: 1080px;
 
@@ -418,7 +420,7 @@ main:focus {
   top: 0;
   z-index: 30;
   height: calc(var(--header-h) + env(safe-area-inset-top));
-  padding: env(safe-area-inset-top) var(--gutter) 0;
+  padding: calc(env(safe-area-inset-top) + var(--notice-h)) var(--gutter) 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -546,7 +548,7 @@ main:focus {
 @media (min-width: 860px) {
   :root {
     --gutter: 40px;
-    --header-h: 72px;
+    --bar-h: 72px;
   }
   .site-header__nav {
     display: flex;
@@ -1265,4 +1267,80 @@ main:focus {
   .bottom-nav {
     display: none;
   }
+}
+
+/* ---------- striscia d'avviso in alto (da /admin), su tutte le pagine ---------- */
+:root.has-notice {
+  --notice-h: 30px;
+}
+
+.noticebar {
+  position: absolute;
+  top: env(safe-area-inset-top);
+  left: 0;
+  right: 0;
+  height: var(--notice-h);
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  padding: 0 var(--gutter);
+  background: var(--bordeaux);
+  color: var(--cream);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  white-space: nowrap;
+  animation: notice-in 0.5s var(--ease-out) both;
+}
+
+.noticebar--gold { background: var(--gold); color: #2b0a0c; }
+.noticebar--sage { background: var(--sage); color: var(--ink); }
+.noticebar--tape {
+  color: #17110b;
+  background:
+    repeating-linear-gradient(-45deg, #17110b 0 8px, #f2c230 8px 16px) top / 100% 3px no-repeat,
+    repeating-linear-gradient(-45deg, #17110b 0 8px, #f2c230 8px 16px) bottom / 100% 3px no-repeat,
+    #f2c230;
+}
+:root[data-theme='dark'] .noticebar--brand { background: #a8262b; }
+
+.noticebar__track {
+  display: flex;
+  gap: 48px;
+}
+
+.noticebar__track.is-running {
+  animation: notice-run var(--dur) linear infinite;
+  will-change: transform;
+}
+
+@keyframes notice-run {
+  to { transform: translate3d(calc(-1 * var(--dist)), 0, 0); }
+}
+
+@keyframes notice-in {
+  from { transform: translate3d(0, -100%, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .noticebar__track.is-running { animation: none; }
+  .noticebar { white-space: normal; }
+}
+
+/* ---------- pioggia di emoji (da /admin) ---------- */
+.party {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.party span {
+  position: absolute;
+  top: -10%;
+  animation: party-fall 2.6s cubic-bezier(0.3, 0.6, 0.5, 1) both;
+}
+
+@keyframes party-fall {
+  to { transform: translate3d(0, 115vh, 0) rotate(var(--r)); }
 }

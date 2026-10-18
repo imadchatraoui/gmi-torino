@@ -6,6 +6,22 @@ import { toggleTheme, usePrefs } from '../shared/prefs'
 const PASS_KEY = 'gmi-admin'
 const pad = (n) => String(n).padStart(2, '0')
 
+const PARTY = ['🎉', '❤️', '🥗', '🌙', '✨', '🤲']
+
+// testi dell'evento modificabili: [campo, etichetta, esempio, lingua]
+const EVT_FIELDS = [
+  ['date', 'Data (italiano)', 'Domenica 25 ottobre 2026', 'it'],
+  ['date', 'Data (inglese)', 'Sunday 25 October 2026', 'en'],
+  ['dayMonth', 'Data breve', '25.10'],
+  ['time', 'Orari', '10:00 – 19:30'],
+  ['venue', 'Luogo', 'Casa del Quartiere di San Salvario'],
+  ['city', 'Città', 'Torino'],
+  ['price', 'Quota', '10 €'],
+  ['signupUrl', 'Link iscrizioni', 'https://forms.gle/…'],
+  ['signupNote', 'Nota iscrizioni (italiano)', 'Iscrizioni entro venerdì 23 ottobre', 'it'],
+  ['signupNote', 'Nota iscrizioni (inglese)', 'Sign up by Friday 23 October', 'en'],
+]
+
 // disegni disponibili per gli ingredienti (src/poke/art.jsx)
 const ARTS = [
   ['rice', 'Riso (base)'],
@@ -101,17 +117,20 @@ export default function Admin() {
   const [toast, setToast] = useState('')
   const [now, setNow] = useState(Date.now())
   const [when, setWhen] = useState('')
-  const [notice, setNotice] = useState({ on: false, it: '', en: '' })
+  const [notice, setNotice] = useState({ on: false, it: '', en: '', tone: 'brand' })
+  const [evt, setEvt] = useState({})
   const [confirmReset, setConfirmReset] = useState(false)
   const [menu, setMenu] = useState(null)
   const [menuDirty, setMenuDirty] = useState(false)
   const menuDirtyRef = useRef(false)
+  const evtDirty = useRef(false)
   menuDirtyRef.current = menuDirty
 
   const apply = (d) => {
     setData(d)
     setWhen(toLocalInput(d.settings.revealAt))
     setNotice(d.settings.notice)
+    setEvt((cur) => (evtDirty.current ? cur : d.settings.event || {}))
     setMenu((m) => (m && menuDirtyRef.current ? m : d.menu))
   }
 
@@ -307,8 +326,22 @@ export default function Admin() {
         </section>
 
         <section className="adm-card">
-          <p className="adm-label">Avviso in cima alla home</p>
-          <p className={`adm-pill-state ${s.notice?.on ? 'is-on' : ''}`}>{s.notice?.on ? 'Visibile ora sul sito' : 'Non visibile'}</p>
+          <p className="adm-label">Striscia d’avviso in alto</p>
+          <p className={`adm-pill-state ${s.notice?.on ? 'is-on' : ''}`}>{s.notice?.on ? 'Visibile ora su tutte le pagine' : 'Non visibile'}</p>
+          <div className={`noticebar noticebar--${notice.tone || 'brand'} adm-preview`}>
+            <span>{notice.it || 'Anteprima della striscia'}</span>
+          </div>
+          <Segmented
+            label="Colore"
+            value={notice.tone || 'brand'}
+            onChange={(v) => setNotice({ ...notice, tone: v })}
+            options={[
+              { v: 'brand', l: 'Bordeaux' },
+              { v: 'gold', l: 'Oro' },
+              { v: 'sage', l: 'Salvia' },
+              { v: 'tape', l: 'Cantiere' },
+            ]}
+          />
           <label className="adm-field" htmlFor="adm-it">
             <span>Testo (italiano)</span>
             <input id="adm-it" type="text" maxLength={220} placeholder="Es. Si inizia alle 10:30, ingresso dal cortile" value={notice.it} onChange={(e) => setNotice({ ...notice, it: e.target.value })} />
@@ -407,6 +440,77 @@ export default function Admin() {
             ]}
           />
           <p className="adm-muted">Automatico: il bottone Iscriviti sparisce dopo venerdì 23 ottobre.</p>
+        </section>
+
+        <section className="adm-card">
+          <p className="adm-label">Festa · su tutti i telefoni aperti</p>
+          <p className="adm-muted">Fa piovere un’emoji per qualche secondo su chiunque abbia il sito aperto.</p>
+          <div className="adm-party">
+            {PARTY.map((e) => (
+              <button key={e} type="button" className="adm-btn" disabled={busy} onClick={() => run({ settings: { party: { emoji: e } } }, `${e} lanciato a tutti`)}>
+                {e}
+              </button>
+            ))}
+          </div>
+        </section>
+
+        <section className="adm-card">
+          <p className="adm-label">Mi piace</p>
+          <Segmented
+            label="Mi piace"
+            value={s.likesOn === false ? 'off' : 'on'}
+            onChange={(v) => run({ settings: { likesOn: v === 'on' } }, v === 'on' ? 'Cuori visibili' : 'Cuori nascosti')}
+            options={[
+              { v: 'on', l: 'Visibili' },
+              { v: 'off', l: 'Nascosti' },
+            ]}
+          />
+        </section>
+
+        <section className="adm-card adm-card--wide">
+          <p className="adm-label">L’evento · testi</p>
+          <p className="adm-muted">Lascia vuoto per usare il testo originale. Vale per home e menu.</p>
+          <div className="adm-evt">
+            {EVT_FIELDS.map(([k, label, ph, sub]) => (
+              <label key={k + (sub || '')} className="adm-field">
+                <span>{label}</span>
+                <input
+                  type="text"
+                  placeholder={ph}
+                  value={(sub ? evt[k]?.[sub] : evt[k]) || ''}
+                  onChange={(e) => {
+                    evtDirty.current = true
+                    const v = e.target.value
+                    setEvt((cur) => (sub ? { ...cur, [k]: { ...(cur[k] || {}), [sub]: v } } : { ...cur, [k]: v }))
+                  }}
+                />
+              </label>
+            ))}
+          </div>
+          <div className="adm-row">
+            <button
+              type="button"
+              className="adm-btn adm-btn--primary"
+              disabled={busy}
+              onClick={async () => {
+                if (await run({ settings: { event: evt } }, 'Evento aggiornato')) evtDirty.current = false
+              }}
+            >
+              Salva l’evento
+            </button>
+            <button
+              type="button"
+              className="adm-btn adm-btn--ghost"
+              disabled={busy}
+              onClick={async () => {
+                evtDirty.current = false
+                setEvt({})
+                await run({ settings: { event: {} } }, 'Testi originali ripristinati')
+              }}
+            >
+              Ripristina
+            </button>
+          </div>
         </section>
 
         <section className="adm-card">

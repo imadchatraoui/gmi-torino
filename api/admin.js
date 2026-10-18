@@ -43,7 +43,7 @@ export default async function handler(req, res) {
       res.setHeader('Allow', 'GET, POST')
       return send(res, 405, { error: 'method not allowed' })
     }
-    return send(res, 200, { settings: await getSettings(), likes: await counts(cfg), menu: await getMenu(POKES), now: Date.now() })
+    return send(res, 200, { settings: await getSettings({ fresh: true }), likes: await counts(cfg), menu: await getMenu(POKES), now: Date.now() })
   } catch {
     return send(res, 502, { error: 'Database non raggiungibile, riprova.' })
   }

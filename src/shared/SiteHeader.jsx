@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { SECTIONS } from '../data/site'
+import { NoticeBar, PartyRain } from './LiveBar'
 import { t, toggleLang, toggleTheme, usePrefs } from './prefs'
 import { observeSections } from './reveal'
 
@@ -36,6 +37,8 @@ export default function SiteHeader({ page = 'home' }) {
 
   return (
     <header className={`site-header${scrolled ? ' is-scrolled' : ''}`}>
+      <NoticeBar />
+      <PartyRain />
       <a className="skip-link" href="#main">
         {t({ it: 'Vai al contenuto', en: 'Skip to content' })}
       </a>
