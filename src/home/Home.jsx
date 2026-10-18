@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { EVENTS } from '../data/events'
 import { ABOUT, CONTACTS, sectionLabel } from '../data/site'
-import { daysUntil, eventStatus } from '../data/when'
+import { daysUntil, eventStatus, isLive, signupOpen } from '../data/when'
 import BottomNav from '../shared/BottomNav'
 import Intro from '../shared/Intro'
 import { t, usePrefs } from '../shared/prefs'
@@ -67,11 +67,13 @@ function Hero({ next, lang, theme }) {
         </p>
         {next && (
           <a className="hero__next theme-ymhs" href="#eventi" style={{ clipPath: NEXT_CLIP }}>
-            <span className="hero__next-label">{tr({ it: 'Prossimo evento', en: 'Next event' })}</span>
+            <span className="hero__next-label">
+              {isLive(next) ? tr({ it: 'In corso, oggi', en: 'Happening today' }) : tr({ it: 'Prossimo evento', en: 'Next event' })}
+            </span>
             <span className="hero__next-name display">{next.name}</span>
             <span className="hero__next-date">
               {tr(next.date)}
-              {countdown(next.start, lang) && <span className="hero__next-count">{countdown(next.start, lang)}</span>}
+              {!isLive(next) && countdown(next.start, lang) && <span className="hero__next-count">{countdown(next.start, lang)}</span>}
             </span>
           </a>
         )}
@@ -123,13 +125,15 @@ function About({ lang }) {
 // Template evento: stessa struttura per ogni evento; cambiano accento, banner, logo e blocchi accesi.
 function EventCard({ ev, lang, theme }) {
   const tr = (v) => t(v, lang)
-  const when = countdown(ev.start, lang)
+  const live = isLive(ev)
+  const when = live ? null : countdown(ev.start, lang)
+  const open = signupOpen(ev)
   return (
     <article className={`event reveal${ev.theme ? ` theme-${ev.theme}` : ''}`} style={{ '--accent': ev.accent, clipPath: CARD_CLIP }}>
       {ev.banner && <img className="event__banner" src={ev.banner} alt="" loading="lazy" decoding="async" />}
       <div className="event__head">
         <p className="event__kicker">
-          {tr({ it: 'Prossimo evento', en: 'Next event' })}
+          {live ? tr({ it: 'In corso, oggi', en: 'Happening today' }) : tr({ it: 'Prossimo evento', en: 'Next event' })}
           {when && <span className="event__count">{when}</span>}
         </p>
         {ev.logo ? (
@@ -168,14 +172,16 @@ function EventCard({ ev, lang, theme }) {
               <dt>{tr({ it: 'Quota', en: 'Fee' })}</dt>
               <dd>
                 {ev.price}
-                {ev.signup && <span>{tr(ev.signup.note)}</span>}
+                {ev.signup && (
+                  <span>{open ? tr(ev.signup.note) : tr({ it: 'Iscrizioni chiuse', en: 'Sign-up closed' })}</span>
+                )}
               </dd>
             </div>
           )}
         </dl>
       )}
       <div className="event__actions">
-        {ev.blocks.signup && ev.signup && (
+        {ev.blocks.signup && open && (
           <StarBorder
             as="a"
             className="signup-star"

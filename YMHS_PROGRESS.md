@@ -268,6 +268,9 @@ Verificato: contrasti AA, tocchi della barra in basso, scroll fluido.
 - Scheda evento senza l'alone sfocato residuo. Provato il sito "dopo il 25 ottobre" (data simulata): l'avviso
   "appena passato", la voce in Archivio e il "prossimo evento in preparazione" ora sono tra righe sottili,
   niente più riquadri arrotondati.
+- Il sito segue da solo i giorni dell'evento (provato simulando le date): da sabato 24/10 il bottone Iscriviti
+  sparisce e la quota dice "Iscrizioni chiuse" (`signup.closes` in `src/data/events.js`); domenica 25 dalle 10:00
+  alle 19:30 "Prossimo evento" diventa "In corso, oggi", senza conto alla rovescia.
 
 ## Manca / idee per le prossime run
 - [ ] Provare su un iPhone vero (sul Mac non c'è Xcode, quindi niente simulatore: tutto verificato con Chrome in

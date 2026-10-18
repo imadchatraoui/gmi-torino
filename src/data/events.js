@@ -23,6 +23,8 @@ export const EVENTS = [
     signup: {
       url: 'https://forms.gle/fRGgX14NWpU66HHJ9',
       note: { it: 'Iscrizioni entro venerdì 23 ottobre', en: 'Sign up by Friday 23 October' },
+      // dopo questa data il bottone Iscriviti sparisce e compare "Iscrizioni chiuse"
+      closes: '2026-10-23T23:59:59+02:00',
     },
     // stile proprio dell'evento (classe .theme-ymhs in base.css): scheda evento e pagina del menu
     theme: 'ymhs',

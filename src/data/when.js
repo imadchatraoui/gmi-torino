@@ -17,3 +17,15 @@ export function daysUntil(iso, now = new Date()) {
     (Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) - Date.UTC(now.getFullYear(), now.getMonth(), now.getDate())) / DAY,
   )
 }
+
+// iscrizioni ancora aperte? (senza data di chiusura: aperte finché l'evento non è iniziato)
+export function signupOpen(ev, now = Date.now()) {
+  if (!ev.signup) return false
+  const closes = new Date(ev.signup.closes ?? ev.start).getTime()
+  return now <= closes
+}
+
+// l'evento è in corso adesso?
+export function isLive(ev, now = Date.now()) {
+  return now >= new Date(ev.start).getTime() && now <= new Date(ev.end ?? ev.start).getTime()
+}
