@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
 import { SECTIONS } from '../data/site'
 import { t, usePrefs } from './prefs'
-import { scrollToEl } from './smoothScroll'
+import { scrollToEl, scrollToY } from './smoothScroll'
 
 // Barra di navigazione flottante per il telefono: compare dopo l'hero,
 // l'indicatore scivola sotto la sezione in vista.
-export default function BottomNav() {
+export default function BottomNav({ items = SECTIONS, heroId = 'top', label = 'Sezioni' }) {
   usePrefs()
   const [active, setActive] = useState(null)
   const [shown, setShown] = useState(false)
@@ -23,11 +23,12 @@ export default function BottomNav() {
       if (performance.now() < lockUntil.current) return
       const line = window.innerHeight * 0.35
       let cur = null
-      for (const s of SECTIONS) {
+      for (const s of items) {
+        if (s.top) continue
         const el = document.getElementById(s.id)
         if (el && el.getBoundingClientRect().top <= line) cur = s.id
       }
-      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) cur = SECTIONS.at(-1).id
+      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) cur = items.filter((s) => !s.top).at(-1).id
       setActive(cur)
     }
     const onScroll = () => {
@@ -39,7 +40,7 @@ export default function BottomNav() {
       window.removeEventListener('scroll', onScroll)
       cancelAnimationFrame(frame)
     }
-    const hero = document.getElementById('top')
+    const hero = document.getElementById(heroId)
     let io
     if (hero && 'IntersectionObserver' in window) {
       io = new IntersectionObserver(([e]) => setShown(!e.isIntersecting), { rootMargin: '-35% 0px 0px 0px' })
@@ -51,6 +52,7 @@ export default function BottomNav() {
       stop()
       io?.disconnect()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
@@ -67,14 +69,20 @@ export default function BottomNav() {
   }, [active, shown])
 
   return (
-    <nav ref={nav} className={`bottom-nav${shown ? ' is-shown' : ''}`} aria-label="Sezioni">
+    <nav ref={nav} className={`bottom-nav${shown ? ' is-shown' : ''}`} aria-label={label}>
       <span ref={pill} className="bottom-nav__pill" aria-hidden="true" />
-      {SECTIONS.map((s) => (
+      {items.map((s) => (
         <a
           key={s.id}
           href={`#${s.id}`}
           aria-current={active === s.id ? 'true' : undefined}
           onClick={(e) => {
+            if (s.top) {
+              e.preventDefault()
+              scrollToY(0)
+              history.replaceState(null, '', location.pathname + location.search)
+              return
+            }
             const el = document.getElementById(s.id)
             if (!el) return
             e.preventDefault()

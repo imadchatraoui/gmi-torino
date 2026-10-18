@@ -303,6 +303,16 @@ Verificato: contrasti AA, tocchi della barra in basso, scroll fluido.
   telefono invece di 29 KB).
 - Tutte le pagine online provate senza errori in console; la 404 personalizzata funziona.
 
+**18/10 notte — esperienza da telefono**
+- Il 25/10 dalle 13:00 in home compare una striscia salvia "È ora di pranzo · Il menu è svelato →" (fino a fine evento).
+- "Indicazioni" sotto il luogo: Mappe di Apple su iPhone/Mac, Google Maps altrove.
+- QR code per tavoli e banco in `anteprime/qr-menu.png` (da stampare) e `qr-menu.svg` (vettoriale).
+- Il menu (pagina, codice, logo) si salva per l'uso senza rete già alla prima visita del sito, da qualsiasi pagina.
+- Intro: dalla seconda apertura va 1,8 volte più veloce; con risparmio dati o rete 2G non parte.
+- Nel menu, barra in basso: Opzione 1, Opzione 2, Torna su.
+- Il menu ricorda dove eri arrivato (per 3 ore) se chiudi e riapri.
+- Dimensioni del testo in rem: seguono la dimensione del testo scelta nel browser.
+
 ## Manca / idee per le prossime run
 - [ ] Provare su un iPhone vero (sul Mac non c'è Xcode, quindi niente simulatore: tutto verificato con Chrome in
   emulazione). Da guardare: intro in risparmio energetico, barra di Safari durante lo scroll del menu, tocchi sulla barra in basso.

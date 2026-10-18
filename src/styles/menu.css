@@ -48,7 +48,7 @@
 }
 
 .menu-hero__event {
-  font-size: 15px;
+  font-size: 0.9375rem;
   font-weight: 600;
   color: var(--label);
 }
@@ -70,7 +70,7 @@
 
 .menu-hero__meta {
   margin-top: 8px;
-  font-size: 15px;
+  font-size: 0.9375rem;
   line-height: 1.6;
   letter-spacing: 0.06em;
   color: var(--text-2);
@@ -79,7 +79,7 @@
 .menu-hero__lede {
   max-width: 30em;
   margin: 18px auto 0;
-  font-size: 17px;
+  font-size: 1.0625rem;
   line-height: 1.5;
   color: var(--text);
 }
@@ -162,7 +162,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-weight: 600;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -190,7 +190,7 @@
 
 .menu-wait__text {
   max-width: 26em;
-  font-size: 16px;
+  font-size: 1rem;
   line-height: 1.55;
   color: var(--text-2);
 }
@@ -258,7 +258,7 @@
 }
 
 .choice__label {
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -270,13 +270,13 @@
 }
 
 .choice__title {
-  font-size: 21px;
+  font-size: 1.3125rem;
   line-height: 1.15;
 }
 
 .choice__items {
   margin-top: 4px;
-  font-size: 13px;
+  font-size: 0.8125rem;
   line-height: 1.4;
   opacity: 0.85;
 }
@@ -323,7 +323,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -338,7 +338,7 @@
   min-height: 44px;
   padding: 0 2px 0 8px;
   color: var(--heading);
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-weight: 600;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -348,7 +348,7 @@
 
 .poke__skip::after {
   content: '↓';
-  font-size: 13px;
+  font-size: 0.8125rem;
   letter-spacing: 0;
 }
 
@@ -381,7 +381,7 @@
   flex-direction: column;
   align-items: center;
   gap: 6px;
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: 500;
   color: var(--text-2);
   pointer-events: none;
@@ -440,14 +440,14 @@
   border-radius: 50%;
   border: 1.5px solid var(--brand);
   color: var(--heading);
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
   transition: background-color 0.25s, color 0.25s, border-color 0.25s;
 }
 
 .poke__name {
-  font-size: 16px;
+  font-size: 1rem;
   line-height: 1.25;
   color: var(--text);
   transition: color 0.25s;
@@ -493,7 +493,7 @@
     min-height: 27px;
   }
   .poke__name {
-    font-size: 14px;
+    font-size: 0.875rem;
   }
 }
 
@@ -512,7 +512,7 @@
   padding: 14px 0;
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
-  font-size: 15px;
+  font-size: 0.9375rem;
   color: var(--text-2);
   text-align: center;
 }
@@ -523,21 +523,21 @@
 }
 
 .verse__ar {
-  font-size: 22px;
+  font-size: 1.375rem;
   line-height: 1.9;
   color: var(--gold-text);
 }
 
 .verse__tr {
   margin-top: 14px;
-  font-size: 17px;
+  font-size: 1.0625rem;
   line-height: 1.55;
   color: var(--heading);
 }
 
 .verse figcaption {
   margin-top: 12px;
-  font-size: 13px;
+  font-size: 0.8125rem;
   color: var(--text-3);
 }
 
@@ -575,7 +575,7 @@
     gap: 10px;
   }
   .poke__name {
-    font-size: 19px;
+    font-size: 1.1875rem;
   }
 }
 
@@ -599,7 +599,7 @@
   background: none;
   color: var(--heading);
   font: inherit;
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-weight: 600;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -737,7 +737,7 @@
   position: absolute;
   left: 50%;
   top: -2px;
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-weight: 700;
   color: var(--like);
   pointer-events: none;
@@ -759,5 +759,12 @@
   .like--beat .pulse-heart__heart,
   .like--beat .pulse-heart__pill::after {
     animation: none;
+  }
+}
+
+/* telefono: la barra in basso non copre gli ultimi ingredienti */
+@media (max-width: 859px) {
+  .menu-revealed .poke__sticky {
+    padding-bottom: calc(64px + env(safe-area-inset-bottom));
   }
 }

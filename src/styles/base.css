@@ -167,7 +167,7 @@ body {
   background: var(--bg);
   color: var(--text);
   font-family: var(--font);
-  font-size: 17px;
+  font-size: 1.0625rem;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -webkit-tap-highlight-color: transparent;
@@ -234,7 +234,7 @@ blockquote {
 }
 
 .eyebrow {
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 600;
   color: var(--gold-text);
 }
@@ -398,7 +398,7 @@ blockquote {
   padding: 10px 14px;
   background: var(--brand);
   color: var(--on-brand);
-  font-size: 15px;
+  font-size: 0.9375rem;
   font-weight: 600;
   text-decoration: none;
   transform: translate3d(0, -160%, 0);
@@ -449,13 +449,13 @@ main:focus {
 .site-header__name {
   display: flex;
   flex-direction: column;
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 600;
   color: var(--heading);
 }
 
 .site-header__name small {
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 400;
   color: var(--text-3);
 }
@@ -483,7 +483,7 @@ main:focus {
   background: none;
   color: var(--heading);
   font: inherit;
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 500;
   letter-spacing: 0.14em;
   cursor: pointer;
@@ -555,7 +555,7 @@ main:focus {
   }
   .site-header__nav a {
     padding: 10px 14px;
-    font-size: 15px;
+    font-size: 0.9375rem;
     font-weight: 500;
     color: var(--text-2);
     text-decoration: none;
@@ -576,7 +576,7 @@ main:focus {
   padding: 0 24px;
   border-radius: 999px;
   border: 1.5px solid transparent;
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 600;
   text-decoration: none;
   transition: background-color 0.25s, color 0.25s, border-color 0.25s, transform 0.25s var(--ease-out);
@@ -619,7 +619,7 @@ main:focus {
   border-radius: 999px;
   background: var(--surface);
   color: var(--heading);
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: 500;
 }
 
@@ -705,7 +705,7 @@ main:focus {
   border-radius: 999px;
   background: transparent;
   color: var(--text-3);
-  font-size: 14px;
+  font-size: 0.875rem;
   cursor: pointer;
 }
 
@@ -715,7 +715,7 @@ main:focus {
   padding: 48px var(--gutter) calc(104px + env(safe-area-inset-bottom));
   background: #2b0a0c;
   color: rgba(255, 252, 235, 0.74);
-  font-size: 15px;
+  font-size: 0.9375rem;
   line-height: 1.6;
 }
 
@@ -756,7 +756,7 @@ main:focus {
 
 .site-footer__title {
   margin-bottom: 12px;
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-weight: 600;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -833,7 +833,7 @@ main:focus {
   margin: 40px auto 0;
   padding-top: 22px;
   border-top: 1px solid rgba(255, 252, 235, 0.12);
-  font-size: 13px;
+  font-size: 0.8125rem;
   color: rgba(255, 252, 235, 0.55);
 }
 
@@ -909,7 +909,7 @@ main:focus {
   margin-top: 18px;
   padding-top: 14px;
   border-top: 1px solid var(--line);
-  font-size: 16px;
+  font-size: 1rem;
   line-height: 1.55;
   color: var(--text-2);
 }
@@ -919,7 +919,7 @@ main:focus {
   align-items: center;
   gap: 10px;
   margin-bottom: 6px;
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-weight: 600;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -963,7 +963,7 @@ main:focus {
   border-radius: 999px;
   background: var(--brand);
   color: var(--on-brand);
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 600;
 }
 
@@ -1131,7 +1131,7 @@ main:focus {
   overflow: hidden;
   white-space: nowrap;
   text-align: center;
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: 800;
   line-height: 1;
   letter-spacing: 0.22em;
@@ -1188,4 +1188,81 @@ main:focus {
 
 .partners__link:active {
   opacity: 0.6;
+}
+
+/* ---------- barra di navigazione (telefono) ---------- */
+/* appoggiata al bordo come un indice: fondo pieno, riga sottile, voci in maiuscoletto,
+   un trattino d'oro che scivola sulla sezione in vista */
+.bottom-nav {
+  position: fixed;
+  z-index: 40;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  padding: 0 calc(var(--gutter) - 8px) env(safe-area-inset-bottom);
+  border-top: 1px solid var(--line);
+  background: var(--bg);
+  transform: translate3d(0, 100%, 0);
+  transition: transform 0.55s var(--ease-out);
+}
+
+.bottom-nav.is-shown {
+  transform: translate3d(0, 0, 0);
+}
+
+.bottom-nav a {
+  position: relative;
+  z-index: 1;
+  flex: 1 1 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  text-decoration: none;
+  color: var(--text-3);
+  transition: color 0.3s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.bottom-nav a[aria-current='true'] {
+  color: var(--heading);
+}
+
+.bottom-nav__pill {
+  position: absolute;
+  top: -1px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  opacity: 0;
+  transition: transform 0.45s var(--ease-out), width 0.45s var(--ease-out), opacity 0.3s;
+}
+
+.bottom-nav__pill::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  width: 26px;
+  height: 100%;
+  margin-left: -13px;
+  background: var(--gold);
+}
+
+@media (max-width: 359px) {
+  .bottom-nav a {
+    font-size: 0.625rem;
+    letter-spacing: 0.08em;
+  }
+}
+
+@media (min-width: 860px) {
+  .bottom-nav {
+    display: none;
+  }
 }

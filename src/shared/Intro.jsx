@@ -7,6 +7,9 @@ import { getTheme, t } from './prefs'
 function shouldShow() {
   try {
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) return false
+    // risparmio dati o rete molto lenta: niente video, si entra subito
+    const c = navigator.connection
+    if (c && (c.saveData || /(^|-)2g$/.test(c.effectiveType || ''))) return false
     return !new URLSearchParams(location.search).has('nointro')
   } catch {
     return true
@@ -40,10 +43,17 @@ export default function Intro() {
     // da tastiera: un tasto qualsiasi entra nel sito
     window.addEventListener('keydown', finish, { once: true })
     const v = video.current
+    // dalla seconda apertura in poi l'intro è più veloce
+    try {
+      if (v && localStorage.getItem('gmi-intro-seen')) v.playbackRate = 1.8
+      localStorage.setItem('gmi-intro-seen', '1')
+    } catch {
+      /* modalità privata */
+    }
     // se il telefono blocca l'autoplay (es. risparmio energetico) si chiude dopo un attimo
     const p = v?.play()
     if (p?.catch) p.catch(() => setTimeout(finish, 900))
-    const safety = setTimeout(finish, 5200)
+    const safety = setTimeout(finish, v?.playbackRate > 1 ? 3200 : 5200)
     return () => {
       clearTimeout(safety)
       window.removeEventListener('keydown', finish)

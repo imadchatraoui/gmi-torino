@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { EVENTS } from '../data/events'
 import { CONTACTS, sectionLabel } from '../data/site'
 import { daysUntil, eventStatus, isLive, signupOpen } from '../data/when'
@@ -109,6 +109,32 @@ function WipSection({ id, lang, kind }) {
   )
 }
 
+// indicazioni stradali: Mappe di Apple su iPhone/iPad/Mac, Google Maps altrove
+function directionsUrl(ev) {
+  const q = encodeURIComponent(`${ev.venue}, ${ev.city}`)
+  const apple = typeof navigator !== 'undefined' && /iPhone|iPad|iPod|Macintosh/.test(navigator.userAgent)
+  return apple ? `https://maps.apple.com/?daddr=${q}` : `https://www.google.com/maps/dir/?api=1&destination=${q}`
+}
+
+// alle 13:00 del giorno dell'evento compare un avviso che porta al menu (fino alla fine dell'evento)
+function MenuReveal({ ev, lang }) {
+  const [now, setNow] = useState(() => Date.now())
+  useEffect(() => {
+    const id = setInterval(() => setNow(Date.now()), 30000)
+    return () => clearInterval(id)
+  }, [])
+  if (!ev?.menu?.revealAt) return null
+  const from = new Date(ev.menu.revealAt).getTime()
+  const to = new Date(ev.end ?? ev.start).getTime()
+  if (now < from || now > to) return null
+  return (
+    <a className="menu-reveal theme-ymhs" href="/menu/">
+      <span className="menu-reveal__label">{t({ it: 'È ora di pranzo', en: 'It’s lunchtime' }, lang)}</span>
+      <span className="menu-reveal__text">{t({ it: 'Il menu è svelato →', en: 'The menu is revealed →' }, lang)}</span>
+    </a>
+  )
+}
+
 // Template evento: stessa struttura per ogni evento; cambiano accento, banner, logo e blocchi accesi.
 function EventCard({ ev, lang, theme }) {
   const tr = (v) => t(v, lang)
@@ -152,6 +178,9 @@ function EventCard({ ev, lang, theme }) {
                 {ev.venue}
               </a>
               <span>{ev.city}</span>
+              <a className="event__cal" href={directionsUrl(ev)} target="_blank" rel="noopener noreferrer">
+                {tr({ it: 'Indicazioni', en: 'Directions' })}
+              </a>
             </dd>
           </div>
           {ev.price && (
@@ -280,6 +309,7 @@ export default function Home() {
       <Intro />
       <SiteHeader page="home" />
       <main id="main" tabIndex={-1} className="home">
+        <MenuReveal ev={EVENTS.find((e) => e.menu?.revealAt)} lang={lang} />
         <Hero next={upcoming[0]} lang={lang} theme={theme} />
         <WipSection id="chi-siamo" lang={lang} kind="about" />
         <Events lang={lang} theme={theme} upcoming={upcoming} recent={recent} />

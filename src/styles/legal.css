@@ -8,7 +8,7 @@
 }
 
 .legal__kicker {
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-weight: 600;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -26,7 +26,7 @@
 
 .legal__intro {
   margin-top: 14px;
-  font-size: 18px;
+  font-size: 1.125rem;
   line-height: 1.55;
   color: var(--text);
 }
@@ -35,7 +35,7 @@
   margin-top: 12px;
   padding-bottom: 22px;
   border-bottom: 1px solid var(--line);
-  font-size: 13px;
+  font-size: 0.8125rem;
   color: var(--text-3);
 }
 
@@ -44,7 +44,7 @@
 }
 
 .legal__sec h2 {
-  font-size: 21px;
+  font-size: 1.3125rem;
   font-weight: 600;
   letter-spacing: -0.01em;
   color: var(--heading);
@@ -52,7 +52,7 @@
 
 .legal__sec p,
 .legal__sec li {
-  font-size: 16px;
+  font-size: 1rem;
   line-height: 1.6;
   color: var(--text-2);
 }
@@ -100,14 +100,14 @@
 .legal__table table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 14px;
+  font-size: 0.875rem;
   line-height: 1.45;
 }
 
 .legal__table th {
   padding: 8px 10px 8px 0;
   border-bottom: 1px solid var(--line);
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -124,7 +124,7 @@
 
 .legal__table code {
   font-family: ui-monospace, 'SF Mono', Menlo, monospace;
-  font-size: 12.5px;
+  font-size: 0.7812rem;
   color: var(--heading);
 }
 
@@ -148,7 +148,7 @@
     border: 0;
   }
   .legal__table td:last-child {
-    font-size: 11px;
+    font-size: 0.6875rem;
     font-weight: 600;
     letter-spacing: 0.14em;
     text-transform: uppercase;

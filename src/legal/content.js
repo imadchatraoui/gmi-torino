@@ -16,6 +16,11 @@ export const STORAGE = [
     kind: { it: 'Funzione', en: 'Feature' },
   },
   {
+    key: 'gmi-intro-seen, gmi-menu-pos',
+    what: { it: 'Se hai già visto l’intro (la seconda volta è più breve) e il punto del menu dove eri arrivato.', en: 'Whether you have already seen the intro (it is shorter the second time) and where you were in the menu.' },
+    kind: { it: 'Funzione', en: 'Feature' },
+  },
+  {
     key: 'gmi-menu-svelato',
     what: { it: 'Il menu del pranzo, dopo che è stato svelato, per riaprirlo anche senza rete.', en: 'The lunch menu, once revealed, to open it again without a connection.' },
     kind: { it: 'Funzione', en: 'Feature' },
