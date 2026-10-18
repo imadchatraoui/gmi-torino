@@ -143,8 +143,8 @@
 .swatches {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin-top: 18px;
+  gap: 22px 16px;
+  margin-top: 20px;
   padding: 0;
   list-style: none;
 }
@@ -154,35 +154,33 @@
   flex-direction: column;
   width: 100%;
   height: 100%;
-  padding: 0 0 12px;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
-  background: var(--surface);
+  padding: 0;
+  border: 0;
+  background: none;
   text-align: left;
-  overflow: hidden;
   cursor: pointer;
-  transition: transform 0.25s var(--ease-out);
 }
 
 .swatch button:active {
-  transform: scale(0.98);
+  opacity: 0.7;
 }
 
+/* campione piatto: un rettangolo di colore, una riga sottile, il nome sotto */
 .swatch__chip {
   display: block;
-  height: 64px;
-  border-bottom: 1px solid var(--line);
+  height: 72px;
+  box-shadow: inset 0 0 0 1px var(--line);
 }
 
 .swatch__name {
-  margin: 10px 12px 0;
+  margin: 10px 0 0;
   font-size: 15px;
   font-weight: 600;
   color: var(--heading);
 }
 
 .swatch__hex {
-  margin: 0 12px;
+  margin: 0;
   font-size: 13px;
   font-weight: 500;
   color: var(--gold-text);
@@ -190,7 +188,7 @@
 }
 
 .swatch__role {
-  margin: 6px 12px 0;
+  margin: 6px 0 0;
   font-size: 13px;
   line-height: 1.4;
   color: var(--text-2);
@@ -302,35 +300,25 @@
 .accents {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
+  gap: 14px;
   margin-top: 18px;
   padding: 0;
   list-style: none;
 }
 
 .accent-card {
-  position: relative;
-  isolation: isolate;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  height: 120px;
-  padding: 12px;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
-  background: var(--surface);
-  overflow: hidden;
+  display: grid;
+  gap: 2px;
 }
 
+/* il colore della scheda dell'evento: pieno, con il bordo strappato come nelle schede vere */
 .accent-card::before {
   content: '';
-  position: absolute;
-  z-index: -1;
-  inset: -40% -40% auto auto;
-  width: 120%;
-  aspect-ratio: 1;
-  background: radial-gradient(closest-side, var(--accent), transparent);
-  opacity: 0.45;
+  display: block;
+  height: 64px;
+  margin-bottom: 8px;
+  background: var(--accent);
+  clip-path: polygon(0 6%, 12% 0, 26% 5%, 41% 1%, 57% 6%, 73% 0, 88% 5%, 100% 1%, 100% 94%, 86% 100%, 70% 95%, 54% 100%, 38% 94%, 22% 99%, 9% 94%, 0 99%);
 }
 
 .accent-card__name {
@@ -342,6 +330,7 @@
 .accent-card__hex {
   font-size: 12px;
   color: var(--text-3);
+  font-variant-numeric: tabular-nums;
 }
 
 /* movimento */

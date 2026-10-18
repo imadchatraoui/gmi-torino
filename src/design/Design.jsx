@@ -26,7 +26,7 @@ const COLORS = [
 ]
 
 const ACCENTS = [
-  { name: 'YMHS', hex: '#8F9C7D' },
+  { name: 'YMHS', hex: '#A7AF92' },
   { name: { it: 'Esempio', en: 'Example' }, hex: '#B88A5A' },
   { name: { it: 'Esempio', en: 'Example' }, hex: '#6C86B0' },
 ]
@@ -223,8 +223,8 @@ export default function Design() {
           <h2 id="e-t" className="id-sec__title reveal">{tr({ it: 'Template evento', en: 'Event template' })}</h2>
           <p className="id-sec__lede reveal">
             {tr({
-              it: 'Ogni evento usa la stessa struttura e gli stessi colori. Cambiano solo: un colore d’accento (un alone tenue, mai pieno), il banner, il logo dell’evento e quali blocchi mostrare: info, iscrizione, programma, menu. Un giorno dopo la fine l’evento passa da solo in Archivio.',
-              en: 'Every event uses the same structure and colours. Only these change: one accent colour (a soft glow, never solid), the banner, the event logo and which blocks to show: info, sign-up, programme, menu. One day after it ends, the event moves to the Archive by itself.',
+              it: 'Ogni evento usa la stessa struttura. Cambiano solo: il colore della sua scheda (uno solo, uguale in cima alla pagina e in Eventi: per lo YMHS il salvia delle locandine), il banner, il logo dell’evento, i loghi di chi lo organizza con noi e quali blocchi mostrare: info, iscrizione, programma, menu. Un giorno dopo la fine l’evento passa da solo in Archivio.',
+              en: 'Every event uses the same structure. Only these change: the colour of its card (just one, the same at the top of the page and in Events: for YMHS the sage of the posters), the banner, the event logo, the logos of those organising it with us and which blocks to show: info, sign-up, programme, menu. One day after it ends, the event moves to the Archive by itself.',
             })}
           </p>
           <ul className="accents">
@@ -241,8 +241,8 @@ export default function Design() {
           <h2 id="mo-t" className="id-sec__title reveal">{tr({ it: 'Movimento', en: 'Motion' })}</h2>
           <p className="id-sec__lede reveal">
             {tr({
-              it: 'Un solo momento forte per pagina: all’apertura il logo che si costruisce, nel menu la ciotola che si apre. Si animano solo posizione e trasparenza, così resta fluido anche su telefoni economici. In più, piccoli dettagli: il titolo della home che scorre piano nei colori del logo, il cuore dei like che pulsa. Con “riduci movimento” tutto è fermo.',
-              en: 'One strong moment per page: the logo building itself when the site opens, the bowl opening on the menu. Only position and opacity are animated, so it stays smooth on cheap phones. Plus a few small touches: the home title slowly flowing through the logo colours, the like heart pulsing. With “reduce motion” everything stands still.',
+              it: 'Un solo momento forte per pagina: all’apertura il logo che si costruisce, nel menu la ciotola che si apre. Si animano solo posizione e trasparenza, così resta fluido anche su telefoni economici. In più, piccoli dettagli: il titolo della home che scorre piano nei colori del logo, «in sha Allah» che si alterna con l’arabo e la traduzione con una semplice dissolvenza, il coperchio che si muove appena mentre il menu è ancora segreto, il cuore dei like che pulsa. Con “riduci movimento” tutto è fermo.',
+              en: 'One strong moment per page: the logo building itself when the site opens, the bowl opening on the menu. Only position and opacity are animated, so it stays smooth on cheap phones. Plus a few small touches: the home title slowly flowing through the logo colours, “in sha Allah” alternating with the Arabic and the translation in a simple fade, the lid moving slightly while the menu is still secret, the like heart pulsing. With “reduce motion” everything stands still.',
             })}
           </p>
           <div className="bowl-demo reveal">

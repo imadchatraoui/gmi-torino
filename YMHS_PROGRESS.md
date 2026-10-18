@@ -262,6 +262,9 @@ Verificato: contrasti AA, tocchi della barra in basso, scroll fluido.
   Ora è stampato direttamente sul cartone (fusione "moltiplica"), più grande, con l'etichetta sotto in maiuscoletto.
   Rifatta anche l'anteprima del link del menu.
 - Dati dell'organizzazione per Google (logo, email, Instagram, GMI nazionale) insieme a quelli dell'evento.
+- /design allineato: campioni di colore piatti (rettangolo pieno + nome, niente schede arrotondate), colori evento
+  come pieni con il bordo strappato (YMHS = salvia #A7AF92, non più un alone sfocato); testi di "Template evento" e
+  "Movimento" aggiornati (un colore solo per evento, loghi dei partner, in sha Allah che si alterna, coperchio).
 
 ## Manca / idee per le prossime run
 - [ ] Provare su un iPhone vero (sul Mac non c'è Xcode, quindi niente simulatore: tutto verificato con Chrome in
