@@ -485,11 +485,11 @@ export default function Admin() {
           </div>
           <p className="adm-muted">
             Link da aprire una volta: <strong>gmitorino.org/corposunnah</strong> ·{' '}
-            {data.corpoUsed ? `già aperto il ${new Date(data.corpoUsed).toLocaleString('it-IT', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}` : 'non ancora aperto'}
+            {data.corpoOpens ? `aperto ${Math.min(data.corpoOpens.used, data.corpoOpens.max)} volte su ${data.corpoOpens.max}` : ''}
           </p>
-          {data.corpoUsed && (
+          {data.corpoOpens?.used > 0 && (
             <div className="adm-row">
-              <button type="button" className="adm-btn adm-btn--ghost" disabled={busy} onClick={() => run({ action: 'resetCorpo' }, 'Link riattivato: si può riaprire una volta')}>
+              <button type="button" className="adm-btn adm-btn--ghost" disabled={busy} onClick={() => run({ action: 'resetCorpo' }, 'Link riattivato: di nuovo 3 aperture')}>
                 Riattiva il link
               </button>
             </div>

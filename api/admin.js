@@ -6,7 +6,7 @@
 //   POST { action: 'resetLikes' } -> azzera i mi piace
 //   POST { action: 'resetCorpo' } -> riattiva il link da aprire una volta (gmitorino.org/corposunnah)
 import { POKES } from '../server/menu-data.js'
-import { ONCE_KEY } from './corposunnah.js'
+import { ONCE_KEY, OPENS } from './corposunnah.js'
 import { clientIp, getMenu, getSettings, readBody, redis, redisConfig, resetMenu, saveMenu, saveSettings, send, sha256 } from '../server/store.js'
 
 const PASSWORD_HASH = 'a1dd395c19f3a1f7ff0e6bfe3ee6028e4373b41085a6da776ab02a8baf129abb'
@@ -46,7 +46,7 @@ export default async function handler(req, res) {
       res.setHeader('Allow', 'GET, POST')
       return send(res, 405, { error: 'method not allowed' })
     }
-    return send(res, 200, { settings: await getSettings({ fresh: true }), likes: await counts(cfg), menu: await getMenu(POKES), corpoUsed: Number(await redis(cfg, ['GET', ONCE_KEY])) || null, now: Date.now() })
+    return send(res, 200, { settings: await getSettings({ fresh: true }), likes: await counts(cfg), menu: await getMenu(POKES), corpoOpens: { used: Number(await redis(cfg, ['GET', ONCE_KEY])) || 0, max: OPENS }, now: Date.now() })
   } catch {
     return send(res, 502, { error: 'Database non raggiungibile, riprova.' })
   }

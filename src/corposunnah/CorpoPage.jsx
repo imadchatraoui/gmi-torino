@@ -6,7 +6,7 @@ import SiteHeader from '../shared/SiteHeader'
 import { scrollToEl } from '../shared/smoothScroll'
 
 // gmitorino.org/corposunnah: il menu in anteprima per Umaima di Corpo e Sunnah, che l'ha pensato con noi.
-// Il link si apre una volta sola: il server consegna il menu alla prima richiesta e poi mai più
+// Il link si apre poche volte (OPENS in api/corposunnah.js): poi il server non consegna più il menu
 // (api/corposunnah.js). Da /admin si può riattivare.
 const MenuRevealed = lazy(() => import('../menu/MenuRevealed'))
 const EV = eventById('ymhs')
@@ -18,13 +18,17 @@ export default function CorpoPage() {
   const collab = EV.menu.collab
   const [state, setState] = useState('checking') // checking | ready | opening | open | used | error
   const [options, setOptions] = useState(null)
+  const [left, setLeft] = useState(1)
   const menuRef = useRef(null)
 
   const check = () => {
     setState('checking')
     fetch('/api/corposunnah', { cache: 'no-store' })
       .then((r) => (r.ok ? r.json() : Promise.reject()))
-      .then((d) => setState(d.used ? 'used' : 'ready'))
+      .then((d) => {
+        setLeft(d.left ?? 1)
+        setState(d.used ? 'used' : 'ready')
+      })
       .catch(() => setState('error'))
   }
   useEffect(check, [])
@@ -41,6 +45,7 @@ export default function CorpoPage() {
       } catch {
         /* niente */
       }
+      setLeft(d.left ?? 0)
       setOptions(d.options)
       setState('open')
     } catch {
@@ -95,15 +100,21 @@ export default function CorpoPage() {
         {(state === 'ready' || state === 'opening') && (
           <section className="cs-once" style={{ clipPath: CLIP }} aria-labelledby="cs-once-title">
             <p className="cs-once__mark" aria-hidden="true">
-              1×
+              {left}×
             </p>
             <h2 id="cs-once-title" className="cs-once__title">
-              {tr({ it: 'Questo link si apre una volta sola', en: 'This link opens only once' })}
+              {left > 1
+                ? tr({ it: `Questo link si apre ancora ${left} volte`, en: `This link opens ${left} more times` })
+                : tr({ it: 'Questo link si apre una volta sola', en: 'This link opens only once' })}
             </h2>
             <p className="cs-once__text">
               {tr({
-                it: 'Quando premi il pulsante il menu si apre qui sotto. Da quel momento il link non funziona più: tieni la pagina aperta finché non hai finito di guardarlo.',
-                en: 'When you press the button the menu opens below. From then on the link stops working: keep this page open until you have finished.',
+                it: left > 1
+                  ? 'Quando premi il pulsante il menu si apre qui sotto e conta come un\'apertura: tieni la pagina aperta finché non hai finito di guardarlo.'
+                  : 'Quando premi il pulsante il menu si apre qui sotto. Da quel momento il link non funziona più: tieni la pagina aperta finché non hai finito di guardarlo.',
+                en: left > 1
+                  ? 'When you press the button the menu opens below and counts as one opening: keep this page open until you have finished.'
+                  : 'When you press the button the menu opens below. From then on the link stops working: keep this page open until you have finished.',
               })}
             </p>
             <button type="button" className="btn btn--primary cs-once__btn" onClick={openMenu} disabled={state === 'opening'}>
@@ -121,8 +132,8 @@ export default function CorpoPage() {
             </h2>
             <p className="cs-once__text">
               {tr({
-                it: 'Si poteva aprire una volta sola. Se ti serve rivederlo, scrivi a GMI Torino: lo riattiviamo noi.',
-                en: 'It could be opened only once. If you need to see it again, write to GMI Torino and we will reactivate it.',
+                it: 'Le aperture sono finite. Se ti serve rivederlo, scrivi a GMI Torino: lo riattiviamo noi.',
+                en: 'No openings left. If you need to see it again, write to GMI Torino and we will reactivate it.',
               })}
             </p>
           </section>
@@ -140,7 +151,9 @@ export default function CorpoPage() {
         {state === 'open' && options && (
           <div ref={menuRef} className="cs-menu">
             <p className="cs-open-note">
-              {tr({ it: 'Il link ora è chiuso: il menu resta qui finché tieni aperta la pagina.', en: 'The link is now closed: the menu stays here while this page is open.' })}
+              {left > 0
+                ? tr({ it: `Aperture rimaste: ${left}. Il menu resta qui finché tieni aperta la pagina.`, en: `Openings left: ${left}. The menu stays here while this page is open.` })
+                : tr({ it: 'Il link ora è chiuso: il menu resta qui finché tieni aperta la pagina.', en: 'The link is now closed: the menu stays here while this page is open.' })}
             </p>
             <Suspense fallback={<div className="menu-loading" />}>
               <MenuRevealed options={options} />
