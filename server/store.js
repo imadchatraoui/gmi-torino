@@ -14,6 +14,7 @@ export const DEFAULTS = {
   notice: { on: false, it: '', en: '', tone: 'brand' }, // striscia in alto su tutte le pagine
   likesOn: true, // cuori dei mi piace nel menu
   party: { at: 0, emoji: '🎉' }, // pioggia di emoji su tutti i telefoni aperti
+  collab: { on: true, it: '', en: '' }, // sezione "ideato in collaborazione con" nel menu (testo vuoto = quello di events.js)
   event: {}, // testi dell'evento cambiati da /admin (data, orari, luogo, quota, iscrizioni)
 }
 
@@ -54,7 +55,7 @@ async function readSettings() {
   try {
     const raw = await redis(cfg, ['GET', SETTINGS_KEY])
     const saved = raw ? JSON.parse(raw) : {}
-    return { ...DEFAULTS, ...saved, notice: { ...DEFAULTS.notice, ...(saved.notice || {}) }, party: { ...DEFAULTS.party, ...(saved.party || {}) } }
+    return { ...DEFAULTS, ...saved, notice: { ...DEFAULTS.notice, ...(saved.notice || {}) }, party: { ...DEFAULTS.party, ...(saved.party || {}) }, collab: { ...DEFAULTS.collab, ...(saved.collab || {}) } }
   } catch {
     return { ...DEFAULTS }
   }
@@ -80,6 +81,9 @@ export async function saveSettings(patch) {
     }
   }
   if (typeof patch.likesOn === 'boolean') next.likesOn = patch.likesOn
+  if (patch.collab && typeof patch.collab === 'object') {
+    next.collab = { on: patch.collab.on !== false, it: text(patch.collab.it), en: text(patch.collab.en) }
+  }
   if (patch.party && PARTY.has(patch.party.emoji)) next.party = { at: Date.now(), emoji: patch.party.emoji }
   if (patch.event && typeof patch.event === 'object') {
     const e = patch.event

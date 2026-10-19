@@ -119,6 +119,7 @@ export default function Admin() {
   const [when, setWhen] = useState('')
   const [notice, setNotice] = useState({ on: false, it: '', en: '', tone: 'brand' })
   const [evt, setEvt] = useState({})
+  const [collab, setCollab] = useState({ on: true, it: '', en: '' })
   const [confirmReset, setConfirmReset] = useState(false)
   const [menu, setMenu] = useState(null)
   const [menuDirty, setMenuDirty] = useState(false)
@@ -130,6 +131,7 @@ export default function Admin() {
     setData(d)
     setWhen(toLocalInput(d.settings.revealAt))
     setNotice(d.settings.notice)
+    setCollab(d.settings.collab || { on: true, it: '', en: '' })
     setEvt((cur) => (evtDirty.current ? cur : d.settings.event || {}))
     setMenu((m) => (m && menuDirtyRef.current ? m : d.menu))
   }
@@ -451,6 +453,35 @@ export default function Admin() {
                 {e}
               </button>
             ))}
+          </div>
+        </section>
+
+        <section className="adm-card">
+          <p className="adm-label">Collaborazione · Corpo e Sunnah</p>
+          <Segmented
+            label="Sezione collaborazione"
+            value={s.collab?.on === false ? 'off' : 'on'}
+            onChange={(v) => run({ settings: { collab: { ...collab, on: v === 'on' } } }, v === 'on' ? 'Sezione visibile' : 'Sezione nascosta')}
+            options={[
+              { v: 'on', l: 'Visibile' },
+              { v: 'off', l: 'Nascosta' },
+            ]}
+          />
+          <label className="adm-field" htmlFor="adm-cit">
+            <span>Testo (italiano)</span>
+            <input id="adm-cit" type="text" maxLength={220} placeholder="Il menu del pranzo è stato ideato insieme a Umaima di Corpo e Sunnah…" value={collab.it} onChange={(e) => setCollab({ ...collab, it: e.target.value })} />
+          </label>
+          <label className="adm-field" htmlFor="adm-cen">
+            <span>Testo (inglese, facoltativo)</span>
+            <input id="adm-cen" type="text" maxLength={220} value={collab.en} onChange={(e) => setCollab({ ...collab, en: e.target.value })} />
+          </label>
+          <div className="adm-row">
+            <button type="button" className="adm-btn adm-btn--primary" disabled={busy} onClick={() => run({ settings: { collab } }, 'Testo aggiornato')}>
+              Salva testo
+            </button>
+            <button type="button" className="adm-btn adm-btn--ghost" disabled={busy} onClick={() => run({ settings: { collab: { on: collab.on, it: '', en: '' } } }, 'Testo originale')}>
+              Testo originale
+            </button>
           </div>
         </section>
 

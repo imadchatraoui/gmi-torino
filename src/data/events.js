@@ -41,6 +41,18 @@ export const EVENTS = [
     blocks: { info: true, signup: true, program: false, menu: true },
     menu: {
       meal: { it: 'Il pranzo', en: 'Lunch' },
+      // chi ha ideato il menu con noi: sezione prima delle bowl (testo modificabile da /admin)
+      collab: {
+        name: 'Corpo e Sunnah',
+        logo: '/eventi/ymhs/partner/corpo-e-sunnah.svg',
+        ratio: 3627 / 2880,
+        instagram: 'https://www.instagram.com/corpoesunnah/',
+        handle: '@corpoesunnah',
+        text: {
+          it: 'Il menu del pranzo è stato ideato insieme a Umaima di Corpo e Sunnah, che ringraziamo per il suo lavoro.',
+          en: 'The lunch menu was created together with Umaima of Corpo e Sunnah, whom we thank for her work.',
+        },
+      },
       // il menu è una sorpresa: i piatti (server/menu-data.js) arrivano al telefono solo da quest'ora
       revealAt: '2026-10-25T13:00:00+01:00',
       note: {

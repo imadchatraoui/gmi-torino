@@ -13,5 +13,6 @@ export default async function handler(req, res) {
     likesOn: s.likesOn !== false,
     party: s.party,
     event: s.event || {},
+    collab: s.collab,
   })
 }

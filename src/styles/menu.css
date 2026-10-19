@@ -119,6 +119,97 @@
   min-height: 36px;
 }
 
+/* ---------- ideato in collaborazione con (prima delle bowl) ---------- */
+.collab {
+  --collab: #534739;
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  max-width: 30rem;
+  margin: 8px auto 28px;
+  padding: 22px var(--gutter) 24px;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  text-align: center;
+}
+
+:root[data-theme='dark'] .collab {
+  --collab: #e9dfcf;
+}
+
+.collab__label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--label);
+}
+
+.collab__label::before,
+.collab__label::after {
+  content: '';
+  width: 22px;
+  height: 1px;
+  background: var(--ornament);
+}
+
+.collab__logo {
+  display: block;
+  padding: 4px;
+}
+
+.collab__logo span {
+  display: block;
+  height: 96px;
+  aspect-ratio: var(--r);
+  background: var(--collab);
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+}
+
+.collab__text {
+  max-width: 26em;
+  font-size: 1rem;
+  line-height: 1.55;
+  color: var(--text-2);
+}
+
+.collab__ig {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  color: var(--heading);
+  text-decoration: none;
+}
+
+.collab__ig svg {
+  width: 20px;
+  height: 20px;
+  flex: none;
+}
+
+.collab__ig span {
+  padding-bottom: 2px;
+  border-bottom: 1px solid var(--ornament);
+}
+
+.collab__ig strong {
+  font-weight: 600;
+}
+
+.collab__logo:active,
+.collab__ig:active {
+  opacity: 0.6;
+}
+
 /* ---------- attesa: il menu è una sorpresa fino all'ora di pranzo ---------- */
 .menu-loading {
   min-height: 40svh;

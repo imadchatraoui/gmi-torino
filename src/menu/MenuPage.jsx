@@ -2,6 +2,7 @@ import { lazy, Suspense, useEffect, useState } from 'react'
 import { eventById } from '../data/events'
 import PokeIllustration from '../poke/PokeIllustration'
 import Intro from '../shared/Intro'
+import Collab from './Collab'
 import { useLiveEvent } from '../shared/liveSettings'
 import { useMenu } from '../shared/menuApi'
 import { t, usePrefs } from '../shared/prefs'
@@ -120,6 +121,8 @@ export default function MenuPage() {
           </p>
           )}
         </section>
+
+        <Collab collab={ev.menu.collab} lang={lang} />
 
         {open ? (
           <Suspense fallback={<div className="menu-loading" />}>
