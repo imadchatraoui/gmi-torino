@@ -373,11 +373,12 @@
 
 /* le due proposte: pezzi di carta salvia strappata */
 .choice {
+  --bowl: clamp(112px, 37vw, 156px); /* la bowl grande: è la prima cosa che si guarda */
   display: grid;
-  grid-template-columns: 104px 1fr;
+  grid-template-columns: var(--bowl) 1fr;
   align-items: center;
-  gap: 14px;
-  padding: 18px 16px 18px 10px;
+  gap: 12px;
+  padding: 16px 14px 16px 6px;
   background: var(--card);
   color: var(--on-card);
   text-decoration: none;
@@ -395,8 +396,8 @@
 
 .choice__bowl {
   display: block;
-  width: 104px;
-  height: 104px;
+  width: var(--bowl);
+  height: var(--bowl);
 }
 
 .choice__bowl .poke-art {
@@ -417,9 +418,8 @@
   text-transform: uppercase;
 }
 
-.choice__label,
-.choice__title {
-  padding-right: 48px; /* spazio per il cuore in alto a destra */
+.choice__label {
+  padding-right: 52px; /* spazio per il cuore in alto a destra */
 }
 
 .choice__title {
@@ -635,6 +635,25 @@
   display: none;
 }
 
+/* telefoni con le barre di Safari aperte: meno spazio al titolo e alla lista, più alla bowl */
+@media (max-height: 780px) {
+  .poke__sticky {
+    padding-top: 10px;
+  }
+  .poke__title {
+    font-size: clamp(1.5rem, 6.6vw, 2rem);
+  }
+  .poke__stage {
+    margin: 4px 0 6px;
+  }
+  .poke__list li {
+    min-height: 29px;
+  }
+  .poke__name {
+    font-size: 0.9375rem;
+  }
+}
+
 /* schermi bassi (es. iPhone SE) */
 @media (max-height: 640px) {
   .poke__title {
@@ -698,11 +717,7 @@
     grid-template-columns: 1fr 1fr;
   }
   .choice {
-    grid-template-columns: 140px 1fr;
-  }
-  .choice__bowl {
-    width: 140px;
-    height: 140px;
+    --bowl: 156px;
   }
   .poke__sticky {
     display: grid;
