@@ -88,7 +88,7 @@ export default function BottomNav({ items = SECTIONS, heroId = 'top', label = 'S
             e.preventDefault()
             // il tocco vince subito: l'indicatore va sulla sezione scelta e resta lì durante lo scorrimento
             setActive(s.id)
-            lockUntil.current = performance.now() + 1400
+            lockUntil.current = performance.now() + 1000
             scrollToEl(el, { onDone: () => (lockUntil.current = performance.now() + 150) })
             history.replaceState(null, '', `#${s.id}`)
           }}

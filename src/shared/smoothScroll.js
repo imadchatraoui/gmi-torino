@@ -9,15 +9,29 @@ const maxY = () => document.documentElement.scrollHeight - innerHeight
 const clamp = (v) => Math.max(0, Math.min(maxY(), v))
 const easeInOut = (t) => (t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2)
 
+const easeInQuad = (t) => t * t
+const easeOutCubic = (t) => 1 - (1 - t) ** 3
+
 let jumpFrame = 0
 
 function stopJump() {
-  if (jumpFrame) {
-    document.documentElement.classList.remove('is-jumping')
-    dispatchEvent(new Event('scroll'))
-  }
   cancelAnimationFrame(jumpFrame)
   jumpFrame = 0
+}
+
+// un tratto di scivolata da `from` a `to`, poi `next`
+function glide(from, to, dur, ease, next) {
+  const t0 = performance.now()
+  const tick = (now) => {
+    const k = Math.min(1, (now - t0) / dur)
+    scrollTo({ top: from + (to - from) * ease(k), behavior: 'instant' })
+    if (k < 1) jumpFrame = requestAnimationFrame(tick)
+    else {
+      jumpFrame = 0
+      next()
+    }
+  }
+  jumpFrame = requestAnimationFrame(tick)
 }
 
 // scivolata verso una posizione; si interrompe se chi legge tocca o usa la rotella
@@ -26,30 +40,28 @@ export function scrollToY(y, { onDone } = {}) {
   const to = clamp(y)
   const from = scrollY
   const dist = to - from
+  const done = () => onDone?.()
   if (reduced() || Math.abs(dist) < 2) {
     scrollTo({ top: to, behavior: 'instant' })
-    onDone?.()
+    done()
     return
   }
-  // salto lungo (es. da un'opzione all'altra del menu): la pagina scorre davvero, ma le animazioni legate
-  // allo scroll (la ciotola) restano ferme durante il viaggio, così non si vedono andare a velocità folle
-  const long = Math.abs(dist) > innerHeight * 1.5
-  if (long) document.documentElement.classList.add('is-jumping')
-  // più lontano = un po' più lungo, ma mai lento
-  const dur = long ? Math.min(1500, 700 + Math.sqrt(Math.abs(dist)) * 8) : Math.min(1100, 420 + Math.sqrt(Math.abs(dist)) * 9)
-  const t0 = performance.now()
-  const tick = (now) => {
-    const k = Math.min(1, (now - t0) / dur)
-    scrollTo({ top: from + dist * easeInOut(k), behavior: 'instant' })
-    if (k < 1) jumpFrame = requestAnimationFrame(tick)
-    else {
-      jumpFrame = 0
-      document.documentElement.classList.remove('is-jumping')
-      dispatchEvent(new Event('scroll'))
-      onDone?.()
-    }
+  const seg = innerHeight * 0.75
+  if (Math.abs(dist) <= seg * 2.5) {
+    // salto corto: una sola scivolata con accelerazione e frenata
+    glide(from, to, Math.min(900, 380 + Math.sqrt(Math.abs(dist)) * 8), easeInOut, done)
+    return
   }
-  jumpFrame = requestAnimationFrame(tick)
+  // salto lungo (es. da un'opzione all'altra del menu, "Torna su"): parte, prende velocità,
+  // salta il tratto in mezzo mentre va forte (a quella velocità non si nota) e frena sull'arrivo.
+  // Le velocità dei due tratti combaciano, così sembra uno scroll unico e veloce; la ciotola
+  // si anima normalmente lungo l'ultimo tratto invece di comparire già pronta.
+  const dir = Math.sign(dist)
+  glide(from, from + dir * seg, 260, easeInQuad, () => {
+    const start = to - dir * seg
+    scrollTo({ top: start, behavior: 'instant' })
+    glide(start, to, 390, easeOutCubic, done)
+  })
 }
 
 const headerOffset = () => document.querySelector('.site-header')?.offsetHeight ?? 0

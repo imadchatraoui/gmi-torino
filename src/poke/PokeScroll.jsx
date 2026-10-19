@@ -101,8 +101,6 @@ export default function PokeScroll({ poke, skipTo, likeIds }) {
     // Gli eventi scroll arrivano già una volta per frame (sono allineati al rendering),
     // quindi si aggiorna direttamente: una lettura di layout, poi solo scritture.
     const update = () => {
-      // durante un salto lungo (smoothScroll.js) la ciotola resta ferma: si aggiorna all'arrivo
-      if (document.documentElement.classList.contains('is-jumping')) return
       const rect = section.getBoundingClientRect()
       // corsa fissa: lo stage può allungarsi o accorciarsi con le barre di Safari, l'animazione no
       const range = rect.height - (fullH - stickTop)
