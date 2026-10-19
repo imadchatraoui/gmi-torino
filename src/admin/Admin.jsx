@@ -483,6 +483,17 @@ export default function Admin() {
               Testo originale
             </button>
           </div>
+          <p className="adm-muted">
+            Link da aprire una volta: <strong>gmitorino.org/corposunnah</strong> ·{' '}
+            {data.corpoUsed ? `già aperto il ${new Date(data.corpoUsed).toLocaleString('it-IT', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}` : 'non ancora aperto'}
+          </p>
+          {data.corpoUsed && (
+            <div className="adm-row">
+              <button type="button" className="adm-btn adm-btn--ghost" disabled={busy} onClick={() => run({ action: 'resetCorpo' }, 'Link riattivato: si può riaprire una volta')}>
+                Riattiva il link
+              </button>
+            </div>
+          )}
         </section>
 
         <section className="adm-card">

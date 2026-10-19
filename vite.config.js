@@ -5,6 +5,7 @@ import likesHandler from './api/likes.js'
 import menuHandler from './api/menu.js'
 import settingsHandler from './api/settings.js'
 import adminHandler from './api/admin.js'
+import corpoHandler from './api/corposunnah.js'
 import { EVENTS } from './src/data/events.js'
 import { eventIcs } from './src/data/ics.js'
 import { eventJsonLd, organizationJsonLd, robotsTxt, sitemapXml } from './src/data/seo.js'
@@ -28,6 +29,7 @@ function devLikes() {
     if (op === 'EXPIRE') return 1
     if (op === 'GET') return store.has(command[1]) ? String(store.get(command[1])) : null
     if (op === 'SET') {
+      if (command.includes('NX') && store.has(command[1])) return null
       store.set(command[1], command[2])
       return 'OK'
     }
@@ -43,7 +45,7 @@ function devLikes() {
     }
     return null
   }
-  const handlers = { '/api/likes': likesHandler, '/api/menu': menuHandler, '/api/settings': settingsHandler, '/api/admin': adminHandler }
+  const handlers = { '/api/likes': likesHandler, '/api/menu': menuHandler, '/api/settings': settingsHandler, '/api/admin': adminHandler, '/api/corposunnah': corpoHandler }
   const middleware = (req, res, next) => {
     const route = Object.keys(handlers).find((r) => req.url === r || req.url.startsWith(`${r}?`))
     if (!route) return next()
@@ -134,6 +136,7 @@ export default defineConfig({
         design: resolve(import.meta.dirname, 'design/index.html'),
         privacy: resolve(import.meta.dirname, 'privacy/index.html'),
         admin: resolve(import.meta.dirname, 'admin/index.html'),
+        corposunnah: resolve(import.meta.dirname, 'corposunnah/index.html'),
         notFound: resolve(import.meta.dirname, '404.html'),
       },
     },
