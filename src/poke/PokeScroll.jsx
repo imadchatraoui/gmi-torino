@@ -6,6 +6,31 @@ import PokeIllustration from './PokeIllustration'
 import VideoScrub from './VideoScrub'
 import { buildTimeline, clamp01 } from './timeline'
 
+// Altezza visibile dello schermo per lo stage. Su iPhone cambia quando Safari apre/chiude le barre:
+// si aggiorna solo quando lo scroll si ferma, così la bowl non trema mentre si scorre.
+let viewportTracked = false
+function trackViewport() {
+  if (viewportTracked || typeof window === 'undefined') return
+  viewportTracked = true
+  const root = document.documentElement
+  let last = 0
+  let timer = 0
+  const apply = () => {
+    timer = 0
+    const h = window.innerHeight
+    if (Math.abs(h - last) < 2) return
+    last = h
+    root.style.setProperty('--app-h', `${h}px`)
+  }
+  const later = () => {
+    clearTimeout(timer)
+    timer = setTimeout(apply, 350)
+  }
+  apply()
+  window.addEventListener('resize', later)
+  window.addEventListener('scroll', () => timer && later(), { passive: true })
+}
+
 const reducedMotion = () =>
   typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
@@ -28,6 +53,7 @@ export default function PokeScroll({ poke, skipTo, likeIds }) {
   const tl = useMemo(() => buildTimeline(items.length, media?.cues), [items.length, media?.cues])
 
   useEffect(() => {
+    trackViewport()
     const section = sectionRef.current
     const sticky = stickyRef.current
     let active = -2

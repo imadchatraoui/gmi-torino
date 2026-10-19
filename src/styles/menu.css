@@ -447,7 +447,7 @@
   position: relative;
   height: calc((var(--poke-screens) + 1) * (100svh - var(--header-h)));
   /* cresce insieme allo stage quando Safari chiude le barre: lo scroll resta allineato all'animazione */
-  height: calc(var(--poke-screens) * (100svh - var(--header-h)) + 100dvh - var(--header-h));
+  height: calc(var(--poke-screens) * (100svh - var(--header-h)) + var(--app-h, 100svh) - var(--header-h));
   transition: height 0.45s var(--ease-out);
 }
 
@@ -459,13 +459,14 @@
   position: sticky;
   top: calc(var(--header-h) + env(safe-area-inset-top));
   height: calc(100svh - var(--header-h) - env(safe-area-inset-top));
-  /* tutto lo schermo visibile: quando Safari chiude le barre la bowl si allarga (senza scatti) */
-  height: calc(100dvh - var(--header-h) - env(safe-area-inset-top));
+  /* tutto lo schermo visibile: --app-h (PokeScroll.jsx) cambia solo a scroll fermo, mai mentre il dito si muove */
+  height: calc(var(--app-h, 100svh) - var(--header-h) - env(safe-area-inset-top));
   transition: height 0.45s var(--ease-out);
   display: flex;
   flex-direction: column;
   padding: 16px var(--gutter) calc(14px + env(safe-area-inset-bottom));
   overflow: hidden;
+  background: var(--bg); /* fondo pieno: i cerchi della carta non scorrono dietro la bowl ferma */
 }
 
 .poke__bar {
