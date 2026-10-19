@@ -422,6 +422,14 @@
   padding-right: 52px; /* spazio per il cuore in alto a destra */
 }
 
+/* anche la prima riga del titolo lascia il posto al cuore (le altre righe usano tutta la larghezza) */
+.choice__title::before {
+  content: '';
+  float: right;
+  width: 50px;
+  height: 0.6em;
+}
+
 .choice__title {
   font-size: 1.3125rem;
   line-height: 1.15;
@@ -438,6 +446,9 @@
 .poke {
   position: relative;
   height: calc((var(--poke-screens) + 1) * (100svh - var(--header-h)));
+  /* cresce insieme allo stage quando Safari chiude le barre: lo scroll resta allineato all'animazione */
+  height: calc(var(--poke-screens) * (100svh - var(--header-h)) + 100dvh - var(--header-h));
+  transition: height 0.45s var(--ease-out);
 }
 
 .poke + .poke {
@@ -448,6 +459,9 @@
   position: sticky;
   top: calc(var(--header-h) + env(safe-area-inset-top));
   height: calc(100svh - var(--header-h) - env(safe-area-inset-top));
+  /* tutto lo schermo visibile: quando Safari chiude le barre la bowl si allarga (senza scatti) */
+  height: calc(100dvh - var(--header-h) - env(safe-area-inset-top));
+  transition: height 0.45s var(--ease-out);
   display: flex;
   flex-direction: column;
   padding: 16px var(--gutter) calc(14px + env(safe-area-inset-bottom));
