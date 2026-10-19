@@ -120,50 +120,59 @@
 }
 
 /* ---------- ideato in collaborazione con (prima delle bowl) ---------- */
+/* un foglio di carta strappata nei toni del suo marchio (marrone), al centro della pagina */
 .collab {
   --collab: #534739;
   display: grid;
   justify-items: center;
   gap: 12px;
   max-width: 30rem;
-  margin: 8px auto 28px;
-  padding: 22px var(--gutter) 24px;
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
+  margin: 10px var(--gutter) 34px;
+  padding: 30px 22px 30px;
+  background: color-mix(in srgb, var(--surface) 93%, #534739);
   text-align: center;
+}
+
+@media (min-width: 560px) {
+  .collab {
+    margin-left: auto;
+    margin-right: auto;
+  }
 }
 
 :root[data-theme='dark'] .collab {
   --collab: #e9dfcf;
+  background: color-mix(in srgb, var(--surface) 95%, #e9dfcf);
 }
 
 .collab__label {
-  display: flex;
-  align-items: center;
-  gap: 12px;
   font-size: 0.6875rem;
   font-weight: 600;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
+  white-space: nowrap;
   color: var(--label);
 }
 
-.collab__label::before,
-.collab__label::after {
-  content: '';
-  width: 22px;
+.collab__rule {
+  width: 44px;
   height: 1px;
   background: var(--ornament);
 }
 
 .collab__logo {
   display: block;
-  padding: 4px;
+  padding: 6px;
+  transition: transform 0.4s var(--ease-out);
+}
+
+.collab__logo:active {
+  transform: scale(0.97);
 }
 
 .collab__logo span {
   display: block;
-  height: 96px;
+  height: 112px;
   aspect-ratio: var(--r);
   background: var(--collab);
   -webkit-mask-size: contain;
@@ -175,7 +184,7 @@
 }
 
 .collab__text {
-  max-width: 26em;
+  max-width: 24em;
   font-size: 1rem;
   line-height: 1.55;
   color: var(--text-2);
@@ -186,28 +195,84 @@
   align-items: center;
   gap: 8px;
   min-height: 44px;
-  color: var(--heading);
+  margin-top: 4px;
+  padding: 0 18px 0 14px;
+  border: 1px solid color-mix(in srgb, var(--collab) 35%, transparent);
+  border-radius: 999px;
+  font-weight: 600;
+  color: var(--collab);
   text-decoration: none;
+  transition:
+    background-color 0.2s,
+    transform 0.2s var(--ease-out);
 }
 
 .collab__ig svg {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   flex: none;
 }
 
-.collab__ig span {
-  padding-bottom: 2px;
-  border-bottom: 1px solid var(--ornament);
-}
-
-.collab__ig strong {
-  font-weight: 600;
-}
-
-.collab__logo:active,
 .collab__ig:active {
-  opacity: 0.6;
+  transform: scale(0.97);
+  background: color-mix(in srgb, var(--collab) 10%, transparent);
+}
+
+@media (hover: hover) {
+  .collab__ig:hover {
+    background: color-mix(in srgb, var(--collab) 8%, transparent);
+  }
+}
+
+/* l'entrata, una volta sola: etichetta, logo che compare dall'alto come inchiostro, riga, testo e link */
+@media (prefers-reduced-motion: no-preference) {
+  .collab:not(.is-in) > * {
+    opacity: 0;
+  }
+
+  .collab.is-in .collab__label {
+    animation: collab-up 0.8s var(--ease-out) backwards;
+  }
+
+  .collab.is-in .collab__logo span {
+    animation: collab-ink 1.4s cubic-bezier(0.6, 0, 0.3, 1) 0.15s backwards;
+  }
+
+  .collab.is-in .collab__rule {
+    animation: collab-rule 0.8s var(--ease-out) 0.6s backwards;
+  }
+
+  .collab.is-in .collab__text {
+    animation: collab-up 0.9s var(--ease-out) 0.7s backwards;
+  }
+
+  .collab.is-in .collab__ig {
+    animation: collab-up 0.9s var(--ease-out) 0.85s backwards;
+  }
+}
+
+@keyframes collab-up {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0);
+  }
+}
+
+@keyframes collab-ink {
+  from {
+    clip-path: inset(0 0 100% 0);
+    transform: translate3d(0, -6px, 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+    transform: none;
+  }
+}
+
+@keyframes collab-rule {
+  from {
+    transform: scaleX(0);
+  }
 }
 
 /* ---------- attesa: il menu è una sorpresa fino all'ora di pranzo ---------- */
