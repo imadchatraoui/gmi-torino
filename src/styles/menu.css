@@ -446,9 +446,8 @@
 .poke {
   position: relative;
   height: calc((var(--poke-screens) + 1) * (100svh - var(--header-h)));
-  /* cresce insieme allo stage quando Safari chiude le barre: lo scroll resta allineato all'animazione */
-  height: calc(var(--poke-screens) * (100svh - var(--header-h)) + var(--app-h, 100svh) - var(--header-h));
-  transition: height 0.45s var(--ease-out);
+  /* altezza fissa (non cambia quando Safari apre o chiude le barre): lo scroll non salta mai */
+  height: calc(var(--poke-screens) * (100svh - var(--header-h)) + 100lvh - var(--header-h));
 }
 
 .poke + .poke {

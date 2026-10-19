@@ -61,8 +61,14 @@ export default function PokeScroll({ poke, skipTo, likeIds }) {
     // lo stage si ferma sotto l'header (top dello sticky), non al bordo dello schermo:
     // p = 0 quando inizia a restare fermo, p = 1 quando riparte
     let stickTop = 0
+    let fullH = 0 // altezza dello schermo con le barre di Safari chiuse (100lvh): non cambia mai scorrendo
     const measure = () => {
       stickTop = parseFloat(getComputedStyle(sticky).top) || 0
+      const probe = document.createElement('div')
+      probe.style.cssText = 'position:absolute;top:0;height:100vh;height:100lvh;visibility:hidden;pointer-events:none'
+      document.body.appendChild(probe)
+      fullH = probe.offsetHeight
+      probe.remove()
     }
 
     const render = (p) => {
@@ -98,7 +104,8 @@ export default function PokeScroll({ poke, skipTo, likeIds }) {
       // durante un salto lungo (smoothScroll.js) la ciotola resta ferma: si aggiorna all'arrivo
       if (document.documentElement.classList.contains('is-jumping')) return
       const rect = section.getBoundingClientRect()
-      const range = rect.height - sticky.offsetHeight
+      // corsa fissa: lo stage può allungarsi o accorciarsi con le barre di Safari, l'animazione no
+      const range = rect.height - (fullH - stickTop)
       const p = range > 0 ? clamp01((stickTop - rect.top) / range) : 0
       if (Math.abs(p - lastP) < 0.0005) return
       lastP = p
