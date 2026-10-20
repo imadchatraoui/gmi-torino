@@ -49,8 +49,8 @@ export const EVENTS = [
         instagram: 'https://www.instagram.com/corpoesunnah/',
         handle: '@corpoesunnah',
         text: {
-          it: 'Il menu del pranzo è stato ideato insieme a Umaima di Corpo e Sunnah, che ringraziamo per il suo lavoro.',
-          en: 'The lunch menu was created together with Umaima of Corpo e Sunnah, whom we thank for her work.',
+          it: 'Il menu del pranzo è stato ideato insieme a Oumaima di Corpo e Sunnah, che ringraziamo per il suo lavoro.',
+          en: 'The lunch menu was created together with Oumaima of Corpo e Sunnah, whom we thank for her work.',
         },
       },
       // il menu è una sorpresa: i piatti (server/menu-data.js) arrivano al telefono solo da quest'ora

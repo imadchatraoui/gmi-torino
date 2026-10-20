@@ -469,7 +469,7 @@ export default function Admin() {
           />
           <label className="adm-field" htmlFor="adm-cit">
             <span>Testo (italiano)</span>
-            <input id="adm-cit" type="text" maxLength={220} placeholder="Il menu del pranzo è stato ideato insieme a Umaima di Corpo e Sunnah…" value={collab.it} onChange={(e) => setCollab({ ...collab, it: e.target.value })} />
+            <input id="adm-cit" type="text" maxLength={220} placeholder="Il menu del pranzo è stato ideato insieme a Oumaima di Corpo e Sunnah…" value={collab.it} onChange={(e) => setCollab({ ...collab, it: e.target.value })} />
           </label>
           <label className="adm-field" htmlFor="adm-cen">
             <span>Testo (inglese, facoltativo)</span>

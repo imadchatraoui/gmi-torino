@@ -1,54 +1,76 @@
 # GMI Torino · sito
 
-Sito di GMI Torino con l'identità della sezione: logo ufficiale (PNG trasparente), bordeaux, crema e oro,
-font di sistema SF Pro. Volutamente semplice: niente elementi decorativi "torinesi". Italiano e inglese,
-tema chiaro e scuro (segue il telefono; bottoni in alto a destra). Lo stile delle locandine YMHS (carta,
-salvia, blu, Bodoni) vale solo per le cose dell'evento: la sua scheda e la pagina `/menu/`.
+Il sito di GMI Torino (Giovani Musulmani d'Italia), online su **[gmitorino.org](https://gmitorino.org)**.
+Ogni push su `main` viene pubblicato da Vercel in automatico.
+
+Identità della sezione: logo ufficiale (PNG trasparente), bordeaux, crema e oro, font di sistema. Volutamente
+semplice. Italiano e inglese, tema chiaro e scuro. Lo stile delle locandine YMHS (carta, salvia, blu, Bodoni)
+vale solo per le cose dell'evento: la sua scheda in home, `/menu` e `/corposunnah`.
+
+## Pagine
 
 | URL | File | Cosa |
 | --- | --- | --- |
-| `gmitorino.org/` | `index.html` → `src/home/` | "Prossimamente, in sha Allah" + Chi siamo, Eventi, Archivio, Contatti |
-| `gmitorino.org/menu/` | `menu/index.html` → `src/menu/` | menu del pranzo del prossimo evento: i poke si aprono con lo scroll |
-| `gmitorino.org/design/` | `design/index.html` → `src/design/` | guida all'identità: marchio, intro, colori, tipografia, stile evento, template, movimento, componenti, voce (noindex) |
-| `gmitorino.org/privacy/` | `privacy/index.html` → `src/legal/` | Privacy e cookie (informativa GDPR, memoria del browser usata) |
-| `gmitorino.org/accessibilita/` | `accessibilita/index.html` → `src/legal/` | Dichiarazione di accessibilità (WCAG 2.1 AA) |
+| `/` | `index.html` → `src/home/` | "Prossimamente, in sha Allah", eventi, Chi siamo e Archivio (lavori in corso), contatti |
+| `/menu` | `menu/index.html` → `src/menu/` | il menu del pranzo: segreto fino all'ora scelta, poi i poke si aprono con lo scroll |
+| `/corposunnah` | `corposunnah/index.html` → `src/corposunnah/` | anteprima del menu per Oumaima di Corpo e Sunnah: il link si apre 3 volte (noindex) |
+| `/admin` | `admin/index.html` → `src/admin/` | pannello di gestione (password) |
+| `/privacy` | `privacy/index.html` → `src/legal/` | privacy e cookie |
+| `/design` | `design/index.html` → `src/design/` | guida all'identità (noindex) |
 
-Vite + Preact (codice scritto in stile React: gli import di `react` puntano a `preact/compat`), nessuna libreria di animazione.
-Dipendenze: solo `preact` e `@hugeicons/core-free-icons` (le icone del cuore); in sviluppo `vite`, `@preact/preset-vite`, `oxlint`.
-Build multi-page (`vite.config.js`): ogni URL è un file statico vero, funziona su Vercel o qualunque
-hosting statico senza regole di rewrite.
+## Pannello /admin
+
+Da telefono, senza toccare il codice (aggiornamenti in diretta entro ~5 secondi):
+ora del pranzo e apertura del menu, mi piace (in diretta, azzera, on/off), avviso in alto su tutte le pagine,
+iscrizioni aperte/chiuse, piatti e ingredienti del menu, testi dell'evento, sezione Corpo e Sunnah e link
+`/corposunnah` (quante aperture usate, riattiva), pioggia di emoji.
+
+## Server (Vercel Functions + Upstash Redis)
+
+- `api/menu.js` — consegna il menu solo dall'ora scelta (o con `?chiave=…` per chi organizza).
+- `api/corposunnah.js` — il menu per `/corposunnah`, al massimo 3 aperture (`OPENS`).
+- `api/likes.js` — mi piace condivisi, con limite di richieste.
+- `api/settings.js` — impostazioni pubbliche lette dal sito; `api/admin.js` — il pannello.
+- `server/store.js` — Redis e impostazioni; `server/menu-data.js` — i piatti (mai nel codice del sito).
+- Su Vercel: Upstash collegato (`KV_REST_API_URL`/`KV_REST_API_TOKEN`); facoltativi `ADMIN_PASSWORD`,
+  `MENU_PREVIEW_KEY`, `MENU_REVEAL` (`open`/`closed`, interruttore d'emergenza).
+
+## Sviluppo
+
+Vite + Preact (import di `react` → `preact/compat`), nessuna libreria di animazione.
+In locale le funzioni `api/` girano dentro Vite con un Redis finto in memoria (chiave menu: `prova`).
 
 ```bash
 npm install
-npm run dev      # http://localhost:5173 e http://localhost:5173/menu/  (?nointro salta l'intro)
+npm run dev      # http://localhost:5173  (/menu/?chiave=prova per vedere il menu)
 npm run build    # output in dist/
 npm run preview
 
-# controlli da telefono simulato (Chrome headless, 375x812 @2x)
 node scripts/shot-mobile.mjs http://localhost:5173/menu/?nointro /tmp/menu.png "0,#poke-1@0.5,100%" --dark --size=375x667 --en
-node scripts/perf-scroll.mjs http://localhost:4173/menu/?nointro   # CPU 4x, fotogrammi e dove rallenta
+node scripts/perf-scroll.mjs http://localhost:4173/menu/?nointro   # fotogrammi e dove rallenta
 ```
 
 ## Dove si cambiano i contenuti
 
-- `src/data/events.js` — gli eventi (template): data, luogo, quota, iscrizione (con `signup.closes`: dopo quella data
-  il bottone Iscriviti sparisce), colore, banner, logo, `partners` (loghi di chi organizza con noi), ora del menu
-  (`menu.revealAt`), blocchi accesi (`info`, `signup`, `program`, `menu`). Il giorno dell'evento compare "In corso,
-  oggi"; un giorno dopo la fine passa da solo in Archivio e per 7 giorni in Eventi resta un avviso (`src/data/when.js`).
-- `src/data/site.js` — sezioni della home e contatti. Chi siamo e Archivio (finché è vuoto) sono "lavori in corso":
-  bozza sfocata + nastro giallo-nero (`WipSection` in `src/home/Home.jsx`). Quando ci sono i testi veri, si sostituisce.
-- `src/legal/content.js` — testi di Privacy e cookie e di Accessibilità (IT/EN), con la tabella della memoria del browser.
-- `server/menu-data.js` — le due opzioni poke e i loro ingredienti (testo esatto del menu). Segreto: non entra nel codice del sito, lo consegna solo `api/menu.js`.
+- `src/data/events.js` — eventi: data, luogo, iscrizione, partner, ora del menu, collaborazione Corpo e Sunnah.
+  Dopo l'evento passa da solo in Archivio.
+- `src/data/site.js` — sezioni della home e contatti.
+- `src/legal/content.js` — testi di Privacy e cookie.
 - Testi IT/EN: ogni testo è `{ it: '…', en: '…' }`. "Giovani Musulmani d'Italia" non si traduce.
-- `src/styles/` — `base.css` (colori, temi, header, footer, bottoni, intro, componenti condivisi), `torino.css`
-  (solo la calligrafia إن شاء الله), `home.css`, `menu.css`, `design.css`, `legal.css`.
-- `src/components/react-bits/` — GradientText (titolo), StarBorder (Iscriviti), PulseHeart (like): sorgenti ufficiali
-  non modificate, ricolorate da fuori (vedi `THIRD_PARTY_NOTICES.md`).
-- `public/eventi/ymhs/partner/` — loghi Umma Rise e Bayna (B + pallino d'oro) in SVG a un colore, ricavati dalle
-  locandine; mostrati da `src/shared/Partners.jsx`.
-- `src/shared/smoothScroll.js` — scroll morbido: rotella del mouse sul computer e salti nella pagina (barra in basso,
-  Salta, link #sezione) su tutti i dispositivi. Lo scorrimento col dito resta nativo.
-- L'archivio si riempie da solo: un giorno dopo la fine, un evento di `src/data/events.js` passa in Archivio.
+- `src/styles/` — `base.css` (colori, temi, componenti condivisi), `home.css`, `menu.css`, `corposunnah.css`,
+  `admin.css`, `design.css`, `legal.css`, `torino.css`.
+- `src/components/react-bits/` — GradientText, StarBorder, PulseHeart (vedi `THIRD_PARTY_NOTICES.md`).
+- `public/eventi/ymhs/partner/` — loghi Umma Rise, Bayna, Corpo e Sunnah in SVG a un colore.
+
+## Prova prima dell'evento (un iPhone e un Android)
+
+1. Intro col logo, poi la pagina scorre bene (anche veloce, su e giù).
+2. Tema chiaro/scuro e IT/EN restano scelti alla riapertura; nessuna lettera tagliata.
+3. Barra in basso: ogni voce porta alla sezione giusta, senza scatti.
+4. Scheda evento: calendario, mappe e "Iscriviti".
+5. `/menu` senza chiave: ciotola chiusa e conto alla rovescia. Con `?chiave=ciao`: le bowl si aprono scorrendo.
+6. Un mi piace da un telefono si vede sull'altro entro ~10 secondi.
+7. Durante il pranzo, per lo staff: `/menu/?chiave=ciao&staff` mostra i mi piace in diretta.
 
 ## Animazione poke
 
@@ -164,6 +186,5 @@ aggiornata in background; `/api/` mai salvata. Per svuotare le copie dopo un cam
 
 ## Deploy
 
-Non ancora fatto (da decidere: vedi `YMHS_PROGRESS.md`). Su Vercel: progetto collegato al repo, preset Vite,
-build `npm run build`, output `dist/`; la cartella `api/` diventa la funzione dei like. Poi il dominio
-`gmitorino.org` va puntato a Vercel dal pannello del registrar.
+Vercel, progetto `gmi-torino` collegato a questo repo (preset Vite, build `npm run build`, output `dist/`, cartella
+`api/` come funzioni). Ogni push su `main` va online da solo; il dominio `gmitorino.org` punta già a Vercel.

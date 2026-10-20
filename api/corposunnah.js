@@ -1,4 +1,4 @@
-// Link da aprire una volta sola (gmitorino.org/corposunnah): il menu per Umaima di Corpo e Sunnah prima dell'evento.
+// Link da aprire una volta sola (gmitorino.org/corposunnah): il menu per Oumaima di Corpo e Sunnah prima dell'evento.
 //   GET  -> { used, left }              il link è ancora valido? quante aperture restano?
 //   POST -> { options, left } per le prime OPENS aperture, poi 410 { used: true }
 // Si riattiva da gmitorino.org/admin (Collaborazione · Corpo e Sunnah).
@@ -6,7 +6,7 @@ import { POKES } from '../server/menu-data.js'
 import { getMenu, redis, redisConfig, send } from '../server/store.js'
 
 export const ONCE_KEY = 'gmi:corposunnah'
-export const OPENS = 3 // Imad, il responsabile, poi Umaima
+export const OPENS = 3 // Imad, il responsabile, poi Oumaima
 
 export default async function handler(req, res) {
   const cfg = redisConfig()

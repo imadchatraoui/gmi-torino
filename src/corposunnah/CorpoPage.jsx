@@ -5,7 +5,7 @@ import { t, usePrefs } from '../shared/prefs'
 import SiteHeader from '../shared/SiteHeader'
 import { scrollToEl } from '../shared/smoothScroll'
 
-// gmitorino.org/corposunnah: il menu in anteprima per Umaima di Corpo e Sunnah, che l'ha pensato con noi.
+// gmitorino.org/corposunnah: il menu in anteprima per Oumaima di Corpo e Sunnah, che l'ha pensato con noi.
 // Il link si apre poche volte (OPENS in api/corposunnah.js): poi il server non consegna più il menu
 // (api/corposunnah.js). Da /admin si può riattivare.
 const MenuRevealed = lazy(() => import('../menu/MenuRevealed'))
@@ -83,7 +83,7 @@ export default function CorpoPage() {
       <main id="main" tabIndex={-1} className="menu cs">
         <section id="menu-top" className="cs-hero" aria-labelledby="cs-title">
           {logo}
-          <p className="cs-eyebrow">{tr({ it: 'Per Umaima', en: 'For Umaima' })}</p>
+          <p className="cs-eyebrow">{tr({ it: 'Per Oumaima', en: 'For Oumaima' })}</p>
           <h1 id="cs-title" className="cs-title display">
             {tr({ it: 'Grazie per il menu', en: 'Thank you for the menu' })}
           </h1>
