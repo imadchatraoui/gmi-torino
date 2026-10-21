@@ -47,7 +47,7 @@ const PokeIllustration = forwardRef(function PokeIllustration({ items, label, ma
   const layerRefs = useRef([])
   const markerRefs = useRef([])
 
-  // Il riso è la base; gli altri ingredienti occupano i 4 posti attorno.
+  // Il riso è la base (se il piatto non ha riso resta la ciotola vuota); gli altri ingredienti occupano i 4 posti attorno.
   const layout = useMemo(() => {
     let slot = 0
     return items.map((item, i) => {
@@ -112,7 +112,7 @@ const PokeIllustration = forwardRef(function PokeIllustration({ items, label, ma
       <div className="poke-art__layer">
         <Svg>
           <Bowl uid={uid} />
-          <RiceBed uid={uid} />
+          {(riceIndex >= 0 || items.length === 0) && <RiceBed uid={uid} />}
         </Svg>
       </div>
       {riceIndex >= 0 && (

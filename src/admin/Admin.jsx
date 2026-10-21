@@ -27,6 +27,7 @@ const ARTS = [
   ['rice', 'Riso (base)'],
   ['a3', 'Cubetti rossi (tonno)'],
   ['a4', 'Cubetti viola (barbabietola)'],
+  ['a9', 'Rondelle viola (carote)'],
   ['a1', 'Avocado con miele'],
   ['a2', 'Avocado con limone'],
   ['a5', 'Fiocchi bianchi (ricotta)'],
@@ -370,11 +371,15 @@ export default function Admin() {
             <fieldset key={p.id} className="adm-poke">
               <legend>{p.label.it}</legend>
               <label className="adm-field">
-                <span>Nome del piatto</span>
+                <span>Nome della bowl (es. La Nativa)</span>
+                <input type="text" value={p.label.it} onChange={(e) => editMenu(pi, (q) => ({ ...q, label: { it: e.target.value, en: e.target.value } }))} />
+              </label>
+              <label className="adm-field">
+                <span>Ingredienti in breve (titolo)</span>
                 <input type="text" value={p.title.it} onChange={(e) => editMenu(pi, (q) => ({ ...q, title: { ...q.title, it: e.target.value } }))} />
               </label>
               <label className="adm-field">
-                <span>In inglese</span>
+                <span>Titolo in inglese</span>
                 <input type="text" value={p.title.en} onChange={(e) => editMenu(pi, (q) => ({ ...q, title: { ...q.title, en: e.target.value } }))} />
               </label>
               <ol className="adm-items">
@@ -426,7 +431,7 @@ export default function Admin() {
               Ripristina l’originale
             </button>
           </div>
-          <p className="adm-muted">Al massimo 5 ingredienti per piatto, un solo riso. Chi ha già il menu aperto vede le modifiche entro mezzo minuto.</p>
+          <p className="adm-muted">Al massimo 5 ingredienti per piatto, un solo riso (senza riso la bowl resta vuota sotto). Chi ha già il menu aperto vede le modifiche entro mezzo minuto.</p>
         </section>
 
         <section className="adm-card">

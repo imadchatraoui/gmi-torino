@@ -452,6 +452,42 @@ function Beet({ uid }) {
   )
 }
 
+/* ---------- carote viola (rondelle) ---------- */
+
+const CARROTS = (() => {
+  const rand = rng(31)
+  return scatter(rand, 11, 36, 17).map((p) => ({ ...p, r: 9.5 + p.k * 3.5 }))
+})()
+
+function Carrot({ uid }) {
+  return (
+    <g>
+      <defs>
+        <radialGradient id={`${uid}-g9`} cx="36%" cy="30%" r="80%">
+          <stop offset="0%" stopColor="#8B4FA8" />
+          <stop offset="65%" stopColor="#5E2A7A" />
+          <stop offset="100%" stopColor="#411B58" />
+        </radialGradient>
+      </defs>
+      <SoftShadow id={`${uid}-g9s`} rx={50} ry={46} dx={4} dy={6} opacity={0.24} />
+      {CARROTS.map((c, i) => (
+        <g key={i} transform={`translate(${f1(c.x)} ${f1(c.y)}) rotate(${c.rot.toFixed(0)})`}>
+          {/* spessore della rondella */}
+          <ellipse cx="1.6" cy="3.4" rx={f1(c.r)} ry={f1(c.r * 0.86)} fill="#2E1040" />
+          <ellipse cx="0" cy="0" rx={f1(c.r)} ry={f1(c.r * 0.86)} fill={`url(#${uid}-g9)`} />
+          {/* cuore arancione delle carote viola */}
+          <ellipse cx="0" cy="0" rx={f1(c.r * 0.5)} ry={f1(c.r * 0.43)} fill="#E8913A" />
+          <ellipse cx="0" cy="0" rx={f1(c.r * 0.22)} ry={f1(c.r * 0.19)} fill="#F6C27A" />
+          <ellipse cx={f1(-c.r * 0.3)} cy={f1(-c.r * 0.45)} rx={f1(c.r * 0.28)} ry={f1(c.r * 0.1)} fill="#FFFFFF" opacity="0.32" />
+          {/* un po' di pepe */}
+          <circle cx={f1(c.r * 0.55)} cy={f1(-c.r * 0.3)} r="0.9" fill="#1B1018" opacity="0.85" />
+          <circle cx={f1(-c.r * 0.6)} cy={f1(c.r * 0.35)} r="0.8" fill="#1B1018" opacity="0.85" />
+        </g>
+      ))}
+    </g>
+  )
+}
+
 /* ---------- ricotta ---------- */
 
 // contorno "a grumi": un cerchio deformato e smussato
@@ -644,7 +680,7 @@ function Chicken({ uid }) {
   )
 }
 
-// chiavi neutre (a1…a8): il codice pubblico del sito non deve far capire gli ingredienti prima dell'ora
+// chiavi neutre (a1…a9): il codice pubblico del sito non deve far capire gli ingredienti prima dell'ora
 export const TOPPING_ART = {
   a1: AvocadoHoney,
   a2: AvocadoLemon,
@@ -654,4 +690,5 @@ export const TOPPING_ART = {
   a6: RedCabbage,
   a7: Hummus,
   a8: Chicken,
+  a9: Carrot,
 }

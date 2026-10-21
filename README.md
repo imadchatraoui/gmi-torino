@@ -153,7 +153,7 @@ Controllo manuale, su Vercel → Settings → Environment Variables (poi Deploym
 - `MENU_PREVIEW_KEY=una-parola` permette a chi organizza di vederlo prima con `gmitorino.org/menu/?chiave=una-parola`.
 - In locale (`npm run dev` / `preview`) la chiave è `prova`: `/menu/?chiave=prova`.
 
-I disegni degli ingredienti (`src/poke/art.jsx`) hanno chiavi neutre (a1…a8) per non far capire niente leggendo il codice.
+I disegni degli ingredienti (`src/poke/art.jsx`) hanno chiavi neutre (a1…a9) per non far capire niente leggendo il codice.
 
 ## Like condivisi sui poke
 

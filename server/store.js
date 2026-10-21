@@ -101,7 +101,7 @@ export async function saveSettings(patch) {
 
 // il menu modificato da /admin (stessa forma di server/menu-data.js); senza modifiche vale il file
 const MENU_KEY = 'gmi:menu'
-const ARTS = new Set(['rice', 'a1', 'a2', 'a3', 'a4', 'a5', 'a6', 'a7', 'a8'])
+const ARTS = new Set(['rice', 'a1', 'a2', 'a3', 'a4', 'a5', 'a6', 'a7', 'a8', 'a9'])
 const pair = (v) => ({ it: text(v?.it), en: text(v?.en) || text(v?.it) })
 
 export async function getMenu(fallback) {
@@ -115,7 +115,7 @@ export async function getMenu(fallback) {
   }
 }
 
-// tiene id ed etichette del file (servono ai mi piace), cambia titoli e ingredienti
+// tiene gli id del file (servono ai mi piace), cambia nome, titolo e ingredienti
 export async function saveMenu(options, fallback) {
   const cfg = redisConfig()
   if (!cfg) throw new Error('storage not configured')
@@ -125,7 +125,7 @@ export async function saveMenu(options, fallback) {
       .slice(0, 5)
       .map((it) => ({ name: pair(it.name), art: ARTS.has(it.art) ? it.art : 'rice' }))
       .filter((it) => it.name.it)
-    return { ...base, title: o.title ? pair(o.title) : base.title, items: items.length ? items : base.items }
+    return { ...base, label: o.label?.it ? pair(o.label) : base.label, title: o.title ? pair(o.title) : base.title, items: items.length ? items : base.items }
   })
   await redis(cfg, ['SET', MENU_KEY, JSON.stringify(clean)])
   return clean
