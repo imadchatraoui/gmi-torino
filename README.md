@@ -1,4 +1,4 @@
-# GMI Torino · sito
+# GMI Torino - sito
 
 Il sito di GMI Torino (Giovani Musulmani d'Italia), online su **[gmitorino.org](https://gmitorino.org)**.
 Ogni push su `main` viene pubblicato da Vercel in automatico.
