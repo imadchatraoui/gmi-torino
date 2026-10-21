@@ -626,7 +626,7 @@ function Hummus({ uid }) {
   )
 }
 
-/* ---------- straccetti di pollo con salsa tahina ---------- */
+/* ---------- straccetti di pollo ---------- */
 
 // straccetti: strisce sottili e irregolari, bordi rosolati, segni della piastra
 const STRIPS = (() => {
@@ -646,7 +646,6 @@ const STRIPS = (() => {
     return { x, y, r: r + (rand() - 0.5) * 10, w, h, d }
   })
 })()
-const TAHINI = 'M -34 -34 C -22 -36 -24 -20 -12 -20 S -2 -6 8 -6 S 20 8 28 8 S 38 22 32 36'
 
 function Chicken({ uid }) {
   return (
@@ -673,9 +672,6 @@ function Chicken({ uid }) {
           <path d={`M ${f1(-st.w / 2 + 4)} ${f1(-st.h / 2 + 2)} L ${f1(st.w / 2 - 6)} ${f1(-st.h / 2 + 2.5)}`} stroke="#FBE3B6" strokeOpacity="0.6" strokeWidth="1.1" strokeLinecap="round" />
         </g>
       ))}
-      <path d={TAHINI} fill="none" stroke="#8C7550" strokeOpacity="0.4" strokeWidth="5.5" strokeLinecap="round" strokeLinejoin="round" transform="translate(1.2 2)" />
-      <path d={TAHINI} fill="none" stroke="#E9DAB4" strokeWidth="4.2" strokeLinecap="round" strokeLinejoin="round" />
-      <path d={TAHINI} fill="none" stroke="#FFFAEB" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" transform="translate(-0.9 -1)" />
     </g>
   )
 }

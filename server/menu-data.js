@@ -33,7 +33,7 @@ export const POKES = [
       { name: { it: 'Carote viola condite con sale, olio e pepe', en: 'Purple carrots with salt, olive oil and pepper' }, art: 'a9' },
       { name: { it: 'Ceci in hummus con un po\' di paprika', en: 'Chickpea hummus with a little paprika' }, art: 'a7' },
       { name: { it: 'Avocado con olio evo sale e limone', en: 'Avocado with extra virgin olive oil, salt and lemon' }, art: 'a2' },
-      { name: { it: 'Straccetti di pollo con salsa tahina', en: 'Chicken strips with tahini sauce' }, art: 'a8' },
+      { name: { it: 'Straccetti di pollo', en: 'Chicken strips' }, art: 'a8' },
     ],
     media: null,
   },
