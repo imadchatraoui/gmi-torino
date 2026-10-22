@@ -1,5 +1,5 @@
 // Reading e riflessione collettiva (YMHS, 25 ottobre 2026): testi di Fedouà El Attari (EquiLibri d'Oriente),
-// riportati così come li ha scritti lei. Si cambiano qui.
+// riportati così come li ha scritti lei. Si cambiano qui. _parola_ = corsivo (come nel suo testo).
 export const READING = {
   partner: "EquiLibri d'Oriente",
   // logo in PNG trasparente (contiene il nome); se manca, resta il nome scritto
@@ -9,6 +9,8 @@ export const READING = {
   original: "(Kīmīyā-yi Sa‘ādat / L'Alchimia della Felicità) — Abu Hamid Al-Ghazali (1058–1111)",
   place: 'Casa del Quartiere di San Salvario, TO',
   question: '“Who are you, where did you come from, and where are you going?”',
+  // la stessa domanda nella sua traduzione italiana dell'estratto
+  questionIt: 'Chi sei, da dove vieni e dove stai andando?',
   ebook: {
     url: 'https://www.globalgreyebooks.com/alchemy-of-happiness-ebook.html',
     qr: '/eventi/ymhs/reading/qr-libro.svg',
@@ -42,15 +44,15 @@ export const READING = {
     heading: '2. Domande per la Riflessione Condivisa',
     items: [
       ['Sullo specchio del cuore:', 'Qual è la "polvere" o l\'ansia quotidiana che oggi appesantisce il nostro cuore e come possiamo fare spazio per ritrovare chiarezza interiore?'],
-      ['Sulla traiettoria personale:', 'Di fronte alla domanda “Where are you going?”, quali sono le coordinate fondamentali che guidano oggi le nostre scelte?'],
-      ['Sulla cura di comunità:', 'In che modo la ricerca della pace interiore (sakinah) individuale diventa una risorsa collettiva per sostenere chi ci sta accanto?'],
+      ['Sulla traiettoria personale:', 'Di fronte alla domanda _“Where are you going?”_, quali sono le coordinate fondamentali che guidano oggi le nostre scelte?'],
+      ['Sulla cura di comunità:', 'In che modo la ricerca della pace interiore (_sakinah_) individuale diventa una risorsa collettiva per sostenere chi ci sta accanto?'],
     ],
   },
   books: {
     heading: '3. Bibliografia Essenziale di Abu Hamid Al-Ghazali',
     items: [
       ['Kīmīyā-yi Sa‘ādat', "(L'Alchimia della Felicità)", "Sintesi accessibile scritta in persiano per guidare l'individuo alla cura del cuore, alla disciplina personale e alla conoscenza interiore."],
-      ['Iḥyāʾ ʿUlūm al-Dīn', '(La Rinascita delle Scienze Religiose)', 'Capolavoro monumentale in 40 libri che concilia giurisprudenza, etica, filosofia e dimensione mistica (sufismo).'],
+      ['Iḥyāʾ ʿUlūm al-Dīn', '(La Rinascita delle Scienze Religiose)', 'Capolavoro monumentale in 40 libri che concilia giurisprudenza, etica, filosofia e dimensione mistica (_sufismo_).'],
       ['Al-Munqidh min al-Ḍalāl', "(Il Liberatore dall'Errore)", 'Autobiografia spirituale sulla sua crisi intellettuale e il percorso verso la ricerca della verità vissuta.'],
       ['Mishkāt al-Anwār', '(La Nicchia delle Luci)', "Trattato sulla simbolica della luce nel Corano e sulla percezione spirituale dell'anima."],
       ['Ayyuhā al-Walad', '(Lettera a un Discepolo)', "Guida etica e pratica rivolta alle nuove generazioni sull'importanza di trasformare il sapere in azione consapevole."],

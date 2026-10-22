@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { eventById } from '../data/events'
 import { tornClip } from '../shared/Paper'
+import BottomNav from '../shared/BottomNav'
+import ShareButton from '../shared/ShareButton'
 import SiteFooter from '../shared/SiteFooter'
 import SiteHeader from '../shared/SiteHeader'
 import { READING as R } from './content'
@@ -10,6 +12,43 @@ import { READING as R } from './content'
 const EV = eventById('ymhs')
 const QUOTE_CLIP = tornClip(61, { depth: 3, points: 30 })
 const BOOK_CLIP = tornClip(73, { depth: 3, points: 30 })
+
+// _parola_ nel testo → corsivo
+const rich = (s) => s.split(/_(.+?)_/g).map((part, i) => (i % 2 ? <em key={i}>{part}</em> : part))
+
+const NAV = [
+  { id: 'estratto', label: { it: 'Estratto', en: 'Excerpt' } },
+  { id: 'domande', label: { it: 'Domande', en: 'Questions' } },
+  { id: 'libro', label: { it: 'Libro', en: 'Book' } },
+  { id: 'rd-top', top: true, label: { it: 'Torna su', en: 'Top' } },
+]
+
+// filo sottile sotto l'header: quanto manca alla fine del testo (solo transform, niente re-render)
+function Progress() {
+  const bar = useRef(null)
+  useEffect(() => {
+    let frame = 0
+    const draw = () => {
+      frame = 0
+      const max = document.documentElement.scrollHeight - innerHeight
+      if (bar.current) bar.current.style.transform = `scaleX(${max > 0 ? Math.min(1, scrollY / max) : 0})`
+    }
+    const on = () => frame || (frame = requestAnimationFrame(draw))
+    draw()
+    addEventListener('scroll', on, { passive: true })
+    addEventListener('resize', on)
+    return () => {
+      removeEventListener('scroll', on)
+      removeEventListener('resize', on)
+      cancelAnimationFrame(frame)
+    }
+  }, [])
+  return (
+    <div className="rd-progress" aria-hidden="true">
+      <span ref={bar} />
+    </div>
+  )
+}
 
 // le sezioni salgono piano quando arrivano sullo schermo (una volta sola)
 function useReveal() {
@@ -96,8 +135,9 @@ export default function ReadingPage() {
   return (
     <>
       <SiteHeader page="menu" />
+      <Progress />
       <main id="main" tabIndex={-1} className={`rd rd--${size}`} ref={ref}>
-        <header className="rd-hero">
+        <header id="rd-top" className="rd-hero">
           <img className="rd-hero__logo" src={EV.logo} srcSet={EV.logoSrcSet} sizes="(min-width: 640px) 360px, 70vw" alt={EV.name} width="682" height="343" />
           <p className="rd-hero__kind">{R.kind}</p>
           <h1 className="rd-hero__title display">{R.title}</h1>
@@ -117,9 +157,10 @@ export default function ReadingPage() {
 
         <figure className="rd-question rd-reveal" style={{ clipPath: QUOTE_CLIP }}>
           <blockquote className="display">{R.question}</blockquote>
+          <figcaption lang="it">{R.questionIt}</figcaption>
         </figure>
 
-        <section className="rd-section rd-reveal" aria-labelledby="rd-excerpt">
+        <section id="estratto" className="rd-section rd-reveal" aria-labelledby="rd-excerpt">
           <h2 id="rd-excerpt" className="rd-h2">{R.excerpt.heading}</h2>
           <ReaderBar view={view} setView={setView} size={size} setSize={setSize} />
           {/* affiancati: ogni paragrafo inglese ha accanto il suo italiano, così si segue riga per riga */}
@@ -139,21 +180,21 @@ export default function ReadingPage() {
           </div>
         </section>
 
-        <section className="rd-section rd-reveal" aria-labelledby="rd-questions">
+        <section id="domande" className="rd-section rd-reveal" aria-labelledby="rd-questions">
           <h2 id="rd-questions" className="rd-h2">{R.questions.heading}</h2>
           <ol className="rd-questions">
             {R.questions.items.map(([lead, text], i) => (
               <li key={i}>
                 <span className="rd-questions__n display" aria-hidden="true">{i + 1}</span>
                 <p>
-                  <strong>{lead}</strong> {text}
+                  <strong>{lead}</strong> {rich(text)}
                 </p>
               </li>
             ))}
           </ol>
         </section>
 
-        <aside className="rd-book rd-reveal" style={{ clipPath: BOOK_CLIP }} aria-labelledby="rd-book-title">
+        <aside id="libro" className="rd-book rd-reveal" style={{ clipPath: BOOK_CLIP }} aria-labelledby="rd-book-title">
           <span className="rd-book__badge">{R.ebook.badge}</span>
           <h2 id="rd-book-title" className="rd-book__title">{R.ebook.title}</h2>
           <div className="rd-book__row">
@@ -173,7 +214,7 @@ export default function ReadingPage() {
                 <p className="rd-books__name">
                   <strong>{name}</strong> <em>{it}</em>
                 </p>
-                <p className="rd-books__text">{text}</p>
+                <p className="rd-books__text">{rich(text)}</p>
               </li>
             ))}
           </ol>
@@ -185,9 +226,11 @@ export default function ReadingPage() {
           </PartnerLogo>
           <p>{R.credits.role}</p>
           <p className="rd-credits__curator">{R.credits.curator}</p>
+          <ShareButton className="rd-share" title="Reading · The Alchemy of Happiness" label="Condividi il testo" />
         </footer>
       </main>
       <SiteFooter />
+      <BottomNav items={NAV} heroId="rd-top" label="Sezioni del reading" />
     </>
   )
 }

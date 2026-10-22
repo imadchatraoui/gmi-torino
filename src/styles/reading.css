@@ -5,6 +5,38 @@
   padding: 0 var(--gutter) 48px;
 }
 
+/* sul telefono c'è la barra in basso: un po' di spazio in più sotto */
+@media (max-width: 859px) {
+  .rd {
+    padding-bottom: calc(80px + env(safe-area-inset-bottom));
+  }
+}
+
+/* le sezioni si fermano sotto l'header e la barra di lettura quando ci si salta */
+.rd [id] {
+  scroll-margin-top: calc(var(--header-h) + 12px);
+}
+
+/* progresso di lettura: un filo sotto l'header */
+.rd-progress {
+  position: fixed;
+  z-index: 49;
+  top: calc(var(--header-h) + env(safe-area-inset-top));
+  left: 0;
+  right: 0;
+  height: 2px;
+  pointer-events: none;
+}
+
+.rd-progress span {
+  display: block;
+  height: 100%;
+  background: var(--gold, var(--brand));
+  transform: scaleX(0);
+  transform-origin: left;
+  will-change: transform;
+}
+
 /* ---------- apertura ---------- */
 .rd-hero {
   display: grid;
@@ -81,6 +113,13 @@
   background: var(--card);
   color: var(--on-card);
   text-align: center;
+}
+
+.rd-question figcaption {
+  margin-top: 12px;
+  font-size: 0.9375rem;
+  font-style: italic;
+  opacity: 0.8;
 }
 
 .rd-question blockquote {
@@ -395,17 +434,45 @@
   font-style: italic;
 }
 
+.rd-share {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  justify-self: center;
+  gap: 8px;
+  min-height: 44px;
+  margin-top: 22px;
+  padding: 0 4px;
+  border: 0;
+  background: none;
+  color: var(--heading);
+  font: inherit;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.rd-share span {
+  padding-bottom: 2px;
+  border-bottom: 1px solid var(--ornament);
+}
+
+.rd-share:active {
+  opacity: 0.6;
+}
+
 /* entrata delle sezioni, una volta sola */
 @media (prefers-reduced-motion: no-preference) {
+  /* solo dissolvenza: niente spostamento, così i salti dalla barra in basso arrivano precisi sul titolo */
   .rd-reveal:not(.is-in) {
     opacity: 0;
-    transform: translate3d(0, 14px, 0);
   }
 
   .rd-reveal {
-    transition:
-      opacity 0.8s var(--ease-out),
-      transform 0.8s var(--ease-out);
+    transition: opacity 0.9s var(--ease-out);
   }
 }
 
