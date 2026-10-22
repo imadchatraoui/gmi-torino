@@ -51,7 +51,6 @@ export const EVENTS = [
         title: 'Reading e riflessione collettiva',
         who: 'Fedouà El Attari',
         text: 'Dal libro “The Alchemy of Happiness” di Al-Ghazali',
-        link: { href: '/reading/', label: { it: 'Leggi il testo', en: 'Read the text' } },
       },
       { from: '14:25', to: '14:55', kind: 'Talk', title: 'Ihsan', who: 'Shaykh Ibrahim Gabriele Lungo', text: 'Ihsan: la scienza profetica della salute spirituale' },
       { from: '15:00', to: '16:00', kind: 'Panel', title: 'Love, family & pressure', text: 'Confronto sui cambiamenti che attraversano matrimonio, relazioni e famiglia nelle nuove generazioni musulmane' },
