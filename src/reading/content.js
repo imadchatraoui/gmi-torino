@@ -2,7 +2,7 @@
 // riportati così come li ha scritti lei. Si cambiano qui.
 export const READING = {
   partner: "EquiLibri d'Oriente",
-  // logo nero su bianco (PNG o JPG): finché il file non c'è, resta solo il nome scritto
+  // logo in PNG trasparente (contiene il nome); se manca, resta il nome scritto
   partnerLogo: '/eventi/ymhs/reading/equilibri-doriente.png',
   kind: 'Reading & Riflessione Collettiva',
   title: '“The Alchemy of Happiness”',

@@ -21,6 +21,11 @@ export const STORAGE = [
     kind: { it: 'Funzione', en: 'Feature' },
   },
   {
+    key: 'gmi-reading-view, gmi-reading-size',
+    what: { it: 'Come preferisci leggere il testo del reading (lingua, affiancato, grandezza del testo).', en: 'How you prefer to read the reading text (language, side by side, text size).' },
+    kind: { it: 'Preferenza', en: 'Preference' },
+  },
+  {
     key: 'gmi-menu-svelato',
     what: { it: 'Il menu del pranzo, dopo che è stato svelato, per riaprirlo anche senza rete.', en: 'The lunch menu, once revealed, to open it again without a connection.' },
     kind: { it: 'Funzione', en: 'Feature' },

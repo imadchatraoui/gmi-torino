@@ -27,19 +27,76 @@ function useReveal() {
   return ref
 }
 
-// il logo di chi cura il reading; se il file manca non si vede niente (e resta il nome scritto)
-function PartnerLogo({ className }) {
+// il logo di chi cura il reading (contiene già il nome); se il file manca resta il nome scritto
+function PartnerLogo({ className, children }) {
   const [ok, setOk] = useState(true)
-  if (!ok) return null
+  if (!ok) return children
   return <img className={className} src={R.partnerLogo} alt={R.partner} onError={() => setOk(false)} />
+}
+
+// preferenze di lettura ricordate su questo telefono (vedi Privacy e cookie)
+function useStored(key, initial, allowed) {
+  const [v, setV] = useState(() => {
+    try {
+      const s = localStorage.getItem(key)
+      return allowed.includes(s) ? s : initial
+    } catch {
+      return initial
+    }
+  })
+  const set = (next) => {
+    setV(next)
+    try {
+      localStorage.setItem(key, next)
+    } catch {
+      /* modalità privata */
+    }
+  }
+  return [v, set]
+}
+
+const VIEWS = [
+  ['both', 'EN | IT', 'Inglese a sinistra, italiano a destra'],
+  ['it', 'Italiano', 'Solo italiano'],
+  ['en', 'English', 'Only English'],
+]
+const SIZES = ['s', 'm', 'l', 'xl']
+const FIELDS = ['before', 'lead', 'strong', 'after']
+
+// barra di lettura: lingua dell'estratto e grandezza del testo
+function ReaderBar({ view, setView, size, setSize }) {
+  const i = SIZES.indexOf(size)
+  return (
+    <div className="rd-bar" role="toolbar" aria-label="Opzioni di lettura">
+      <div className="rd-seg" role="group" aria-label="Lingua dell'estratto">
+        {VIEWS.map(([v, l, aria]) => (
+          <button key={v} type="button" aria-pressed={view === v} aria-label={aria} onClick={() => setView(v)}>
+            {l}
+          </button>
+        ))}
+      </div>
+      <div className="rd-seg rd-seg--size" role="group" aria-label="Grandezza del testo">
+        <button type="button" aria-label="Testo più piccolo" disabled={i === 0} onClick={() => setSize(SIZES[i - 1])}>
+          A−
+        </button>
+        <button type="button" aria-label="Testo più grande" disabled={i === SIZES.length - 1} onClick={() => setSize(SIZES[i + 1])}>
+          A+
+        </button>
+      </div>
+    </div>
+  )
 }
 
 export default function ReadingPage() {
   const ref = useReveal()
+  const [view, setView] = useStored('gmi-reading-view', 'both', VIEWS.map((v) => v[0]))
+  const [size, setSize] = useStored('gmi-reading-size', 'm', SIZES)
+  const [en, it] = ['en', 'it'].map((l) => R.excerpt.versions.find((v) => v.lang === l))
+  const shown = view === 'both' ? [en, it] : [view === 'en' ? en : it]
   return (
     <>
       <SiteHeader page="menu" />
-      <main id="main" tabIndex={-1} className="rd" ref={ref}>
+      <main id="main" tabIndex={-1} className={`rd rd--${size}`} ref={ref}>
         <header className="rd-hero">
           <img className="rd-hero__logo" src={EV.logo} srcSet={EV.logoSrcSet} sizes="(min-width: 640px) 360px, 70vw" alt={EV.name} width="682" height="343" />
           <p className="rd-hero__kind">{R.kind}</p>
@@ -52,8 +109,9 @@ export default function ReadingPage() {
             {R.place}
           </p>
           <div className="rd-hero__partner">
-            <PartnerLogo className="rd-hero__plogo" />
-            <span>{R.partner}</span>
+            <PartnerLogo className="rd-hero__plogo">
+              <span>{R.partner}</span>
+            </PartnerLogo>
           </div>
         </header>
 
@@ -63,17 +121,22 @@ export default function ReadingPage() {
 
         <section className="rd-section rd-reveal" aria-labelledby="rd-excerpt">
           <h2 id="rd-excerpt" className="rd-h2">{R.excerpt.heading}</h2>
-          {R.excerpt.versions.map((v) => (
-            <div key={v.lang} className="rd-text" lang={v.lang}>
-              <p className="rd-text__tag">{v.tag}</p>
-              <blockquote>
-                <p>{v.before}</p>
-                <p>{v.lead}</p>
-                <p className="rd-text__key">{v.strong}</p>
-                <p>{v.after}</p>
-              </blockquote>
-            </div>
-          ))}
+          <ReaderBar view={view} setView={setView} size={size} setSize={setSize} />
+          {/* affiancati: ogni paragrafo inglese ha accanto il suo italiano, così si segue riga per riga */}
+          <div className={`rd-text rd-text--${shown.length === 2 ? 'two' : 'one'}`}>
+            {shown.map((v) => (
+              <p key={v.lang} className="rd-text__tag" lang={v.lang}>
+                {v.tag}
+              </p>
+            ))}
+            {FIELDS.map((f) =>
+              shown.map((v) => (
+                <p key={`${f}-${v.lang}`} lang={v.lang} className={f === 'strong' ? 'rd-text__p rd-text__key' : 'rd-text__p'}>
+                  {v[f]}
+                </p>
+              )),
+            )}
+          </div>
         </section>
 
         <section className="rd-section rd-reveal" aria-labelledby="rd-questions">
@@ -117,8 +180,9 @@ export default function ReadingPage() {
         </section>
 
         <footer className="rd-credits rd-reveal">
-          <PartnerLogo className="rd-credits__logo" />
-          <p className="rd-credits__brand display">{R.credits.brand}</p>
+          <PartnerLogo className="rd-credits__logo">
+            <p className="rd-credits__brand display">{R.credits.brand}</p>
+          </PartnerLogo>
           <p>{R.credits.role}</p>
           <p className="rd-credits__curator">{R.credits.curator}</p>
         </footer>
