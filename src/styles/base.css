@@ -150,6 +150,17 @@
   box-sizing: border-box;
 }
 
+/* su iPhone un doppio tocco su un bottone o un link non ingrandisce la pagina (il pizzico per lo zoom resta) */
+a,
+button,
+input,
+select,
+textarea,
+label,
+summary {
+  touch-action: manipulation;
+}
+
 html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;

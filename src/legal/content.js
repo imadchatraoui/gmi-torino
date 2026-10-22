@@ -21,8 +21,8 @@ export const STORAGE = [
     kind: { it: 'Funzione', en: 'Feature' },
   },
   {
-    key: 'gmi-reading-view, gmi-reading-size',
-    what: { it: 'Come preferisci leggere il testo del reading (lingua, affiancato, grandezza del testo).', en: 'How you prefer to read the reading text (language, side by side, text size).' },
+    key: 'gmi-reading-view, gmi-reading-size, gmi-reading-font, gmi-reading-space',
+    what: { it: 'Come preferisci leggere il testo del reading (lingua, affiancato, grandezza, carattere e spaziatura del testo).', en: 'How you prefer to read the reading text (language, side by side, text size, font and spacing).' },
     kind: { it: 'Preferenza', en: 'Preference' },
   },
   {

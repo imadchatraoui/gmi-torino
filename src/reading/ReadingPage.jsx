@@ -99,29 +99,120 @@ const VIEWS = [
   ['it', 'Italiano', 'Solo italiano'],
   ['en', 'English', 'Only English'],
 ]
-const SIZES = ['s', 'm', 'l', 'xl']
+const SIZES = ['s', 'm', 'l', 'xl', 'xxl']
+const SIZE_PCT = { s: 90, m: 100, l: 115, xl: 130, xxl: 150 }
 const FIELDS = ['before', 'lead', 'strong', 'after']
 
-// barra di lettura: lingua dell'estratto e grandezza del testo
-function ReaderBar({ view, setView, size, setSize }) {
+// schermo sempre acceso mentre si legge ad alta voce (Wake Lock: Safari 16.4+, Chrome); si riattiva tornando sulla pagina
+function useAwake() {
+  const supported = typeof navigator !== 'undefined' && 'wakeLock' in navigator
+  const [on, setOn] = useState(false)
+  useEffect(() => {
+    if (!on || !supported) return
+    let lock = null
+    let alive = true
+    const take = () =>
+      navigator.wakeLock
+        .request('screen')
+        .then((l) => (alive ? (lock = l) : l.release()))
+        .catch(() => setOn(false))
+    const back = () => document.visibilityState === 'visible' && take()
+    take()
+    document.addEventListener('visibilitychange', back)
+    return () => {
+      alive = false
+      document.removeEventListener('visibilitychange', back)
+      lock?.release().catch(() => {})
+    }
+  }, [on, supported])
+  return { supported, on, setOn }
+}
+
+// barra di lettura: lingua dell'estratto e, nel pannello Aa, grandezza, carattere e spaziatura
+function ReaderBar({ view, setView, prefs }) {
+  const [open, setOpen] = useState(false)
+  const box = useRef(null)
+  const { size, setSize, font, setFont, space, setSpace, awake } = prefs
   const i = SIZES.indexOf(size)
-  return (
-    <div className="rd-bar" role="toolbar" aria-label="Opzioni di lettura">
-      <div className="rd-seg" role="group" aria-label="Lingua dell'estratto">
-        {VIEWS.map(([v, l, aria]) => (
-          <button key={v} type="button" aria-pressed={view === v} aria-label={aria} onClick={() => setView(v)}>
+
+  // si chiude toccando fuori o con Esc
+  useEffect(() => {
+    if (!open) return
+    const out = (e) => box.current && !box.current.contains(e.target) && setOpen(false)
+    const esc = (e) => e.key === 'Escape' && setOpen(false)
+    document.addEventListener('pointerdown', out)
+    document.addEventListener('keydown', esc)
+    return () => {
+      document.removeEventListener('pointerdown', out)
+      document.removeEventListener('keydown', esc)
+    }
+  }, [open])
+
+  const seg = (label, value, set, options) => (
+    <div className="rd-opt">
+      <span className="rd-opt__label">{label}</span>
+      <div className="rd-seg" role="group" aria-label={label}>
+        {options.map(([v, l]) => (
+          <button key={v} type="button" aria-pressed={value === v} onClick={() => set(v)}>
             {l}
           </button>
         ))}
       </div>
-      <div className="rd-seg rd-seg--size" role="group" aria-label="Grandezza del testo">
-        <button type="button" aria-label="Testo più piccolo" disabled={i === 0} onClick={() => setSize(SIZES[i - 1])}>
-          A−
-        </button>
-        <button type="button" aria-label="Testo più grande" disabled={i === SIZES.length - 1} onClick={() => setSize(SIZES[i + 1])}>
-          A+
+    </div>
+  )
+
+  return (
+    <div className="rd-bar" ref={box}>
+      <div className="rd-bar__row">
+        <div className="rd-seg" role="group" aria-label="Lingua dell'estratto">
+          {VIEWS.map(([v, l, aria]) => (
+            <button key={v} type="button" aria-pressed={view === v} aria-label={aria} onClick={() => setView(v)}>
+              {l}
+            </button>
+          ))}
+        </div>
+        <button
+          type="button"
+          className="rd-aa"
+          aria-expanded={open}
+          aria-controls="rd-panel"
+          aria-label="Opzioni di lettura: grandezza, carattere, spaziatura"
+          onClick={() => setOpen(!open)}
+        >
+          <span aria-hidden="true">Aa</span>
         </button>
       </div>
+      {open && (
+        <div id="rd-panel" className="rd-panel" role="group" aria-label="Opzioni di lettura">
+          <div className="rd-opt">
+            <span className="rd-opt__label">Grandezza</span>
+            <div className="rd-seg rd-seg--size" role="group" aria-label="Grandezza del testo">
+              <button type="button" aria-label="Testo più piccolo" disabled={i === 0} onClick={() => setSize(SIZES[i - 1])}>
+                A−
+              </button>
+              <output className="rd-size" aria-live="polite">
+                {SIZE_PCT[size]}%
+              </output>
+              <button type="button" aria-label="Testo più grande" disabled={i === SIZES.length - 1} onClick={() => setSize(SIZES[i + 1])}>
+                A+
+              </button>
+            </div>
+          </div>
+          {seg('Carattere', font, setFont, [
+            ['serif', 'Classico'],
+            ['sans', 'Semplice'],
+          ])}
+          {seg('Spaziatura', space, setSpace, [
+            ['normal', 'Normale'],
+            ['wide', 'Ampia'],
+          ])}
+          {awake.supported &&
+            seg('Schermo', awake.on ? 'on' : 'off', (v) => awake.setOn(v === 'on'), [
+              ['off', 'Normale'],
+              ['on', 'Sempre acceso'],
+            ])}
+        </div>
+      )}
     </div>
   )
 }
@@ -130,13 +221,17 @@ export default function ReadingPage() {
   const ref = useReveal()
   const [view, setView] = useStored('gmi-reading-view', 'both', VIEWS.map((v) => v[0]))
   const [size, setSize] = useStored('gmi-reading-size', 'm', SIZES)
+  const [font, setFont] = useStored('gmi-reading-font', 'serif', ['serif', 'sans'])
+  const [space, setSpace] = useStored('gmi-reading-space', 'normal', ['normal', 'wide'])
+  const awake = useAwake()
+  const prefs = { size, setSize, font, setFont, space, setSpace, awake }
   const [en, it] = ['en', 'it'].map((l) => R.excerpt.versions.find((v) => v.lang === l))
   const shown = view === 'both' ? [en, it] : [view === 'en' ? en : it]
   return (
     <>
       <SiteHeader page="menu" />
       <Progress />
-      <main id="main" tabIndex={-1} className={`rd rd--${size}`} ref={ref}>
+      <main id="main" tabIndex={-1} className={`rd rd--${size} rd--${font} rd--${space}`} ref={ref}>
         <header id="rd-top" className="rd-hero">
           <img className="rd-hero__logo" src={EV.logo} srcSet={EV.logoSrcSet} sizes="(min-width: 640px) 360px, 70vw" alt={EV.name} width="682" height="343" />
           <p className="rd-hero__kind">{R.kind}</p>
@@ -162,7 +257,7 @@ export default function ReadingPage() {
 
         <section id="estratto" className="rd-section rd-reveal" aria-labelledby="rd-excerpt">
           <h2 id="rd-excerpt" className="rd-h2">{R.excerpt.heading}</h2>
-          <ReaderBar view={view} setView={setView} size={size} setSize={setSize} />
+          <ReaderBar view={view} setView={setView} prefs={prefs} />
           {/* affiancati: ogni paragrafo inglese ha accanto il suo italiano, così si segue riga per riga */}
           <div className={`rd-text rd-text--${shown.length === 2 ? 'two' : 'one'}`}>
             {shown.map((v) => (
