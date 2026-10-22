@@ -139,7 +139,6 @@ export default defineConfig({
         corposunnah: resolve(import.meta.dirname, 'corposunnah/index.html'),
         reading: resolve(import.meta.dirname, 'reading/index.html'),
         programma: resolve(import.meta.dirname, 'programma/index.html'),
-        test: resolve(import.meta.dirname, 'test/index.html'),
         notFound: resolve(import.meta.dirname, '404.html'),
       },
     },
