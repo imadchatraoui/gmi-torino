@@ -1,0 +1,346 @@
+/* gmitorino.org/reading: il testo del reading su Al-Ghazali, stile YMHS (carta, salvia, blu, Bodoni) */
+.rd {
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: 0 var(--gutter) 48px;
+}
+
+/* ---------- apertura ---------- */
+.rd-hero {
+  display: grid;
+  justify-items: center;
+  padding: 32px 0 30px;
+  text-align: center;
+}
+
+.rd-hero > * {
+  animation: rd-up 0.9s var(--ease-out) backwards;
+}
+
+.rd-hero > :nth-child(2) { animation-delay: 0.12s; }
+.rd-hero > :nth-child(3) { animation-delay: 0.22s; }
+.rd-hero > :nth-child(n + 4) { animation-delay: 0.34s; }
+
+.rd-hero__logo {
+  width: min(70vw, 360px);
+  height: auto;
+  margin-bottom: 18px;
+}
+
+.rd-hero__kind {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--label);
+}
+
+.rd-hero__title {
+  margin-top: 10px;
+  font-size: clamp(2.1rem, 9.5vw, 3.2rem);
+  line-height: 1.06;
+  color: var(--heading);
+  text-wrap: balance;
+}
+
+.rd-hero__original {
+  max-width: 30em;
+  margin-top: 12px;
+  font-size: 0.9375rem;
+  font-style: italic;
+  line-height: 1.5;
+  color: var(--text-2);
+}
+
+.rd-hero .divider {
+  margin: 20px auto 16px;
+}
+
+.rd-hero__meta {
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: var(--text-2);
+}
+
+.rd-hero__partner {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+/* ---------- la domanda ---------- */
+.rd-question {
+  margin: 8px calc(var(--gutter) * -0.4) 44px;
+  padding: 34px 26px;
+  background: var(--card);
+  color: var(--on-card);
+  text-align: center;
+}
+
+.rd-question blockquote {
+  font-size: clamp(1.45rem, 6.4vw, 1.9rem);
+  line-height: 1.25;
+  text-wrap: balance;
+}
+
+/* ---------- sezioni ---------- */
+.rd-section {
+  margin-bottom: 44px;
+}
+
+.rd-h2 {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--label);
+}
+
+.rd-h2::after {
+  content: '';
+  flex: 1 1 auto;
+  min-width: 24px;
+  height: 1px;
+  background: var(--line);
+}
+
+/* l'estratto: testo grande e comodo da leggere ad alta voce */
+.rd-text + .rd-text {
+  margin-top: 28px;
+}
+
+.rd-text__tag {
+  margin-bottom: 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--text-3);
+}
+
+.rd-text blockquote {
+  display: grid;
+  gap: 14px;
+  padding-left: 16px;
+  border-left: 2px solid var(--ornament);
+  font-family: var(--display);
+  font-size: 1.1875rem;
+  line-height: 1.6;
+  color: var(--text);
+}
+
+.rd-text__key {
+  font-style: italic;
+  color: var(--heading);
+}
+
+/* le domande */
+.rd-questions {
+  display: grid;
+  gap: 20px;
+  padding: 0;
+  list-style: none;
+}
+
+.rd-questions li {
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  gap: 12px;
+  align-items: start;
+}
+
+.rd-questions__n {
+  font-size: 2rem;
+  line-height: 1;
+  color: var(--navy);
+}
+
+:root[data-theme='dark'] .rd-questions__n {
+  color: var(--label);
+}
+
+.rd-questions p {
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  color: var(--text-2);
+}
+
+.rd-questions strong {
+  color: var(--heading);
+}
+
+/* il libro */
+.rd-book {
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  margin: 0 calc(var(--gutter) * -0.4) 44px;
+  padding: 32px 22px 30px;
+  background: var(--surface);
+  text-align: center;
+}
+
+.rd-book__badge {
+  padding: 4px 10px;
+  border: 1px solid var(--ornament);
+  border-radius: 999px;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--label);
+}
+
+.rd-book__title {
+  font-size: 1.1875rem;
+  font-weight: 600;
+  color: var(--heading);
+}
+
+.rd-book__row {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+}
+
+/* il QR serve a chi guarda da un computer o da un foglio: su carta chiara anche col tema scuro */
+.rd-book__qr {
+  width: 120px;
+  height: 120px;
+  padding: 6px;
+  background: #f3ede2;
+}
+
+.rd-book__text {
+  max-width: 26em;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: var(--text-2);
+}
+
+.rd-book__btn {
+  margin-top: 6px;
+  min-width: 220px;
+}
+
+@media (min-width: 560px) {
+  .rd-book__row {
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    text-align: left;
+  }
+}
+
+/* bibliografia */
+.rd-books {
+  display: grid;
+  padding: 0;
+  list-style: none;
+  counter-reset: book;
+}
+
+.rd-books li {
+  padding: 14px 0;
+  border-top: 1px solid var(--line);
+}
+
+.rd-books li:last-child {
+  border-bottom: 1px solid var(--line);
+}
+
+.rd-books__name {
+  font-size: 1rem;
+  line-height: 1.4;
+  color: var(--heading);
+}
+
+.rd-books__name em {
+  color: var(--text-2);
+}
+
+.rd-books__text {
+  margin-top: 4px;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: var(--text-2);
+}
+
+/* logo nero su bianco: si fonde con la carta; nel tema scuro diventa chiaro */
+.rd-hero__plogo,
+.rd-credits__logo {
+  width: auto;
+  mix-blend-mode: multiply;
+}
+
+.rd-hero__plogo {
+  height: 46px;
+}
+
+.rd-credits__logo {
+  height: 84px;
+  justify-self: center;
+  margin-bottom: 6px;
+}
+
+:root[data-theme='dark'] .rd-hero__plogo,
+:root[data-theme='dark'] .rd-credits__logo {
+  filter: invert(1);
+  mix-blend-mode: screen;
+}
+
+/* chi l'ha curato */
+.rd-credits {
+  display: grid;
+  gap: 4px;
+  padding-top: 8px;
+  text-align: center;
+  font-size: 0.875rem;
+  color: var(--text-2);
+}
+
+.rd-credits__brand {
+  font-size: 1.375rem;
+  color: var(--heading);
+}
+
+.rd-credits__curator {
+  margin-top: 6px;
+  font-style: italic;
+}
+
+/* entrata delle sezioni, una volta sola */
+@media (prefers-reduced-motion: no-preference) {
+  .rd-reveal:not(.is-in) {
+    opacity: 0;
+    transform: translate3d(0, 14px, 0);
+  }
+
+  .rd-reveal {
+    transition:
+      opacity 0.8s var(--ease-out),
+      transform 0.8s var(--ease-out);
+  }
+}
+
+@keyframes rd-up {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rd-hero > * {
+    animation: none;
+  }
+}

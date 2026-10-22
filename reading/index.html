@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="it" class="theme-ymhs">
+  <head>
+    <meta charset="UTF-8" />
+    <script>
+      // tema e lingua prima del primo disegno (vedi src/shared/prefs.js)
+      try {
+        var d = document.documentElement, t = localStorage.getItem('gmi-theme'), l = localStorage.getItem('gmi-lang')
+        d.dataset.theme = t || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+        if (l) d.lang = l
+      } catch (e) {}
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#f3ede2" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <title>Reading · The Alchemy of Happiness · GMI Torino</title>
+    <meta name="description" content="Reading e riflessione collettiva a partire da The Alchemy of Happiness di Al-Ghazali. YMHS, 25 ottobre 2026, Casa del Quartiere di San Salvario, Torino." />
+    <meta property="og:title" content="Reading e riflessione collettiva · The Alchemy of Happiness" />
+    <meta property="og:description" content="Who are you, where did you come from, and where are you going? · YMHS, 25 ottobre 2026" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="it_IT" />
+    <meta property="og:site_name" content="GMI Torino" />
+    <meta property="og:url" content="https://gmitorino.org/reading/" />
+    <meta name="twitter:card" content="summary" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/reading/main.jsx"></script>
+    <script defer src="/_vercel/insights/script.js"></script>
+  </body>
+</html>

@@ -1,0 +1,129 @@
+import { useEffect, useRef, useState } from 'react'
+import { eventById } from '../data/events'
+import { tornClip } from '../shared/Paper'
+import SiteFooter from '../shared/SiteFooter'
+import SiteHeader from '../shared/SiteHeader'
+import { READING as R } from './content'
+
+// gmitorino.org/reading (e /test per le prove): il testo del reading su Al-Ghazali, da leggere sul telefono
+// durante l'evento. Stile YMHS come /menu; i testi sono in content.js, così come li ha scritti chi lo cura.
+const EV = eventById('ymhs')
+const QUOTE_CLIP = tornClip(61, { depth: 3, points: 30 })
+const BOOK_CLIP = tornClip(73, { depth: 3, points: 30 })
+
+// le sezioni salgono piano quando arrivano sullo schermo (una volta sola)
+function useReveal() {
+  const ref = useRef(null)
+  useEffect(() => {
+    const els = ref.current?.querySelectorAll('.rd-reveal') ?? []
+    if (!('IntersectionObserver' in window)) return els.forEach((el) => el.classList.add('is-in'))
+    const io = new IntersectionObserver(
+      (entries) => entries.forEach((e) => e.isIntersecting && (e.target.classList.add('is-in'), io.unobserve(e.target))),
+      { rootMargin: '0px 0px -12% 0px' },
+    )
+    els.forEach((el) => io.observe(el))
+    return () => io.disconnect()
+  }, [])
+  return ref
+}
+
+// il logo di chi cura il reading; se il file manca non si vede niente (e resta il nome scritto)
+function PartnerLogo({ className }) {
+  const [ok, setOk] = useState(true)
+  if (!ok) return null
+  return <img className={className} src={R.partnerLogo} alt={R.partner} onError={() => setOk(false)} />
+}
+
+export default function ReadingPage() {
+  const ref = useReveal()
+  return (
+    <>
+      <SiteHeader page="menu" />
+      <main id="main" tabIndex={-1} className="rd" ref={ref}>
+        <header className="rd-hero">
+          <img className="rd-hero__logo" src={EV.logo} srcSet={EV.logoSrcSet} sizes="(min-width: 640px) 360px, 70vw" alt={EV.name} width="682" height="343" />
+          <p className="rd-hero__kind">{R.kind}</p>
+          <h1 className="rd-hero__title display">{R.title}</h1>
+          <p className="rd-hero__original">{R.original}</p>
+          <div className="divider" aria-hidden="true" />
+          <p className="rd-hero__meta">
+            25 ottobre 2026
+            <br />
+            {R.place}
+          </p>
+          <div className="rd-hero__partner">
+            <PartnerLogo className="rd-hero__plogo" />
+            <span>{R.partner}</span>
+          </div>
+        </header>
+
+        <figure className="rd-question rd-reveal" style={{ clipPath: QUOTE_CLIP }}>
+          <blockquote className="display">{R.question}</blockquote>
+        </figure>
+
+        <section className="rd-section rd-reveal" aria-labelledby="rd-excerpt">
+          <h2 id="rd-excerpt" className="rd-h2">{R.excerpt.heading}</h2>
+          {R.excerpt.versions.map((v) => (
+            <div key={v.lang} className="rd-text" lang={v.lang}>
+              <p className="rd-text__tag">{v.tag}</p>
+              <blockquote>
+                <p>{v.before}</p>
+                <p>{v.lead}</p>
+                <p className="rd-text__key">{v.strong}</p>
+                <p>{v.after}</p>
+              </blockquote>
+            </div>
+          ))}
+        </section>
+
+        <section className="rd-section rd-reveal" aria-labelledby="rd-questions">
+          <h2 id="rd-questions" className="rd-h2">{R.questions.heading}</h2>
+          <ol className="rd-questions">
+            {R.questions.items.map(([lead, text], i) => (
+              <li key={i}>
+                <span className="rd-questions__n display" aria-hidden="true">{i + 1}</span>
+                <p>
+                  <strong>{lead}</strong> {text}
+                </p>
+              </li>
+            ))}
+          </ol>
+        </section>
+
+        <aside className="rd-book rd-reveal" style={{ clipPath: BOOK_CLIP }} aria-labelledby="rd-book-title">
+          <span className="rd-book__badge">{R.ebook.badge}</span>
+          <h2 id="rd-book-title" className="rd-book__title">{R.ebook.title}</h2>
+          <div className="rd-book__row">
+            <img className="rd-book__qr" src={R.ebook.qr} alt="QR code del libro in PDF" width="120" height="120" />
+            <p className="rd-book__text">{R.ebook.text}</p>
+          </div>
+          <a className="btn btn--primary rd-book__btn" href={R.ebook.url} target="_blank" rel="noopener noreferrer">
+            {R.ebook.button} →
+          </a>
+        </aside>
+
+        <section className="rd-section rd-reveal" aria-labelledby="rd-books">
+          <h2 id="rd-books" className="rd-h2">{R.books.heading}</h2>
+          <ol className="rd-books">
+            {R.books.items.map(([name, it, text]) => (
+              <li key={name}>
+                <p className="rd-books__name">
+                  <strong>{name}</strong> <em>{it}</em>
+                </p>
+                <p className="rd-books__text">{text}</p>
+              </li>
+            ))}
+          </ol>
+        </section>
+
+        <footer className="rd-credits rd-reveal">
+          <PartnerLogo className="rd-credits__logo" />
+          <p className="rd-credits__brand display">{R.credits.brand}</p>
+          <p>{R.credits.role}</p>
+          <p className="rd-credits__curator">{R.credits.curator}</p>
+        </footer>
+      </main>
+      <SiteFooter />
+    </>
+  )
+}

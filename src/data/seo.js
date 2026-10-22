@@ -46,7 +46,7 @@ export function eventJsonLd(ev) {
   }
 }
 
-export const robotsTxt = () => `User-agent: *\nAllow: /\nDisallow: /api/\nDisallow: /admin/\nDisallow: /corposunnah/\n\nSitemap: ${SITE}/sitemap.xml\n`
+export const robotsTxt = () => `User-agent: *\nAllow: /\nDisallow: /api/\nDisallow: /admin/\nDisallow: /corposunnah/\nDisallow: /test/\n\nSitemap: ${SITE}/sitemap.xml\n`
 
 export const sitemapXml = (paths) =>
   `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${paths

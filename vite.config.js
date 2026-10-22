@@ -137,6 +137,8 @@ export default defineConfig({
         privacy: resolve(import.meta.dirname, 'privacy/index.html'),
         admin: resolve(import.meta.dirname, 'admin/index.html'),
         corposunnah: resolve(import.meta.dirname, 'corposunnah/index.html'),
+        reading: resolve(import.meta.dirname, 'reading/index.html'),
+        test: resolve(import.meta.dirname, 'test/index.html'),
         notFound: resolve(import.meta.dirname, '404.html'),
       },
     },
