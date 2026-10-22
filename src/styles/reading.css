@@ -94,6 +94,20 @@
   color: var(--text-2);
 }
 
+.rd-hero__prog {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 40px;
+  margin-top: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--heading);
+  text-decoration: none;
+}
+
 .rd-hero__partner {
   display: grid;
   justify-items: center;

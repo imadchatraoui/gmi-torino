@@ -6,7 +6,7 @@
 const CACHE = 'gmi-torino-v1'
 
 self.addEventListener('install', (event) => {
-  event.waitUntil(caches.open(CACHE).then((c) => c.addAll(['/', '/menu/', '/reading/'])).then(() => self.skipWaiting()))
+  event.waitUntil(caches.open(CACHE).then((c) => c.addAll(['/', '/menu/', '/programma/', '/reading/'])).then(() => self.skipWaiting()))
 })
 
 self.addEventListener('activate', (event) => {

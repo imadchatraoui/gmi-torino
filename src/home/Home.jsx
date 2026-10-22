@@ -13,6 +13,7 @@ import GradientText from '../components/react-bits/GradientText'
 import StarBorder from '../components/react-bits/StarBorder'
 import Partners from '../shared/Partners'
 import WipBox from '../shared/WipBox'
+import { directionsUrl } from '../shared/directions'
 import { useLiveEvent, useLiveSettings } from '../shared/liveSettings'
 import WordCycle from './WordCycle'
 
@@ -110,14 +111,6 @@ function WipSection({ id, lang, kind }) {
       <WipBox kind={kind} />
     </section>
   )
-}
-
-// indicazioni: su Android il telefono chiede con quale app aprirle (Maps, Waze…); su iPhone e computer
-// Google Maps (si apre nell'app se c'è, altrimenti nel browser). iPhone non permette di far scegliere l'app.
-function directionsUrl(ev) {
-  const q = encodeURIComponent(`${ev.venue}, ${ev.city}`)
-  const android = typeof navigator !== 'undefined' && /Android/i.test(navigator.userAgent)
-  return android ? `geo:0,0?q=${q}` : `https://www.google.com/maps/dir/?api=1&destination=${q}`
 }
 
 // alle 13:00 del giorno dell'evento compare un avviso che porta al menu (fino alla fine dell'evento)
@@ -251,6 +244,11 @@ function EventCard({ ev: base, lang, theme }) {
             {tr({ it: 'Iscriviti', en: 'Sign up' })}
           </StarBorder>
         )}
+        {ev.blocks.program && ev.program && (
+          <a className="btn btn--ghost" href="/programma/">
+            {tr({ it: 'Il programma', en: 'The programme' })}
+          </a>
+        )}
         {ev.blocks.menu && ev.menu && (
           <a className="btn btn--ghost" href="/menu/">
             {tr({ it: 'Il menu del pranzo', en: 'The lunch menu' })}
@@ -303,6 +301,11 @@ function Archive({ lang, finished }) {
             {ev.venue}
             <span>{ev.city}</span>
           </p>
+          {ev.blocks.program && ev.program && (
+            <a className="past__link" href="/programma/">
+              {tr({ it: 'Il programma', en: 'The programme' })}
+            </a>
+          )}
           {ev.blocks.menu && (
             <a className="past__link" href="/menu/">
               {tr({ it: 'Il menu del pranzo', en: 'The lunch menu' })}

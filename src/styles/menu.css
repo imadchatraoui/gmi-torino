@@ -688,6 +688,21 @@
   padding: 48px var(--gutter) 8px;
 }
 
+.menu-prog {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 44px;
+  margin-top: 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--heading);
+  text-decoration: none;
+}
+
 .menu-partners {
   margin-top: 22px;
 }

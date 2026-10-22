@@ -243,6 +243,9 @@ export default function ReadingPage() {
             <br />
             {R.place}
           </p>
+          <a className="rd-hero__prog" href="/programma/">
+            Programma della giornata <span aria-hidden="true">→</span>
+          </a>
           <div className="rd-hero__partner">
             <PartnerLogo className="rd-hero__plogo">
               <span>{R.partner}</span>

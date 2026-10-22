@@ -136,6 +136,11 @@ export default function MenuPage() {
 
         <section id="menu-end" className="menu-end" aria-label={tr(meal)}>
           <p className="menu-note">{tr(note)}</p>
+          {ev.blocks.program && ev.program && (
+            <a className="menu-prog" href="/programma/">
+              {tr({ it: 'Il programma della giornata', en: 'The programme of the day' })} <span aria-hidden="true">→</span>
+            </a>
+          )}
           <Partners ev={ev} className="menu-partners" />
           {open && (
           <ShareButton

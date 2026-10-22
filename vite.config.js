@@ -112,7 +112,7 @@ function searchData() {
     },
     generateBundle() {
       this.emitFile({ type: 'asset', fileName: 'robots.txt', source: robotsTxt() })
-      this.emitFile({ type: 'asset', fileName: 'sitemap.xml', source: sitemapXml(['/', '/menu/', '/privacy/']) })
+      this.emitFile({ type: 'asset', fileName: 'sitemap.xml', source: sitemapXml(['/', '/menu/', '/programma/', '/reading/', '/privacy/']) })
     },
   }
 }
@@ -138,6 +138,7 @@ export default defineConfig({
         admin: resolve(import.meta.dirname, 'admin/index.html'),
         corposunnah: resolve(import.meta.dirname, 'corposunnah/index.html'),
         reading: resolve(import.meta.dirname, 'reading/index.html'),
+        programma: resolve(import.meta.dirname, 'programma/index.html'),
         test: resolve(import.meta.dirname, 'test/index.html'),
         notFound: resolve(import.meta.dirname, '404.html'),
       },

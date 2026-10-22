@@ -38,7 +38,29 @@ export const EVENTS = [
       // Bayna: la B con il pallino d'oro al centro (dal logo ufficiale, due livelli: segno + pallino)
       { name: 'Bayna', url: 'https://www.instagram.com/baynapsicologia/', logo: '/eventi/ymhs/partner/bayna.svg', dot: '/eventi/ymhs/partner/bayna-punto.svg', ratio: 411 / 595, height: 36 },
     ],
-    blocks: { info: true, signup: true, program: false, menu: true },
+    blocks: { info: true, signup: true, program: true, menu: true },
+    // il programma della giornata (dalla locandina; pagina gmitorino.org/programma). Orari di quel giorno, ora di Torino.
+    program: [
+      { from: '10:00', to: '10:30', title: 'Apertura e introduzione', text: 'Presentazione delle realtà promotrici e delle finalità della giornata' },
+      { from: '10:35', to: '11:05', kind: 'Talk', title: 'Between two worlds', who: 'Dott.ssa Najoua Meddad', text: 'Identità, seconde generazioni e minority stress' },
+      { from: '11:10', to: '12:40', title: 'Sessione workshop 1', text: 'Tre workshop in parallelo su aspettative e pressione, pressioni sociali e benessere, corpo e immagine' },
+      { from: '12:45', to: '13:45', title: 'Pausa pranzo', pause: true, link: { href: '/menu/', label: { it: 'Il menu del pranzo', en: 'The lunch menu' } } },
+      {
+        from: '13:50',
+        to: '14:20',
+        title: 'Reading e riflessione collettiva',
+        who: 'Fedouà El Attari',
+        text: 'Dal libro “The Alchemy of Happiness” di Al-Ghazali',
+        link: { href: '/reading/', label: { it: 'Leggi il testo', en: 'Read the text' } },
+      },
+      { from: '14:25', to: '14:55', kind: 'Talk', title: 'Ihsan', who: 'Shaykh Ibrahim Gabriele Lungo', text: 'Ihsan: la scienza profetica della salute spirituale' },
+      { from: '15:00', to: '16:00', kind: 'Panel', title: 'Love, family & pressure', text: 'Confronto sui cambiamenti che attraversano matrimonio, relazioni e famiglia nelle nuove generazioni musulmane' },
+      { from: '16:05', to: '17:35', title: 'Sessione workshop 2', text: 'Tre workshop in parallelo su relazioni sane, solitudine e appartenenza, creatività e salute mentale' },
+      { from: '17:35', to: '18:05', title: 'Coffee break', pause: true },
+      { from: '18:05', to: '18:35', kind: 'Talk', title: 'Healthy community', who: 'Vincenzo Abbatantuono', text: 'Comunità, prevenzione, conflitti giovanili e dipendenze' },
+      { from: '18:35', to: '19:05', title: 'Stop Start Continue', text: 'Attività per trasformare le riflessioni in impegni concreti' },
+      { from: '19:05', to: '19:30', title: 'Chiusura e ringraziamenti' },
+    ],
     menu: {
       meal: { it: 'Il pranzo', en: 'Lunch' },
       // chi ha ideato il menu con noi: sezione prima delle bowl (testo modificabile da /admin)
