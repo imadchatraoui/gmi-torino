@@ -24,6 +24,6 @@ export default async function handler(req, res) {
   const revealed = byKey || env === 'open' || (env !== 'closed' && menuRevealed(settings, now))
   const revealAt = settings.menuMode === 'closed' ? null : settings.revealAt
   // con la chiave di prova la risposta è personale: mai in cache
-  const cache = byKey ? 'no-store' : 'public, s-maxage=3, stale-while-revalidate=15'
+  const cache = byKey ? 'no-store' : 'public, s-maxage=1, stale-while-revalidate=1'
   return send(res, 200, revealed ? { revealed, revealAt, now, options: await getMenu(POKES) } : { revealed, revealAt, now }, cache)
 }

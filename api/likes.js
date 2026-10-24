@@ -1,6 +1,6 @@
 // Like condivisi del menu (Vercel Function).
-//   GET  /api/likes?ids=poke-1,poke-2   -> { counts: { "poke-1": 12, "poke-2": 7 } }
-//   POST /api/likes  { id, delta: 1|-1 } -> { id, count }
+//   GET  /api/likes?ids=poke-1,poke-2   -> { counts: { "poke-1": 12, "poke-2": 7 }, t }  (in cache CDN 1 s)
+//   POST /api/likes  { id, delta: 1|-1 } -> { id, count, t }
 // I numeri stanno in un hash Redis su Upstash (REST API, nessuna dipendenza).
 // Chiavi: UPSTASH_REDIS_REST_URL + UPSTASH_REDIS_REST_TOKEN, oppure KV_REST_API_URL + KV_REST_API_TOKEN
 // (i nomi che Vercel crea collegando Upstash dal Marketplace). Senza chiavi risponde 503
@@ -28,6 +28,7 @@ async function redis(cfg, command) {
     method: 'POST',
     headers: { Authorization: `Bearer ${cfg.token}`, 'Content-Type': 'application/json' },
     body: JSON.stringify(command),
+    signal: AbortSignal.timeout(4000),
   })
   if (!res.ok) throw new Error(`upstash ${res.status}`)
   const data = await res.json()
@@ -35,10 +36,10 @@ async function redis(cfg, command) {
   return data.result
 }
 
-function send(res, status, body) {
+function send(res, status, body, cache = 'no-store') {
   res.statusCode = status
   res.setHeader('Content-Type', 'application/json')
-  res.setHeader('Cache-Control', 'no-store')
+  res.setHeader('Cache-Control', cache)
   res.end(JSON.stringify(body))
 }
 
@@ -85,7 +86,9 @@ export default async function handler(req, res) {
       if (!ids.length) return send(res, 400, { error: 'ids required' })
       const values = await redis(cfg, ['HMGET', KEY, ...ids])
       const counts = Object.fromEntries(ids.map((id, i) => [id, Math.max(0, Number(values[i]) || 0)]))
-      return send(res, 200, { counts })
+      // i numeri sono uguali per tutti: la CDN li tiene 1 secondo, così la sala non arriva tutta al database.
+      // t = ora del server, per non far tornare indietro il numero subito dopo il proprio tocco (src/shared/likes.js)
+      return send(res, 200, { counts, t: Date.now() }, 'public, s-maxage=1, stale-while-revalidate=1')
     }
 
     if (req.method === 'POST') {
@@ -97,7 +100,7 @@ export default async function handler(req, res) {
         await redis(cfg, ['HSET', KEY, id, '0'])
         count = 0
       }
-      return send(res, 200, { id, count })
+      return send(res, 200, { id, count, t: Date.now() })
     }
 
     res.setHeader('Allow', 'GET, POST')

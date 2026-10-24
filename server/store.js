@@ -27,11 +27,13 @@ export function redisConfig() {
   return url && token ? { url, token } : null
 }
 
+// risposta del database entro 4 s, altrimenti si va avanti con i valori di riserva (niente funzioni appese)
 export async function redis(cfg, command) {
   const res = await fetch(cfg.url, {
     method: 'POST',
     headers: { Authorization: `Bearer ${cfg.token}`, 'Content-Type': 'application/json' },
     body: JSON.stringify(command),
+    signal: AbortSignal.timeout(4000),
   })
   if (!res.ok) throw new Error(`upstash ${res.status}`)
   const data = await res.json()
@@ -57,7 +59,8 @@ async function readSettings() {
     const saved = raw ? JSON.parse(raw) : {}
     return { ...DEFAULTS, ...saved, notice: { ...DEFAULTS.notice, ...(saved.notice || {}) }, party: { ...DEFAULTS.party, ...(saved.party || {}) }, collab: { ...DEFAULTS.collab, ...(saved.collab || {}) } }
   } catch {
-    return { ...DEFAULTS }
+    // database irraggiungibile: restano le ultime impostazioni lette (non si torna ai valori di partenza)
+    return memo.value || { ...DEFAULTS }
   }
 }
 
@@ -104,14 +107,20 @@ const MENU_KEY = 'gmi:menu'
 const ARTS = new Set(['rice', 'a1', 'a2', 'a3', 'a4', 'a5', 'a6', 'a7', 'a8', 'a9'])
 const pair = (v) => ({ it: text(v?.it), en: text(v?.en) || text(v?.it) })
 
-export async function getMenu(fallback) {
+// come per le impostazioni: al massimo una lettura ogni 3 s; se il database non risponde resta l'ultimo menu letto
+let menuMemo = { at: 0, value: null }
+
+export async function getMenu(fallback, { fresh = false } = {}) {
   const cfg = redisConfig()
   if (!cfg) return fallback
+  if (!fresh && menuMemo.value && Date.now() - menuMemo.at < 3000) return menuMemo.value
   try {
     const raw = await redis(cfg, ['GET', MENU_KEY])
-    return raw ? JSON.parse(raw) : fallback
+    const value = raw ? JSON.parse(raw) : fallback
+    menuMemo = { at: Date.now(), value }
+    return value
   } catch {
-    return fallback
+    return menuMemo.value || fallback
   }
 }
 
@@ -128,12 +137,14 @@ export async function saveMenu(options, fallback) {
     return { ...base, label: o.label?.it ? pair(o.label) : base.label, title: o.title ? pair(o.title) : base.title, items: items.length ? items : base.items }
   })
   await redis(cfg, ['SET', MENU_KEY, JSON.stringify(clean)])
+  menuMemo = { at: Date.now(), value: clean }
   return clean
 }
 
 export async function resetMenu() {
   const cfg = redisConfig()
   if (cfg) await redis(cfg, ['DEL', MENU_KEY])
+  menuMemo = { at: 0, value: null }
 }
 
 export function menuRevealed(settings, now = Date.now()) {

@@ -7,7 +7,9 @@ import { useEffect, useState } from 'react'
 const LIKED_KEY = 'gmi-liked'
 const LOCAL_COUNTS_KEY = 'gmi-likes-local'
 
-const state = { counts: {}, liked: readJSON(LIKED_KEY, {}), mode: 'loading' }
+// t: ora del server dell'ultima risposta usata; wrote: ora del server dell'ultimo tocco di questo telefono per poke.
+// Le risposte possono arrivare dalla cache della CDN (1 s): una più vecchia del proprio tocco non sovrascrive il numero.
+const state = { counts: {}, liked: readJSON(LIKED_KEY, {}), mode: 'loading', t: 0, wrote: {} }
 const listeners = new Set()
 const emit = () => listeners.forEach((fn) => fn())
 
@@ -42,6 +44,7 @@ export function loadLikes(ids) {
     .then((r) => (r.ok ? r.json() : Promise.reject(new Error(String(r.status)))))
     .then((data) => {
       state.mode = 'online'
+      state.t = data.t || 0
       ids.forEach((id) => {
         state.counts[id] = data.counts?.[id] ?? 0
       })
@@ -76,6 +79,7 @@ export async function toggleLike(id, liked) {
       if (!r.ok) throw new Error(String(r.status))
       const data = await r.json()
       state.counts = { ...state.counts, [id]: data.count }
+      if (data.t) state.wrote = { ...state.wrote, [id]: data.t }
       emit()
       return
     } catch {
@@ -103,8 +107,13 @@ function startPolling(ids) {
       }
       if (!r.ok) return
       const data = await r.json()
+      // risposta più vecchia di una già usata (cache CDN): si ignora
+      if (data.t && data.t < state.t) return
+      if (data.t) state.t = data.t
       let changed = false
       ids.forEach((id) => {
+        // numero calcolato prima del mio ultimo tocco su questo poke: vale già quello del mio tocco
+        if (data.t && state.wrote[id] && data.t < state.wrote[id]) return
         const n = data.counts?.[id] ?? 0
         if (state.counts[id] !== n) {
           // qualcun altro ha messo "mi piace": il cuore fa un piccolo battito
