@@ -149,10 +149,12 @@ export function clientIp(req) {
 
 export const sha256 = (s) => createHash('sha256').update(String(s)).digest('hex')
 
-export function send(res, status, body) {
+// cache: di norma no-store; per i dati uguali per tutti (impostazioni, menu) la CDN di Vercel
+// tiene la risposta pochi secondi, così le richieste della sala non arrivano tutte alla funzione
+export function send(res, status, body, cache = 'no-store') {
   res.statusCode = status
   res.setHeader('Content-Type', 'application/json')
-  res.setHeader('Cache-Control', 'no-store')
+  res.setHeader('Cache-Control', cache)
   res.end(JSON.stringify(body))
 }
 

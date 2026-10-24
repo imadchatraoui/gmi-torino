@@ -13,8 +13,8 @@ const KEY = 'gmi:likes'
 const ID = /^[a-z0-9-]{1,40}$/
 // solo i poke del menu: nessuno può riempire il database con chiavi inventate
 const ALLOWED = new Set(POKES.map((p) => p.id))
-// al massimo 20 tocchi al minuto dallo stesso indirizzo
-const LIMIT = 20
+// al massimo 300 tocchi al minuto dallo stesso indirizzo
+const LIMIT = 300 // tutta la sala spesso esce dallo stesso indirizzo (Wi-Fi del locale)
 
 function redisConfig() {
   const url = process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL

@@ -23,5 +23,7 @@ export default async function handler(req, res) {
   const byKey = (key && sha256(key) === PREVIEW_HASH) || (process.env.MENU_PREVIEW_KEY && key === process.env.MENU_PREVIEW_KEY)
   const revealed = byKey || env === 'open' || (env !== 'closed' && menuRevealed(settings, now))
   const revealAt = settings.menuMode === 'closed' ? null : settings.revealAt
-  return send(res, 200, revealed ? { revealed, revealAt, now, options: await getMenu(POKES) } : { revealed, revealAt, now })
+  // con la chiave di prova la risposta è personale: mai in cache
+  const cache = byKey ? 'no-store' : 'public, s-maxage=3, stale-while-revalidate=15'
+  return send(res, 200, revealed ? { revealed, revealAt, now, options: await getMenu(POKES) } : { revealed, revealAt, now }, cache)
 }

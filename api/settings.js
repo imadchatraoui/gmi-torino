@@ -14,5 +14,5 @@ export default async function handler(req, res) {
     party: s.party,
     event: s.event || {},
     collab: s.collab,
-  })
+  }}, 'public, s-maxage=3, stale-while-revalidate=15')
 }
