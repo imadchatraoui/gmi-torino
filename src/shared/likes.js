@@ -95,6 +95,12 @@ function startPolling(ids) {
     if (document.hidden || state.mode !== 'online') return
     try {
       const r = await fetch(`/api/likes?ids=${ids.join(',')}`, { cache: 'no-store' })
+      if (r.status === 503) {
+        // cuori spenti dal pannello: si smette di chiedere i numeri
+        clearInterval(polling)
+        polling = 0
+        return
+      }
       if (!r.ok) return
       const data = await r.json()
       let changed = false
