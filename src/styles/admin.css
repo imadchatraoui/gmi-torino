@@ -508,3 +508,145 @@
     grid-template-columns: 1fr 1fr;
   }
 }
+
+/* ---------- emergenza: sempre in cima, in rosso ---------- */
+.adm-sos {
+  --sos: #a8262b;
+  border: 2px solid var(--sos);
+  background: color-mix(in srgb, var(--sos) 7%, var(--surface));
+}
+
+:root[data-theme='dark'] .adm-sos {
+  --sos: #ef6b70;
+}
+
+.adm-sos .adm-label {
+  color: var(--sos);
+}
+
+.adm-sos__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.adm-sos__badge {
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--sos) 14%, transparent);
+  color: var(--sos);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.adm-sos__state {
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--heading);
+}
+
+.adm-sos__text {
+  font-size: 0.9375rem;
+  line-height: 1.45;
+  color: var(--text-2);
+}
+
+.adm-sos__switches {
+  display: grid;
+  gap: 14px;
+}
+
+@media (min-width: 560px) {
+  .adm-sos__switches {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* emergenza attiva: la scheda diventa tutta rossa (stesso rosso scuro anche col tema scuro: testo bianco leggibile) */
+.adm-sos.is-on,
+:root[data-theme='dark'] .adm-sos.is-on {
+  --sos: #a8262b;
+  --line: rgba(255, 255, 255, 0.4);
+  border-color: var(--sos);
+  background: var(--sos);
+  color: #fff;
+}
+
+.adm-sos.is-on .adm-label,
+.adm-sos.is-on .adm-sos__state,
+.adm-sos.is-on .adm-sos__text,
+.adm-sos.is-on .adm-field > span:first-child {
+  color: #fff;
+}
+
+.adm-sos.is-on .adm-sos__badge,
+.adm-sos.is-on .adm-seg button.is-on {
+  background: #fff;
+  color: var(--sos);
+}
+
+/* ---------- gruppi del pannello ---------- */
+.adm-group {
+  grid-column: 1 / -1;
+  margin-top: 14px;
+}
+
+.adm-group h2 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--heading);
+}
+
+.adm-group p {
+  margin-top: 2px;
+  font-size: 0.875rem;
+  color: var(--text-2);
+}
+
+/* "Altro": le cose meno importanti, chiuse finché non servono */
+.adm-more {
+  grid-column: 1 / -1;
+  margin-top: 14px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+}
+
+.adm-more > summary {
+  display: grid;
+  gap: 2px;
+  padding: 16px 18px;
+  list-style: none;
+  cursor: pointer;
+}
+
+.adm-more > summary::-webkit-details-marker {
+  display: none;
+}
+
+.adm-more > summary span {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--heading);
+}
+
+.adm-more > summary span::after {
+  content: ' ▾';
+  font-size: 0.875rem;
+  color: var(--text-2);
+}
+
+.adm-more[open] > summary span::after {
+  content: ' ▴';
+}
+
+.adm-more > summary small {
+  font-size: 0.875rem;
+  color: var(--text-2);
+}
+
+.adm-grid--inner {
+  padding: 0 12px 12px;
+}

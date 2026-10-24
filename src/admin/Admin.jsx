@@ -201,6 +201,7 @@ export default function Admin() {
   const s = data.settings
   const revealed = s.menuMode === 'open' || (s.menuMode === 'auto' && now >= new Date(s.revealAt).getTime())
   const shift = (min) => run({ settings: { revealAt: new Date(new Date(s.revealAt).getTime() + min * 60000).toISOString(), menuMode: 'auto' } }, `Pranzo spostato a ${fmtTime(new Date(new Date(s.revealAt).getTime() + min * 60000).toISOString())}`)
+  const sos = data.static || { on: !!s.staticMode, why: s.staticMode ? 'admin' : '' }
   const likes = Object.entries(data.likes)
   const totalLikes = likes.reduce((n, [, l]) => n + l.count, 0)
 
@@ -234,6 +235,54 @@ export default function Admin() {
       {error && <p className="adm-error adm-error--bar">{error}</p>}
 
       <main className="adm-grid">
+        <section className={`adm-card adm-card--wide adm-sos${sos.on ? ' is-on' : ''}`} aria-labelledby="adm-sos-title">
+          <div className="adm-sos__head">
+            <p className="adm-label">Emergenza</p>
+            <p className="adm-sos__badge">{sos.on ? 'Attiva' : 'Tutto normale'}</p>
+          </div>
+          <h2 id="adm-sos-title" className="adm-sos__state">
+            {sos.on ? 'Il sito è in modalità statica' : 'Il sito è dal vivo'}
+          </h2>
+          <p className="adm-sos__text">
+            {sos.on
+              ? sos.why === 'db'
+                ? 'Il database non risponde: il sito si è messo da solo in statico e riprova fra un minuto.'
+                : sos.why === 'env'
+                  ? 'Statico fisso da Vercel (SITE_STATIC=1): per tornare dal vivo togli la variabile e rifai il deploy.'
+                  : 'Niente cuori, i telefoni si aggiornano una volta al minuto. Menu, programma e pagine funzionano.'
+              : 'Se il sito rallenta o i cuori non funzionano, premi Statico: spegne i like e alleggerisce tutto. Il menu si svela comunque all’ora del pranzo.'}
+          </p>
+          <div className="adm-sos__switches">
+            <div className="adm-field">
+              <span>Sito</span>
+              <Segmented
+                label="Sito"
+                value={s.staticMode ? 'on' : 'off'}
+                onChange={(v) => run({ settings: { staticMode: v === 'on' } }, v === 'on' ? 'Sito statico: niente like, aggiornamenti ogni minuto' : 'Sito di nuovo dal vivo')}
+                options={[
+                  { v: 'off', l: 'Dal vivo' },
+                  { v: 'on', l: 'Statico' },
+                ]}
+              />
+            </div>
+            <div className="adm-field">
+              <span>Cuori (mi piace)</span>
+              <Segmented
+                label="Cuori"
+                value={s.likesOn === false ? 'off' : 'on'}
+                onChange={(v) => run({ settings: { likesOn: v === 'on' } }, v === 'on' ? 'Cuori visibili' : 'Cuori nascosti')}
+                options={[
+                  { v: 'on', l: 'Visibili' },
+                  { v: 'off', l: 'Nascosti' },
+                ]}
+              />
+            </div>
+          </div>
+        </section>
+        <header className="adm-group">
+          <h2>Durante l’evento</h2>
+          <p>Le cose che servono oggi: il pranzo, i mi piace, gli avvisi.</p>
+        </header>
         <section className="adm-card adm-card--lunch">
           <p className="adm-label">Il pranzo</p>
           <h2 className={`adm-state ${revealed ? 'is-open' : ''}`}>
@@ -365,6 +414,22 @@ export default function Admin() {
           </div>
         </section>
 
+        <section className="adm-card">
+          <p className="adm-label">Festa · su tutti i telefoni aperti</p>
+          <p className="adm-muted">Fa piovere un’emoji per qualche secondo su chiunque abbia il sito aperto.</p>
+          <div className="adm-party">
+            {PARTY.map((e) => (
+              <button key={e} type="button" className="adm-btn" disabled={busy} onClick={() => run({ settings: { party: { emoji: e } } }, `${e} lanciato a tutti`)}>
+                {e}
+              </button>
+            ))}
+          </div>
+        </section>
+
+        <header className="adm-group">
+          <h2>Il menu</h2>
+          <p>Nomi dei piatti e ingredienti: le correzioni arrivano ai telefoni in pochi secondi.</p>
+        </header>
         <section className="adm-card adm-card--wide">
           <p className="adm-label">Il menu · piatti e ingredienti</p>
           {menu?.map((p, pi) => (
@@ -435,154 +500,6 @@ export default function Admin() {
         </section>
 
         <section className="adm-card">
-          <p className="adm-label">Iscrizioni</p>
-          <Segmented
-            label="Iscrizioni"
-            value={s.signup}
-            onChange={(v) => run({ settings: { signup: v } }, v === 'open' ? 'Iscrizioni aperte' : v === 'closed' ? 'Iscrizioni chiuse' : 'Iscrizioni automatiche')}
-            options={[
-              { v: 'auto', l: 'Automatico' },
-              { v: 'open', l: 'Aperte' },
-              { v: 'closed', l: 'Chiuse' },
-            ]}
-          />
-          <p className="adm-muted">Automatico: il bottone Iscriviti sparisce dopo venerdì 23 ottobre.</p>
-        </section>
-
-        <section className="adm-card">
-          <p className="adm-label">Festa · su tutti i telefoni aperti</p>
-          <p className="adm-muted">Fa piovere un’emoji per qualche secondo su chiunque abbia il sito aperto.</p>
-          <div className="adm-party">
-            {PARTY.map((e) => (
-              <button key={e} type="button" className="adm-btn" disabled={busy} onClick={() => run({ settings: { party: { emoji: e } } }, `${e} lanciato a tutti`)}>
-                {e}
-              </button>
-            ))}
-          </div>
-        </section>
-
-        <section className="adm-card">
-          <p className="adm-label">Collaborazione · Corpo e Sunnah</p>
-          <Segmented
-            label="Sezione collaborazione"
-            value={s.collab?.on === false ? 'off' : 'on'}
-            onChange={(v) => run({ settings: { collab: { ...collab, on: v === 'on' } } }, v === 'on' ? 'Sezione visibile' : 'Sezione nascosta')}
-            options={[
-              { v: 'on', l: 'Visibile' },
-              { v: 'off', l: 'Nascosta' },
-            ]}
-          />
-          <label className="adm-field" htmlFor="adm-cit">
-            <span>Testo (italiano)</span>
-            <input id="adm-cit" type="text" maxLength={220} placeholder="Il menu del pranzo è stato ideato insieme a Oumaima di Corpo e Sunnah…" value={collab.it} onChange={(e) => setCollab({ ...collab, it: e.target.value })} />
-          </label>
-          <label className="adm-field" htmlFor="adm-cen">
-            <span>Testo (inglese, facoltativo)</span>
-            <input id="adm-cen" type="text" maxLength={220} value={collab.en} onChange={(e) => setCollab({ ...collab, en: e.target.value })} />
-          </label>
-          <div className="adm-row">
-            <button type="button" className="adm-btn adm-btn--primary" disabled={busy} onClick={() => run({ settings: { collab } }, 'Testo aggiornato')}>
-              Salva testo
-            </button>
-            <button type="button" className="adm-btn adm-btn--ghost" disabled={busy} onClick={() => run({ settings: { collab: { on: collab.on, it: '', en: '' } } }, 'Testo originale')}>
-              Testo originale
-            </button>
-          </div>
-          <p className="adm-muted">
-            Link da aprire una volta: <strong>gmitorino.org/corposunnah</strong> ·{' '}
-            {data.corpoOpens ? `aperto ${Math.min(data.corpoOpens.used, data.corpoOpens.max)} volte su ${data.corpoOpens.max}` : ''}
-          </p>
-          {data.corpoOpens?.used > 0 && (
-            <div className="adm-row">
-              <button type="button" className="adm-btn adm-btn--ghost" disabled={busy} onClick={() => run({ action: 'resetCorpo' }, 'Link riattivato: di nuovo 3 aperture')}>
-                Riattiva il link
-              </button>
-            </div>
-          )}
-        </section>
-
-        <section className="adm-card">
-          <p className="adm-label">Sito statico · emergenza</p>
-          <Segmented
-            label="Sito statico"
-            value={s.staticMode ? 'on' : 'off'}
-            onChange={(v) => run({ settings: { staticMode: v === 'on' } }, v === 'on' ? 'Sito statico: niente like, aggiornamenti ogni minuto' : 'Sito di nuovo dal vivo')}
-            options={[
-              { v: 'off', l: 'Dal vivo' },
-              { v: 'on', l: 'Statico' },
-            ]}
-          />
-          <p className="adm-muted">
-            Statico: i cuori spariscono e i telefoni chiedono aggiornamenti una volta al minuto invece che ogni 5 secondi. Il menu si svela
-            comunque all’ora del pranzo. Torna dal vivo quando vuoi.
-          </p>
-          {data.static?.on && !s.staticMode && (
-            <p className="adm-muted">
-              Adesso il sito è statico da solo: {data.static.why === 'env' ? 'SITE_STATIC=1 su Vercel' : 'il database non ha risposto, riprova fra un minuto'}.
-            </p>
-          )}
-        </section>
-
-        <section className="adm-card">
-          <p className="adm-label">Mi piace</p>
-          <Segmented
-            label="Mi piace"
-            value={s.likesOn === false ? 'off' : 'on'}
-            onChange={(v) => run({ settings: { likesOn: v === 'on' } }, v === 'on' ? 'Cuori visibili' : 'Cuori nascosti')}
-            options={[
-              { v: 'on', l: 'Visibili' },
-              { v: 'off', l: 'Nascosti' },
-            ]}
-          />
-        </section>
-
-        <section className="adm-card adm-card--wide">
-          <p className="adm-label">L’evento · testi</p>
-          <p className="adm-muted">Lascia vuoto per usare il testo originale. Vale per home e menu.</p>
-          <div className="adm-evt">
-            {EVT_FIELDS.map(([k, label, ph, sub]) => (
-              <label key={k + (sub || '')} className="adm-field">
-                <span>{label}</span>
-                <input
-                  type="text"
-                  placeholder={ph}
-                  value={(sub ? evt[k]?.[sub] : evt[k]) || ''}
-                  onChange={(e) => {
-                    evtDirty.current = true
-                    const v = e.target.value
-                    setEvt((cur) => (sub ? { ...cur, [k]: { ...(cur[k] || {}), [sub]: v } } : { ...cur, [k]: v }))
-                  }}
-                />
-              </label>
-            ))}
-          </div>
-          <div className="adm-row">
-            <button
-              type="button"
-              className="adm-btn adm-btn--primary"
-              disabled={busy}
-              onClick={async () => {
-                if (await run({ settings: { event: evt } }, 'Evento aggiornato')) evtDirty.current = false
-              }}
-            >
-              Salva l’evento
-            </button>
-            <button
-              type="button"
-              className="adm-btn adm-btn--ghost"
-              disabled={busy}
-              onClick={async () => {
-                evtDirty.current = false
-                setEvt({})
-                await run({ settings: { event: {} } }, 'Testi originali ripristinati')
-              }}
-            >
-              Ripristina
-            </button>
-          </div>
-        </section>
-
-        <section className="adm-card">
           <p className="adm-label">Link utili</p>
           <ul className="adm-links">
             <li>
@@ -595,11 +512,126 @@ export default function Admin() {
               <a href="/menu/?chiave=ciao&staff" target="_blank" rel="noopener">Il menu per lo staff, con i mi piace</a>
             </li>
             <li>
+              <a href="/programma/" target="_blank" rel="noopener">Il programma</a>
+            </li>
+            <li>
+              <a href="/reading/" target="_blank" rel="noopener">Il testo del reading</a>
+            </li>
+            <li>
               <a href="https://vercel.com/dashboard" target="_blank" rel="noopener noreferrer">Vercel</a>
             </li>
           </ul>
           <p className="adm-muted">Ultima modifica: {s.updatedAt ? fmtTime(s.updatedAt) : 'mai'}</p>
         </section>
+
+        <details className="adm-more">
+          <summary>
+            <span>Altro</span>
+            <small>Iscrizioni, testi dell’evento, Corpo e Sunnah</small>
+          </summary>
+          <div className="adm-grid adm-grid--inner">
+            <section className="adm-card">
+              <p className="adm-label">Iscrizioni</p>
+              <Segmented
+                label="Iscrizioni"
+                value={s.signup}
+                onChange={(v) => run({ settings: { signup: v } }, v === 'open' ? 'Iscrizioni aperte' : v === 'closed' ? 'Iscrizioni chiuse' : 'Iscrizioni automatiche')}
+                options={[
+                  { v: 'auto', l: 'Automatico' },
+                  { v: 'open', l: 'Aperte' },
+                  { v: 'closed', l: 'Chiuse' },
+                ]}
+              />
+              <p className="adm-muted">Automatico: il bottone Iscriviti sparisce dopo venerdì 23 ottobre.</p>
+            </section>
+
+            <section className="adm-card adm-card--wide">
+              <p className="adm-label">L’evento · testi</p>
+              <p className="adm-muted">Lascia vuoto per usare il testo originale. Vale per home e menu.</p>
+              <div className="adm-evt">
+                {EVT_FIELDS.map(([k, label, ph, sub]) => (
+                  <label key={k + (sub || '')} className="adm-field">
+                    <span>{label}</span>
+                    <input
+                      type="text"
+                      placeholder={ph}
+                      value={(sub ? evt[k]?.[sub] : evt[k]) || ''}
+                      onChange={(e) => {
+                        evtDirty.current = true
+                        const v = e.target.value
+                        setEvt((cur) => (sub ? { ...cur, [k]: { ...(cur[k] || {}), [sub]: v } } : { ...cur, [k]: v }))
+                      }}
+                    />
+                  </label>
+                ))}
+              </div>
+              <div className="adm-row">
+                <button
+                  type="button"
+                  className="adm-btn adm-btn--primary"
+                  disabled={busy}
+                  onClick={async () => {
+                    if (await run({ settings: { event: evt } }, 'Evento aggiornato')) evtDirty.current = false
+                  }}
+                >
+                  Salva l’evento
+                </button>
+                <button
+                  type="button"
+                  className="adm-btn adm-btn--ghost"
+                  disabled={busy}
+                  onClick={async () => {
+                    evtDirty.current = false
+                    setEvt({})
+                    await run({ settings: { event: {} } }, 'Testi originali ripristinati')
+                  }}
+                >
+                  Ripristina
+                </button>
+              </div>
+            </section>
+
+            <section className="adm-card">
+              <p className="adm-label">Collaborazione · Corpo e Sunnah</p>
+              <Segmented
+                label="Sezione collaborazione"
+                value={s.collab?.on === false ? 'off' : 'on'}
+                onChange={(v) => run({ settings: { collab: { ...collab, on: v === 'on' } } }, v === 'on' ? 'Sezione visibile' : 'Sezione nascosta')}
+                options={[
+                  { v: 'on', l: 'Visibile' },
+                  { v: 'off', l: 'Nascosta' },
+                ]}
+              />
+              <label className="adm-field" htmlFor="adm-cit">
+                <span>Testo (italiano)</span>
+                <input id="adm-cit" type="text" maxLength={220} placeholder="Il menu del pranzo è stato ideato insieme a Oumaima di Corpo e Sunnah…" value={collab.it} onChange={(e) => setCollab({ ...collab, it: e.target.value })} />
+              </label>
+              <label className="adm-field" htmlFor="adm-cen">
+                <span>Testo (inglese, facoltativo)</span>
+                <input id="adm-cen" type="text" maxLength={220} value={collab.en} onChange={(e) => setCollab({ ...collab, en: e.target.value })} />
+              </label>
+              <div className="adm-row">
+                <button type="button" className="adm-btn adm-btn--primary" disabled={busy} onClick={() => run({ settings: { collab } }, 'Testo aggiornato')}>
+                  Salva testo
+                </button>
+                <button type="button" className="adm-btn adm-btn--ghost" disabled={busy} onClick={() => run({ settings: { collab: { on: collab.on, it: '', en: '' } } }, 'Testo originale')}>
+                  Testo originale
+                </button>
+              </div>
+              <p className="adm-muted">
+                Link da aprire una volta: <strong>gmitorino.org/corposunnah</strong> ·{' '}
+                {data.corpoOpens ? `aperto ${Math.min(data.corpoOpens.used, data.corpoOpens.max)} volte su ${data.corpoOpens.max}` : ''}
+              </p>
+              {data.corpoOpens?.used > 0 && (
+                <div className="adm-row">
+                  <button type="button" className="adm-btn adm-btn--ghost" disabled={busy} onClick={() => run({ action: 'resetCorpo' }, 'Link riattivato: di nuovo 3 aperture')}>
+                    Riattiva il link
+                  </button>
+                </div>
+              )}
+            </section>
+          </div>
+        </details>
       </main>
 
       <p className={`adm-toast ${toast ? 'is-on' : ''}`} role="status" aria-live="polite">
