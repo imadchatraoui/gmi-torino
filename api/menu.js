@@ -6,7 +6,7 @@
 // L'ora e lo stato (automatico / sempre visibile / nascosto) si cambiano da gmitorino.org/admin
 // (server/store.js); MENU_REVEAL su Vercel ("open"/"closed") resta come interruttore d'emergenza.
 import { POKES } from '../server/menu-data.js'
-import { getMenu, getSettings, menuRevealed, send, sha256 } from '../server/store.js'
+import { getMenu, getSettings, menuRevealed, send, sha256, staticState } from '../server/store.js'
 
 const PREVIEW_HASH = 'b133a0c0e9bee3be20163d2ad31d6248db292aa6dcb1ee087a2aa50e0fc75ae2'
 
@@ -25,5 +25,6 @@ export default async function handler(req, res) {
   const revealAt = settings.menuMode === 'closed' ? null : settings.revealAt
   // con la chiave di prova la risposta è personale: mai in cache
   const cache = byKey ? 'no-store' : 'public, s-maxage=1, stale-while-revalidate=1'
-  return send(res, 200, revealed ? { revealed, revealAt, now, options: await getMenu(POKES) } : { revealed, revealAt, now }, cache)
+  const still = staticState(settings).on // sito statico: il telefono ricontrolla solo ogni 60 s (e all'ora del pranzo)
+  return send(res, 200, revealed ? { revealed, revealAt, now, static: still, options: await getMenu(POKES) } : { revealed, revealAt, now, static: still }, cache)
 }

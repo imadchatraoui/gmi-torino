@@ -502,6 +502,28 @@ export default function Admin() {
         </section>
 
         <section className="adm-card">
+          <p className="adm-label">Sito statico · emergenza</p>
+          <Segmented
+            label="Sito statico"
+            value={s.staticMode ? 'on' : 'off'}
+            onChange={(v) => run({ settings: { staticMode: v === 'on' } }, v === 'on' ? 'Sito statico: niente like, aggiornamenti ogni minuto' : 'Sito di nuovo dal vivo')}
+            options={[
+              { v: 'off', l: 'Dal vivo' },
+              { v: 'on', l: 'Statico' },
+            ]}
+          />
+          <p className="adm-muted">
+            Statico: i cuori spariscono e i telefoni chiedono aggiornamenti una volta al minuto invece che ogni 5 secondi. Il menu si svela
+            comunque all’ora del pranzo. Torna dal vivo quando vuoi.
+          </p>
+          {data.static?.on && !s.staticMode && (
+            <p className="adm-muted">
+              Adesso il sito è statico da solo: {data.static.why === 'env' ? 'SITE_STATIC=1 su Vercel' : 'il database non ha risposto, riprova fra un minuto'}.
+            </p>
+          )}
+        </section>
+
+        <section className="adm-card">
           <p className="adm-label">Mi piace</p>
           <Segmented
             label="Mi piace"

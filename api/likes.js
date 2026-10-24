@@ -8,7 +8,7 @@
 
 import { createHash } from 'node:crypto'
 import { POKES } from '../server/menu-data.js'
-import { getSettings } from '../server/store.js'
+import { getSettings, staticState } from '../server/store.js'
 
 const KEY = 'gmi:likes'
 const ID = /^[a-z0-9-]{1,40}$/
@@ -76,8 +76,9 @@ async function readBody(req) {
 export default async function handler(req, res) {
   const cfg = redisConfig()
   if (!cfg) return send(res, 503, { error: 'likes storage not configured' })
-  // interruttore dal pannello (/admin → Mi piace → Nascosta): con i cuori spenti niente più richieste al database
-  if ((await getSettings()).likesOn === false) return send(res, 503, { error: 'likes off', off: true })
+  // interruttore dal pannello (/admin → Mi piace → Nascosti, o sito statico): niente richieste al database
+  const s = await getSettings()
+  if (s.likesOn === false || staticState(s).on) return send(res, 503, { error: 'likes off', off: true })
 
   try {
     if (req.method === 'GET') {

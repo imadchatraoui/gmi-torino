@@ -13,6 +13,7 @@ export const DEFAULTS = {
   signup: 'auto', // auto = chiude alla data di events.js; open; closed
   notice: { on: false, it: '', en: '', tone: 'brand' }, // striscia in alto su tutte le pagine
   likesOn: true, // cuori dei mi piace nel menu
+  staticMode: false, // sito statico d'emergenza (da /admin): telefoni che chiedono aggiornamenti ogni 60 s, niente like
   party: { at: 0, emoji: '🎉' }, // pioggia di emoji su tutti i telefoni aperti
   collab: { on: true, it: '', en: '' }, // sezione "ideato in collaborazione con" nel menu (testo vuoto = quello di events.js)
   event: {}, // testi dell'evento cambiati da /admin (data, orari, luogo, quota, iscrizioni)
@@ -44,6 +45,18 @@ export async function redis(cfg, command) {
 // piccola cache in memoria: con molti telefoni insieme il database riceve al massimo una lettura ogni 3 s
 let memo = { at: 0, value: null }
 
+// ultimo momento in cui il database non ha risposto: per 60 s il sito passa da solo in modalità statica
+let dbDownAt = 0
+
+// Sito statico: niente like e telefoni che chiedono aggiornamenti ogni 60 s invece che ogni 5.
+// Si accende da /admin, da solo se il database non risponde, oppure con SITE_STATIC=1 su Vercel (serve un redeploy).
+export function staticState(settings) {
+  if (process.env.SITE_STATIC === '1') return { on: true, why: 'env' }
+  if (settings?.staticMode === true) return { on: true, why: 'admin' }
+  if (Date.now() - dbDownAt < 60000) return { on: true, why: 'db' }
+  return { on: false, why: '' }
+}
+
 export async function getSettings({ fresh = false } = {}) {
   if (!fresh && memo.value && Date.now() - memo.at < 3000) return memo.value
   const v = await readSettings()
@@ -54,12 +67,15 @@ export async function getSettings({ fresh = false } = {}) {
 async function readSettings() {
   const cfg = redisConfig()
   if (!cfg) return { ...DEFAULTS }
+  // database appena andato giù: per 10 s non si riprova, si risponde subito con le ultime impostazioni
+  if (Date.now() - dbDownAt < 10000) return memo.value || { ...DEFAULTS }
   try {
     const raw = await redis(cfg, ['GET', SETTINGS_KEY])
     const saved = raw ? JSON.parse(raw) : {}
     return { ...DEFAULTS, ...saved, notice: { ...DEFAULTS.notice, ...(saved.notice || {}) }, party: { ...DEFAULTS.party, ...(saved.party || {}) }, collab: { ...DEFAULTS.collab, ...(saved.collab || {}) } }
   } catch {
     // database irraggiungibile: restano le ultime impostazioni lette (non si torna ai valori di partenza)
+    dbDownAt = Date.now()
     return memo.value || { ...DEFAULTS }
   }
 }
@@ -84,6 +100,7 @@ export async function saveSettings(patch) {
     }
   }
   if (typeof patch.likesOn === 'boolean') next.likesOn = patch.likesOn
+  if (typeof patch.staticMode === 'boolean') next.staticMode = patch.staticMode
   if (patch.collab && typeof patch.collab === 'object') {
     next.collab = { on: patch.collab.on !== false, it: text(patch.collab.it), en: text(patch.collab.en) }
   }
@@ -114,12 +131,14 @@ export async function getMenu(fallback, { fresh = false } = {}) {
   const cfg = redisConfig()
   if (!cfg) return fallback
   if (!fresh && menuMemo.value && Date.now() - menuMemo.at < 3000) return menuMemo.value
+  if (Date.now() - dbDownAt < 10000) return menuMemo.value || fallback
   try {
     const raw = await redis(cfg, ['GET', MENU_KEY])
     const value = raw ? JSON.parse(raw) : fallback
     menuMemo = { at: Date.now(), value }
     return value
   } catch {
+    dbDownAt = Date.now()
     return menuMemo.value || fallback
   }
 }

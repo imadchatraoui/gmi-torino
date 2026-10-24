@@ -93,16 +93,16 @@ export async function toggleLike(id, liked) {
 
 // numeri quasi in tempo reale: ogni 10 secondi, solo con la pagina in vista e l'API attiva
 let polling = 0
+let pausedUntil = 0
 function startPolling(ids) {
   if (polling) return
   polling = setInterval(async () => {
-    if (document.hidden || state.mode !== 'online') return
+    if (document.hidden || state.mode !== 'online' || Date.now() < pausedUntil) return
     try {
       const r = await fetch(`/api/likes?ids=${ids.join(',')}`, { cache: 'no-store' })
       if (r.status === 503) {
-        // cuori spenti dal pannello: si smette di chiedere i numeri
-        clearInterval(polling)
-        polling = 0
+        // cuori spenti (o sito statico) dal pannello: si richiede solo fra un minuto, nel caso tornino
+        pausedUntil = Date.now() + 60000
         return
       }
       if (!r.ok) return
