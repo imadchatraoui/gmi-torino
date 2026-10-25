@@ -36,7 +36,9 @@ export default function ProgramPage() {
   const now = useNow()
   const items = useMemo(() => ev.program.map((p, i) => ({ ...p, i, start: at(p.from), end: at(p.to) })), [ev.program])
 
-  const today = now >= at('00:00') && now < at('23:59')
+  // "Adesso" / "Tra poco" spenti: il giorno dell'evento gli orari reali sono slittati (rimettere a true per riaccenderli)
+  const LIVE = false
+  const today = LIVE && now >= at('00:00') && now < at('23:59')
   const current = items.find((p) => now >= p.start && now < p.end)
   const next = current ? null : items.find((p) => p.start > now)
   const focus = today ? current || next : null
